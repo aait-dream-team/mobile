@@ -1,3 +1,4 @@
+import 'package:bus_navigation/features/history/presentation/screens/history_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bus_navigation/features/home/presentation/home_page.dart';
@@ -8,6 +9,10 @@ class PageRouter {
       case HomePage.route:
         return MaterialPageRoute(builder: (context) {
           return const HomePage(title: "intial setup");
+        });
+      case RouteHistory.route:
+        return MaterialPageRoute(builder: (context) {
+          return RouteHistory();
         });
     }
   }
