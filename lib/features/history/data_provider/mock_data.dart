@@ -69,3 +69,27 @@ final Map<DateTime, List<RouteModel>> mockdata = {
         date: DateTime(2021, 4, 7)),
   ],
 };
+
+List<RouteModel> data2 = [
+  RouteModel(startPoint: "Home", endPoint: "Bole", date: DateTime(2021, 4, 7)),
+  RouteModel(
+      startPoint: "Piassa", endPoint: "Asko", date: DateTime(2021, 4, 7)),
+  RouteModel(
+      startPoint: "Home", endPoint: "4 Kilo", date: DateTime(2021, 4, 7)),
+  RouteModel(
+      startPoint: "5 Kilo", endPoint: "Shiro Meda", date: DateTime(2021, 4, 7)),
+  RouteModel(startPoint: "Home", endPoint: "Bole", date: DateTime(2021, 4, 6)),
+  RouteModel(
+      startPoint: "Piassa", endPoint: "Asko", date: DateTime(2021, 4, 6)),
+  RouteModel(
+      startPoint: "Home", endPoint: "4 Kilo", date: DateTime(2021, 4, 6)),
+  RouteModel(
+      startPoint: "5 Kilo", endPoint: "Shiro Meda", date: DateTime(2021, 4, 6)),
+  RouteModel(startPoint: "Home", endPoint: "Bole", date: DateTime(2021, 9, 2)),
+  RouteModel(
+      startPoint: "Piassa", endPoint: "Asko", date: DateTime(2021, 9, 2)),
+  RouteModel(
+      startPoint: "Home", endPoint: "4 Kilo", date: DateTime(2021, 9, 2)),
+  RouteModel(
+      startPoint: "5 Kilo", endPoint: "Shiro Meda", date: DateTime(2021, 9, 2)),
+];
