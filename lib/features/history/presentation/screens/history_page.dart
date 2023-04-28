@@ -1,3 +1,4 @@
+import 'package:bus_navigation/core/utils/colors.dart';
 import 'package:bus_navigation/features/history/presentation/widgets/grouped_route.dart';
 import 'package:bus_navigation/features/history/presentation/widgets/loading_shimmer.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class _RouteHistoryState extends State<RouteHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: AppColors.white12,
           elevation: 0,
           title: const Row(
             mainAxisAlignment: MainAxisAlignment.start,

@@ -1,3 +1,4 @@
+import 'package:bus_navigation/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -13,8 +14,8 @@ class LoadingShimmer extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: Shimmer.fromColors(
-            baseColor: const Color.fromARGB(255, 221, 219, 219),
-            highlightColor: const Color.fromARGB(255, 221, 219, 219),
+            baseColor: AppColors.shimmerColor,
+            highlightColor: AppColors.shimmerColor,
             enabled: true,
             child: one_shimmer(width: width),
           ),
@@ -43,7 +44,7 @@ class one_shimmer extends StatelessWidget {
             // Container(
             //   width: 48.0,
             //   height: 48.0,
-            //   color: Colors.white,
+            //   color: AppColors.white,
             // ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -55,7 +56,7 @@ class one_shimmer extends StatelessWidget {
                   Container(
                     width: width * 0.7,
                     height: 8.0,
-                    color: Colors.white,
+                    color: AppColors.white,
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 2.0),
@@ -63,7 +64,7 @@ class one_shimmer extends StatelessWidget {
                   Container(
                     width: width * 0.5,
                     height: 8.0,
-                    color: Colors.white,
+                    color: AppColors.white,
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 2.0),
@@ -71,7 +72,7 @@ class one_shimmer extends StatelessWidget {
                   Container(
                     width: 40.0,
                     height: 8.0,
-                    color: Colors.white,
+                    color: AppColors.white,
                   ),
                 ],
               ),

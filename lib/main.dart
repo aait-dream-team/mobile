@@ -1,4 +1,5 @@
 import 'package:bus_navigation/features/history/presentation/screens/history_page.dart';
+import 'package:bus_navigation/features/home/presentation/home_page.dart';
 import 'package:bus_navigation/routes.dart';
 import 'package:flutter/material.dart';
 
@@ -14,12 +15,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: RouteHistory.route,
+      // initialRoute: RouteHistory.route,
       onGenerateRoute: PageRouter.generateRoute,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: RouteHistory(),
+      home: const HomePage(),
     );
   }
 }
