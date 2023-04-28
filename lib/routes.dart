@@ -8,7 +8,7 @@ class PageRouter {
     switch (settings.name) {
       case HomePage.route:
         return MaterialPageRoute(builder: (context) {
-          return const HomePage(title: "intial setup");
+          return const HomePage();
         });
       case RouteHistory.route:
         return MaterialPageRoute(builder: (context) {

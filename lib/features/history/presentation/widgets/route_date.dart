@@ -1,3 +1,4 @@
+import 'package:bus_navigation/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -11,8 +12,8 @@ class RouteDate extends StatelessWidget {
       padding: const EdgeInsets.only(top: 15),
       child: Text(
         DateFormat.yMMMMEEEEd().format(date),
-        style: const TextStyle(
-            color: Color.fromARGB(255, 182, 180, 180),
+        style: TextStyle(
+            color: AppColors.greyAccent,
             fontSize: 16,
             fontWeight: FontWeight.w600),
       ),
