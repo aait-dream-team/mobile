@@ -47,7 +47,6 @@ class _RouteSearchState extends State<SearchResults> {
                 padding: EdgeInsets.all(16.0),
                 child: Center(child: CircularProgressIndicator(strokeWidth: 7)),
               );
-              // return const Center(child: CircularProgressIndicator(strokeWidth: 7));
             }
             if (state is SearchLoadFailedState) {
               return Center(child: Text(state.msg));
@@ -68,8 +67,6 @@ class _RouteSearchState extends State<SearchResults> {
                       .toList());
             }
             return const Center(child: Text("SomeThing Went Wrong"));
-
-            // return CustomScrollView(slivers: buildSection());
           },
         ),
       ),
