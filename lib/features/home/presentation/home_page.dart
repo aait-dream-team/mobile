@@ -1,5 +1,6 @@
 import 'package:bus_navigation/core/utils/colors.dart';
 import 'package:bus_navigation/features/history/presentation/screens/history_page.dart';
+import 'package:bus_navigation/features/search/presentation/screens/search_result_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,11 +22,13 @@ class _HomePageState extends State<HomePage> {
         "Home",
       ),
     ),
-    const Center(
-      child: Text(
-        "Routes",
-      ),
-    ),
+    // const Center(
+    //   child: Text(
+    //     "Routes",
+    //   ),
+    // ),
+    // TODO(Biruk): Remove Search Results from the bottom nav bar.
+    SearchResults(),
     RouteHistory(),
     const Center(
       child: Text(
