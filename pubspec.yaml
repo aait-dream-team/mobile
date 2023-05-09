@@ -36,7 +36,7 @@ dependencies:
   flutter_osm_plugin: ^0.42.0
   http: ^0.13.5
   intl: ^0.18.1
-  path: ^1.8.3
+  path: ^1.8.2
   path_provider: ^2.0.14
   shimmer: ^2.0.0
   sliver_tools: ^0.2.10

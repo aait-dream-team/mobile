@@ -14,6 +14,10 @@ class PageRouter {
         return MaterialPageRoute(builder: (context) {
           return RouteHistory();
         });
+      case RouteHistory.route:
+        return MaterialPageRoute(builder: (context) {
+          return RouteHistory();
+        });
     }
   }
 }
