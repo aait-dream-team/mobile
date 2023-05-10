@@ -1,4 +1,5 @@
 import 'package:bus_navigation/features/history/presentation/screens/history_page.dart';
+import 'package:bus_navigation/features/onBoarding/presentation/screens/onBoarding_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bus_navigation/features/home/presentation/home_page.dart';
@@ -14,9 +15,9 @@ class PageRouter {
         return MaterialPageRoute(builder: (context) {
           return RouteHistory();
         });
-      case RouteHistory.route:
+      case OnBoardingPage.route:
         return MaterialPageRoute(builder: (context) {
-          return RouteHistory();
+          return const OnBoardingPage();
         });
     }
   }

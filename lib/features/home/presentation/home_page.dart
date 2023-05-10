@@ -22,11 +22,6 @@ class _HomePageState extends State<HomePage> {
         "Home",
       ),
     ),
-    // const Center(
-    //   child: Text(
-    //     "Routes",
-    //   ),
-    // ),
     // TODO(Biruk): Remove Search Results from the bottom nav bar.
     SearchResults(),
     RouteHistory(),
