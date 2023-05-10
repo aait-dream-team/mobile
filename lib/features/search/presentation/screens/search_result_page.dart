@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/colors.dart';
+import '../widgets/depature_datetime.dart';
 import '../widgets/route_result.dart';
 
 class SearchResults extends StatefulWidget {
@@ -20,14 +21,36 @@ class SearchResults extends StatefulWidget {
 class _RouteSearchState extends State<SearchResults> {
   @override
   Widget build(BuildContext context) {
+    int depature = 0;
+    DateTime dateTime = DateTime.now();
     return Scaffold(
+      // TODO: Aman this does not belong here removie it.
+      floatingActionButton: TextButton(
+        onPressed: () => {
+          showModalBottomSheet(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(45))),
+            context: context,
+            builder: (context) => DatePicker(
+              onSave: (dep, date) => {
+                setState(() => {
+                      Navigator.pop(context),
+                      depature = dep,
+                      dateTime = date,
+                    })
+              },
+            ),
+          )
+        },
+        child: const Icon(Icons.add),
+      ),
       appBar: AppBar(
         backgroundColor: AppColors.white12,
         elevation: 0,
-        title: Row(
+        title: const Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const Text("Search Results",
+            Text("Search Results",
                 textAlign: TextAlign.left,
                 style: TextStyle(
                     color: Colors.black,

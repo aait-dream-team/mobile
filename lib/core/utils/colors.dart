@@ -12,4 +12,5 @@ class AppColors {
   static Color greyAccent = const Color.fromARGB(255, 182, 180, 180);
   static Color greenAccent = const Color.fromARGB(139, 63, 131, 65);
   static Color blue = Colors.blue;
+  static Color buttonColor = const Color(0x00669aff);
 }
