@@ -1,9 +1,12 @@
-import 'package:bus_navigation/features/history/presentation/screens/history_page.dart';
 import 'package:bus_navigation/features/home/presentation/home_page.dart';
 import 'package:bus_navigation/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterMapTileCaching.initialise();
+  await FMTC.instance('mapStore').manage.createAsync();
   runApp(const MyApp());
 }
 

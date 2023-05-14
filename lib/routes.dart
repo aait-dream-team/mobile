@@ -19,5 +19,6 @@ class PageRouter {
           return RouteHistory();
         });
     }
+    return null;
   }
 }
