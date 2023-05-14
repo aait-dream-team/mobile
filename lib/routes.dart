@@ -20,5 +20,6 @@ class PageRouter {
           return const OnBoardingPage();
         });
     }
+    return null;
   }
 }
