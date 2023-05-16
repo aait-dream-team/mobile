@@ -1,7 +1,8 @@
 import 'package:bus_navigation/core/utils/colors.dart';
-import 'package:bus_navigation/features/search/models/RouteResultModel.dart';
 
 import 'package:flutter/material.dart';
+
+import '../../models/RouteResultModel.dart';
 
 class RouteWidget extends StatelessWidget {
   final RouteSearchResultModel result;

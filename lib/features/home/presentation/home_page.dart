@@ -4,6 +4,7 @@ import 'package:bus_navigation/features/home/presentation/screens/home_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../search_results/presentation/screens/search_result_page.dart';
 import '../bloc/home_bloc.dart';
 
 class HomePage extends StatefulWidget {
@@ -32,11 +33,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       RouteHistory(),
-      const Center(
-        child: Text(
-          "Settings",
-        ),
-      ),
+      SearchResults(),
     ];
     return Scaffold(
       body: screens[index],
