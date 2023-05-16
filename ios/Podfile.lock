@@ -1,49 +1,51 @@
 PODS:
-  - Alamofire (5.6.4)
   - Flutter (1.0.0)
-  - flutter_osm_plugin (0.0.1):
-    - Alamofire
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - isar_flutter_libs (1.0.0):
     - Flutter
-    - Polyline
-    - Tangram-es
-  - permission_handler_apple (9.0.4):
+  - path_provider_foundation (0.0.1):
     - Flutter
-  - Polyline (5.1.0)
-  - Tangram-es (0.17.1)
-  - url_launcher_ios (0.0.1):
+    - FlutterMacOS
+  - shared_preferences_foundation (0.0.1):
     - Flutter
+    - FlutterMacOS
+  - sqflite (0.0.2):
+    - Flutter
+    - FMDB (>= 2.7.5)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - flutter_osm_plugin (from `.symlinks/plugins/flutter_osm_plugin/ios`)
-  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
-  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
+  - isar_flutter_libs (from `.symlinks/plugins/isar_flutter_libs/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
+  - sqflite (from `.symlinks/plugins/sqflite/ios`)
 
 SPEC REPOS:
   trunk:
-    - Alamofire
-    - Polyline
-    - Tangram-es
+    - FMDB
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  flutter_osm_plugin:
-    :path: ".symlinks/plugins/flutter_osm_plugin/ios"
-  permission_handler_apple:
-    :path: ".symlinks/plugins/permission_handler_apple/ios"
-  url_launcher_ios:
-    :path: ".symlinks/plugins/url_launcher_ios/ios"
+  isar_flutter_libs:
+    :path: ".symlinks/plugins/isar_flutter_libs/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
+  sqflite:
+    :path: ".symlinks/plugins/sqflite/ios"
 
 SPEC CHECKSUMS:
-  Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  flutter_osm_plugin: f06ae1e854af57270c61ae27bdb8a386cfd4afa5
-  permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
-  Polyline: 2a1f29f87f8d9b7de868940f4f76deb8c678a5b1
-  Tangram-es: 628b634f7fc09d2217469b9914de00d9de49ff9d
-  url_launcher_ios: ae1517e5e344f5544fb090b079e11f399dfbe4d2
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  isar_flutter_libs: b69f437aeab9c521821c3f376198c4371fa21073
+  path_provider_foundation: eaf5b3e458fc0e5fbb9940fb09980e853fe058b8
+  shared_preferences_foundation: e2dae3258e06f44cc55f49d42024fd8dd03c590c
+  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
 
-PODFILE CHECKSUM: 4e8f8b2be68aeea4c0d5beb6ff1e79fface1d048
+PODFILE CHECKSUM: 49968a9e985db16827231993ea4bb8168ce6feea
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.12.1
