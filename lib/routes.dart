@@ -68,6 +68,10 @@ class PageRouter {
           print(args);
           return const Text("Error");
         });
+      case SidePage.route:
+        return MaterialPageRoute(builder: (context) {
+          return SidePage();
+        });
     }
     return null;
   }

@@ -12,7 +12,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'features/search_results/data_provider/route_search_data_provider.dart';
 import 'features/search_results/repository/route_search_repository.dart';
-
 import 'features/nav_detail/presentation/screens/detail.dart';
 
 int? initScreen;
