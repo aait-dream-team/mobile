@@ -4,6 +4,8 @@ import 'package:bus_navigation/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'features/nav_detail/presentation/screens/detail.dart';
+
 int? initScreen;
 
 void main() async {
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: initScreen == 0 || initScreen == null
           ? OnBoardingPage.route
-          : HomePage.route,
+          : SidePage.route,
 
       // home: const OnBoardingPage(),
     );

@@ -1,3 +1,4 @@
+import 'package:bus_navigation/features/nav_detail/presentation/screens/detail.dart';
 import 'package:bus_navigation/features/history/presentation/screens/history_page.dart';
 import 'package:bus_navigation/features/onBoarding/presentation/screens/onBoarding_page.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,10 @@ class PageRouter {
       case OnBoardingPage.route:
         return MaterialPageRoute(builder: (context) {
           return const OnBoardingPage();
+        });
+      case SidePage.route:
+        return MaterialPageRoute(builder: (context) {
+          return SidePage();
         });
     }
   }
