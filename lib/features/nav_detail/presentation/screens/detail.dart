@@ -7,6 +7,7 @@ import 'package:bus_navigation/features/navigate/presentation/screens/navigation
 import 'package:bus_navigation/features/search_results/models/RouteResultModel.dart';
 import 'package:bus_navigation/features/search_results/presentation/widgets/route_result.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import 'package:bus_navigation/core/utils/utils.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/bus_mode.dart';
@@ -34,6 +35,26 @@ class _SidePageState extends State<SidePage> {
 
   @override
   Widget build(BuildContext context) {
+    final ScrollController _controller1 = ScrollController();
+    bool _isScrolling = false;
+
+    final ScrollController _controller2 = ScrollController();
+
+    // _controller1.addListener(() {
+    //   _controller2.jumpTo(_controller1.offset);
+    // });
+
+    // _controller2.addListener(() {
+    //   _controller1.jumpTo(_controller2.offset);
+    // });
+
+    // @override
+    // void dispose() {
+    //   _controller1.dispose();
+    //   _controller2.dispose();
+    //   super.dispose();
+    // }
+
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.transparent,
