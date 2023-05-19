@@ -7,11 +7,12 @@ class WalkMode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const borderSide = BorderSide(
-      color: Colors.grey,
+      color: Colors.amber,
       width: 0.5,
     );
     return Container(
       height: 40,
+      width: double.infinity,
       decoration: BoxDecoration(
         color: AppColors.white,
         border: const Border(
@@ -29,12 +30,27 @@ class WalkModeExpanded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text("430 m"),
-        Text("6 min (+2 min waiting)"),
-      ],
+    return Container(
+      height: 40,
+      width: double.infinity,
+      child: const Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            flex: 1,
+            child: Padding(
+              padding: EdgeInsets.only(left: 8.0),
+              child: Text("430 m"),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              "6 min (+2 min waiting)",
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

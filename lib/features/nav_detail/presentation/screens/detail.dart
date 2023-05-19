@@ -1,5 +1,7 @@
+import 'package:bus_navigation/core/utils/utils.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/walk_mode.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class SidePage extends StatefulWidget {
   static const String route = '/d';
@@ -11,7 +13,7 @@ class SidePage extends StatefulWidget {
 class _SidePageState extends State<SidePage> {
   int _counter = 0;
   final ValueNotifier<double> _sheetWidthNotifier = ValueNotifier(200.0);
-  final double _expandedWidth = 400.0;
+  final double _expandedWidth = 390.0;
   bool _isExpanded = false;
 
   void _incrementCounter() {
@@ -22,6 +24,26 @@ class _SidePageState extends State<SidePage> {
 
   @override
   Widget build(BuildContext context) {
+    final ScrollController _controller1 = ScrollController();
+    bool _isScrolling = false;
+
+    final ScrollController _controller2 = ScrollController();
+
+    // _controller1.addListener(() {
+    //   _controller2.jumpTo(_controller1.offset);
+    // });
+
+    // _controller2.addListener(() {
+    //   _controller1.jumpTo(_controller2.offset);
+    // });
+
+    // @override
+    // void dispose() {
+    //   _controller1.dispose();
+    //   _controller2.dispose();
+    //   super.dispose();
+    // }
+
     return MaterialApp(
       home: Scaffold(
         body: SafeArea(
@@ -39,8 +61,10 @@ class _SidePageState extends State<SidePage> {
               Align(
                 alignment: Alignment.centerRight,
                 child: AnimatedContainer(
-                  duration: Duration(milliseconds: 30),
-                  width: _isExpanded ? _expandedWidth : 200.0,
+                  duration: const Duration(
+                    milliseconds: 30,
+                  ),
+                  width: _isExpanded ? _expandedWidth : 150.0,
                   child: Row(
                     children: [
                       IconButton(
@@ -55,49 +79,41 @@ class _SidePageState extends State<SidePage> {
                         },
                       ),
                       Expanded(
-                        child: ClipRect(
-                          child: Container(
-                            color: Colors.grey[200],
-                            child: ListView.builder(
-                              itemCount: 25,
-                              itemBuilder: (BuildContext context, int index) {
-                                return const WalkMode();
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      Visibility(
-                        visible: _isExpanded,
-                        child: ClipRect(
-                          child: Container(
-                            color: Colors.black54,
-                            width: 200.0,
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text(
-                                    'Extra Information',
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      color: Colors.white,
+                        child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    width: 150,
+                                    color: Colors.blue[200],
+                                    child: Column(children: [
+                                      for (var i = 0; i < 50; i++)
+                                        const WalkMode()
+                                    ]),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: _isExpanded,
+                                  child: Expanded(
+                                    flex: 2,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: AppColors.white,
+                                      ),
+                                      width: 300,
+                                      child: Column(
+                                        children: [
+                                          for (var i = 0; i < 50; i++)
+                                            const WalkModeExpanded()
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  const SizedBox(height: 16),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _isExpanded = false;
-                                      });
-                                    },
-                                    child: Text('Close'),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                                )
+                              ],
+                            )),
                       ),
                     ],
                   ),
