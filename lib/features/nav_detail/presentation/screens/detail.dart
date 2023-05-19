@@ -1,3 +1,4 @@
+import 'package:bus_navigation/features/nav_detail/presentation/widgets/walk_mode.dart';
 import 'package:flutter/material.dart';
 
 class SidePage extends StatefulWidget {
@@ -38,13 +39,13 @@ class _SidePageState extends State<SidePage> {
               Align(
                 alignment: Alignment.centerRight,
                 child: AnimatedContainer(
-                  duration: Duration(milliseconds: 300),
+                  duration: Duration(milliseconds: 30),
                   width: _isExpanded ? _expandedWidth : 200.0,
                   child: Row(
                     children: [
                       IconButton(
                         icon: Icon(
-                          _isExpanded ? Icons.arrow_back : Icons.arrow_forward,
+                          _isExpanded ? Icons.arrow_forward : Icons.arrow_back,
                           color: Colors.black,
                         ),
                         onPressed: () {
@@ -60,9 +61,7 @@ class _SidePageState extends State<SidePage> {
                             child: ListView.builder(
                               itemCount: 25,
                               itemBuilder: (BuildContext context, int index) {
-                                return ListTile(
-                                  title: Text('Item $index'),
-                                );
+                                return const WalkMode();
                               },
                             ),
                           ),
@@ -78,14 +77,14 @@ class _SidePageState extends State<SidePage> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Extra Information',
                                     style: TextStyle(
                                       fontSize: 24,
                                       color: Colors.white,
                                     ),
                                   ),
-                                  SizedBox(height: 16),
+                                  const SizedBox(height: 16),
                                   ElevatedButton(
                                     onPressed: () {
                                       setState(() {
