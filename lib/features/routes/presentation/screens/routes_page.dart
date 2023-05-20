@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import './search_routes_page.dart';
 import '../../bloc/routes_bloc.dart';
 import 'screen_arguments.dart';
-
+import 'package:bus_navigation/features/search_results/presentation/screens/search_result_page.dart';
 class RoutesPage extends StatefulWidget {
   static const String route = "/routes";
 
@@ -64,7 +64,7 @@ class _RoutesWidget extends State<RoutesPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
               child: TextField(
                 controller: toController,
                 readOnly: true,
@@ -93,26 +93,24 @@ class _RoutesWidget extends State<RoutesPage> {
                 ),
               ),
             ),
-            Divider(
-              thickness: 1,
-            ),
             Expanded(
-              child: ListView.separated(
-                itemCount: 0,
-                separatorBuilder: (BuildContext context, int index) =>
-                    Divider(color: Colors.grey[300]), // lighter divider color
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    leading:
-                        Icon(Icons.location_on_outlined), // location pin icon
-                    title: Text('Location $index'), // title of the suggestion
-                    subtitle:
-                        Text('Subtitle $index'), // subtitle of the suggestion
-                    trailing: Icon(Icons
-                        .copy), // copy icon at the most left side of the row
-                  );
-                },
-              ),
+              // child: ListView.separated(
+              //   itemCount: 0,
+              //   separatorBuilder: (BuildContext context, int index) =>
+              //       Divider(color: Colors.grey[300]), // lighter divider color
+              //   itemBuilder: (BuildContext context, int index) {
+              //     return ListTile(
+              //       leading:
+              //           Icon(Icons.location_on_outlined), // location pin icon
+              //       title: Text('Location $index'), // title of the suggestion
+              //       subtitle:
+              //           Text('Subtitle $index'), // subtitle of the suggestion
+              //       trailing: Icon(Icons
+              //           .copy), // copy icon at the most left side of the row
+              //     );
+              //   },
+              // ),
+              child: SearchResults(),
             )
           ],
         ),

@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
       // Providing the bloc at this level so that the map state doesn't reset
       // when navigating between states
       BlocProvider.value(value: _homeBloc, child: const HomeWidget()),
-      SearchResults(),
+      // SearchResults(),
       BlocProvider.value(value: _routesBloc, child: const RoutesPage()),
       SearchResults(),
       RouteHistory(),
