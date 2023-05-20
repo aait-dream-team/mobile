@@ -1,3 +1,4 @@
+import 'package:bus_navigation/features/nav_detail/presentation/widgets/time_icon.dart';
 import 'package:flutter/material.dart';
 
 class BusMode extends StatelessWidget {
@@ -5,6 +6,10 @@ class BusMode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Column(
+      children: [
+        // TimeIcon(type: TimeType.start, time:DateTime.now())
+      ],
+    );
   }
 }

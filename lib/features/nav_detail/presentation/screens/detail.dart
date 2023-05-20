@@ -1,4 +1,5 @@
 import 'package:bus_navigation/core/utils/utils.dart';
+import 'package:bus_navigation/features/nav_detail/presentation/widgets/detail.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/walk_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -13,7 +14,7 @@ class SidePage extends StatefulWidget {
 class _SidePageState extends State<SidePage> {
   int _counter = 0;
   final ValueNotifier<double> _sheetWidthNotifier = ValueNotifier(200.0);
-  final double _expandedWidth = 390.0;
+  final double _expandedWidth = 400.0;
   bool _isExpanded = false;
 
   void _incrementCounter() {
@@ -68,9 +69,18 @@ class _SidePageState extends State<SidePage> {
                   child: Row(
                     children: [
                       IconButton(
-                        icon: Icon(
-                          _isExpanded ? Icons.arrow_forward : Icons.arrow_back,
-                          color: Colors.black,
+                        icon: Container(
+                          width: 200,
+                          height: 200,
+                          child: Card(
+                            child: Container(
+                              color: Colors.white,
+                              child: Icon(
+                                _isExpanded ? Icons.arrow_forward_ios : Icons.arrow_back_ios,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
                         ),
                         onPressed: () {
                           setState(() {
@@ -106,7 +116,7 @@ class _SidePageState extends State<SidePage> {
                                       child: Column(
                                         children: [
                                           for (var i = 0; i < 50; i++)
-                                            const WalkModeExpanded()
+                                            const Detail()
                                         ],
                                       ),
                                     ),
