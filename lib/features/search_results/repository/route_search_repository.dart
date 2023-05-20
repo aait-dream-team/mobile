@@ -1,5 +1,6 @@
-import 'package:bus_navigation/features/search/data_provider/route_search_data_provider.dart';
-import 'package:bus_navigation/features/search/models/RouteResultModel.dart';
+
+import '../data_provider/route_search_data_provider.dart';
+import '../models/RouteResultModel.dart';
 
 class RouteSearchRepository {
   final RouteSearchDataProvider dataProvider;

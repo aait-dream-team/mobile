@@ -1,4 +1,5 @@
-import 'package:bus_navigation/features/search/models/RouteResultModel.dart';
+
+import '../models/RouteResultModel.dart';
 
 class RouteSearchDataProvider {
   Future<List<RouteSearchResultModel>> getSearchResults() async {
