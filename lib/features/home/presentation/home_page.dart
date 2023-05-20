@@ -2,6 +2,9 @@ import 'package:bus_navigation/core/utils/colors.dart';
 import 'package:bus_navigation/features/history/presentation/screens/history_page.dart';
 import 'package:bus_navigation/features/home/presentation/screens/home_page.dart';
 import 'package:bus_navigation/features/navigate/presentation/screens/navigation_screen.dart';
+import 'package:bus_navigation/features/routes/presentation/screens/routes_page.dart';
+import 'package:bus_navigation/features/routes/bloc/routes_bloc.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,6 +25,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int index = 0;
   final HomeBloc _homeBloc = HomeBloc()..add(MapLoadEvent());
+  final RoutesBloc _routesBloc = RoutesBloc()..add(RoutesInitialEvent());
+  
   @override
   Widget build(BuildContext context) {
     List<Widget> screens = [
@@ -29,6 +34,7 @@ class _HomePageState extends State<HomePage> {
       // when navigating between states
       BlocProvider.value(value: _homeBloc, child: const HomeWidget()),
       SearchResults(),
+      BlocProvider.value(value: _routesBloc, child: const RoutesPage()),
       RouteHistory(),
       NavigationPage(),
     ];
