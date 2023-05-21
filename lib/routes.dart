@@ -9,7 +9,6 @@ import 'package:bus_navigation/features/routes/presentation/screens/choose_from_
 
 class PageRouter {
   static Route? generateRoute(RouteSettings settings) {
-    // print(settings.arguments);
     final args = settings.arguments;
     switch (settings.name) {
       case HomePage.route:

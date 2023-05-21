@@ -11,8 +11,8 @@ class RoutesLoading extends RoutesState {}
 
 class RoutesLoaded extends RoutesState {}
 class RoutesPinPoint extends RoutesState {
-      final String from;
-      final String to;
+      final PinPoint from;
+      final PinPoint to;
 
       RoutesPinPoint({
         required this.from,

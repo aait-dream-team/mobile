@@ -1,29 +1,31 @@
+import 'package:bus_navigation/features/routes/model/pin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:latlong2/latlong.dart';
 import './search_routes_page.dart';
 import '../../bloc/routes_bloc.dart';
 import 'screen_arguments.dart';
 import 'package:bus_navigation/features/search_results/presentation/screens/search_result_page.dart';
+
 class RoutesPage extends StatefulWidget {
   static const String route = "/routes";
 
   const RoutesPage({super.key});
-  
+
   @override
   State<RoutesPage> createState() => _RoutesWidget();
 }
 
 class _RoutesWidget extends State<RoutesPage> {
-  
   TextEditingController fromController = TextEditingController();
   TextEditingController toController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RoutesBloc, RoutesState>(builder: (context, state) {
-      if (state is RoutesPinPoint){
-        fromController.text = state.from;
-        toController.text = state.to;
+      if (state is RoutesPinPoint) {
+        fromController.text = '${state.from.name}, ${state.from.location}';
+        toController.text = '${state.to.name}, ${state.to.location}';
       }
       return Padding(
         padding: EdgeInsets.fromLTRB(10, 40, 10, 0),
@@ -38,20 +40,19 @@ class _RoutesWidget extends State<RoutesPage> {
                   Navigator.of(context).pushNamed(SearchPage.route,
                       arguments: ScreenArguments(
                           name: 'from ',
-                          func: (String loc) {
-                            // print('here');
-                            // print(loc);
+                          func: (LatLng loc, String name) {
+                            final PinPoint from =
+                                PinPoint(name: name, location: loc);
                             if (state is RoutesPinPoint) {
                               context
                                   .read<RoutesBloc>()
-                                  .add(PointPicked(from: loc, to: state.to));
-                            
+                                  .add(PointPicked(from: from, to: state.to));
                             } else {
-                              context
-                                  .read<RoutesBloc>()
-                                  .add(PointPicked(from: loc, to:''));
+                              context.read<RoutesBloc>().add(PointPicked(
+                                  from: from,
+                                  to: PinPoint(
+                                      name: '', location: LatLng(0.0, 0.0))));
                             }
-
                           }))
                 },
                 decoration: InputDecoration(
@@ -72,15 +73,18 @@ class _RoutesWidget extends State<RoutesPage> {
                   Navigator.pushNamed(context, SearchPage.route,
                       arguments: ScreenArguments(
                           name: 'to ',
-                          func: (String loc) {
+                          func: (LatLng loc, String name) {
+                            final PinPoint to =
+                                PinPoint(name: name, location: loc);
                             if (state is RoutesPinPoint) {
                               context
                                   .read<RoutesBloc>()
-                                  .add(PointPicked(from: state.from, to: loc));
+                                  .add(PointPicked(from: state.from, to: to));
                             } else {
-                              context
-                                  .read<RoutesBloc>()
-                                  .add(PointPicked(from: '', to:loc));
+                              context.read<RoutesBloc>().add(PointPicked(
+                                  from: PinPoint(
+                                      name: '', location: LatLng(0.0, 0.0)),
+                                  to: to));
                             }
                           }));
                 },

@@ -4,8 +4,8 @@ part of 'routes_bloc.dart';
 abstract class RoutesEvent {}
 class RoutesInitialEvent extends RoutesEvent{}
 class PointPicked extends RoutesEvent{
-  final String from;
-  final String to;
+  final PinPoint from;
+  final PinPoint to;
   PointPicked({
     required this.from,
     required this.to

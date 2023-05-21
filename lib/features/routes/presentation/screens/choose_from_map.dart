@@ -77,9 +77,7 @@ class _MapPageState extends State<MapPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Print the center location when the button is pressed
-          screenArguments.func(_centerLocation.toString());
-          // print(_centerLocation);
+          screenArguments.func(_centerLocation, 'Pin Location');
           Navigator.of(context).pop();
           Navigator.of(context).pop();
         },

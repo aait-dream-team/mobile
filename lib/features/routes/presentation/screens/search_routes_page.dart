@@ -1,26 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:latlong2/latlong.dart';
 import 'screen_arguments.dart';
 import 'choose_from_map.dart';
+import 'package:geolocator/geolocator.dart';
+
 class SearchPage extends StatefulWidget {
   static const String route = "/SearchRoute";
   final ScreenArguments screenArguments;
   const SearchPage({super.key, required this.screenArguments});
 
   @override
-  State<SearchPage> createState() => _SearchWidget(screenArguments: this.screenArguments);
+  State<SearchPage> createState() =>
+      _SearchWidget(screenArguments: this.screenArguments);
 }
 
 class _SearchWidget extends State<SearchPage> {
-  final  ScreenArguments screenArguments;
+  final ScreenArguments screenArguments;
 
   _SearchWidget({required this.screenArguments});
+
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments;
-    // print(args.name);
-    print(screenArguments);
-    // print(screenArguments.name);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.fromLTRB(10, 45, 10, 0),
@@ -35,6 +73,13 @@ class _SearchWidget extends State<SearchPage> {
                 textFieldConfiguration: TextFieldConfiguration(
                     decoration: InputDecoration(
                   hintText: 'Location',
+                  suffixIcon: IconButton(
+                    // onPressed: .clear,
+                    onPressed: () {
+                      FocusScope.of(context).unfocus();
+                    },
+                    icon: Icon(Icons.clear),
+                  ),
                   prefixIcon: IconButton(
                     icon: const Icon(Icons.arrow_back_ios_new),
                     onPressed: () {
@@ -46,7 +91,21 @@ class _SearchWidget extends State<SearchPage> {
                   ),
                 )),
                 suggestionsCallback: (pattern) async {
-                  return await ['ልደታ', 'Stadium', 'Lideta', '4 ኪሎ', '6 ኪሎ', '5 ኪሎ','Piyassa', '4 ኪሎ','Kirkos', 'ካዛንችስ','ልደታ', 'Stadium', 'Lideta']; 
+                  return await [
+                    'ልደታ',
+                    'Stadium',
+                    'Lideta',
+                    '4 ኪሎ',
+                    '6 ኪሎ',
+                    '5 ኪሎ',
+                    'Piyassa',
+                    '4 ኪሎ',
+                    'Kirkos',
+                    'ካዛንችስ',
+                    'ልደታ',
+                    'Stadium',
+                    'Lideta'
+                  ];
                 },
                 itemBuilder: (context, suggestion) {
                   return ListTile(
@@ -56,7 +115,7 @@ class _SearchWidget extends State<SearchPage> {
                   );
                 },
                 onSuggestionSelected: (suggestion) {
-                  screenArguments.func(suggestion);
+                  screenArguments.func(LatLng(4.44, 5.55), suggestion);
                   Navigator.pop(context);
                 },
               ),
@@ -70,9 +129,9 @@ class _SearchWidget extends State<SearchPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton.icon(
-                      
                       onPressed: () {
-                        Navigator.of(context).pushNamed(MapPage.route, arguments: screenArguments);
+                        Navigator.of(context).pushNamed(MapPage.route,
+                            arguments: screenArguments);
                       },
                       icon: Icon(Icons.map,
                           color: Colors.grey[700]), // lighter icon color
@@ -94,10 +153,14 @@ class _SearchWidget extends State<SearchPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: () async {
+                        final Position val = await _determinePosition();
+                        screenArguments.func(LatLng(val.latitude, val.longitude), 'Your Current Location');
+                        Navigator.pop(context);
+                      },
                       icon: Icon(Icons.my_location,
                           color: Colors.grey[700]), // lighter icon color
-                      label: Text('Use Current Location',
+                      label: Text('Use Your Location',
                           style: TextStyle(
                               color: Colors.grey[700])), // lighter text color
                       style: ElevatedButton.styleFrom(
@@ -126,7 +189,7 @@ class _SearchWidget extends State<SearchPage> {
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
                     onTap: () {
-                      screenArguments.func('Location $index');
+                      screenArguments.func(LatLng(40.4, 30.7),'Location $index');
                       Navigator.pop(context);
                     },
                     leading:
