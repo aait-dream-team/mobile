@@ -49,87 +49,94 @@ class _SidePageState extends State<SidePage> {
     return MaterialApp(
       home: Scaffold(
         body: SafeArea(
-          child: Stack(
+          child: Column(
             children: [
-              Container(
-                color: Colors.white,
-                child: const Center(
-                  child: Text(
-                    'Main Content',
-                    style: TextStyle(fontSize: 24),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: AnimatedContainer(
-                  duration: const Duration(
-                    milliseconds: 30,
-                  ),
-                  width: _isExpanded ? _expandedWidth : 150.0,
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: Container(
-                          width: 200,
-                          height: 200,
-                          child: Card(
-                            child: Container(
-                              color: Colors.white,
-                              child: Icon(
-                                _isExpanded ? Icons.arrow_forward_ios : Icons.arrow_back_ios,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
+              SizedBox(height: 100,),
+              Expanded(
+                child: Stack(
+                  children: [
+                    Container(
+                      color: Colors.white,
+                      child: const Center(
+                        child: Text(
+                          'Main Content',
+                          style: TextStyle(fontSize: 24),
                         ),
-                        onPressed: () {
-                          setState(() {
-                            _isExpanded = !_isExpanded;
-                          });
-                        },
                       ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Card(
-                                    child: Container(
-                                      width: 150,
-                                      color: Colors.white,
-                                      child: Column(children: [
-                                        for (var i = 0; i < 50; i++)
-                                          const BusMode()
-                                      ]),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: AnimatedContainer(
+                        duration: const Duration(
+                          milliseconds: 30,
+                        ),
+                        width: _isExpanded ? _expandedWidth : 150.0,
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: Container(
+                                width: 200,
+                                height: 200,
+                                child: Card(
+                                  child: Container(
+                                    color: Colors.white,
+                                    child: Icon(
+                                      _isExpanded ? Icons.arrow_forward_ios : Icons.arrow_back_ios,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
-                                Visibility(
-                                  visible: _isExpanded,
-                                  child: Expanded(
-                                    flex: 2,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: AppColors.white,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isExpanded = !_isExpanded;
+                                });
+                              },
+                            ),
+                            Expanded(
+                              child: SingleChildScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Card(
+                                          child: Container(
+                                            width: 150,
+                                            color: Colors.white,
+                                            child: Column(children: [
+                                              for (var i = 0; i < 50; i++)
+                                                const BusMode()
+                                            ]),
+                                          ),
+                                        ),
                                       ),
-                                      width: 300,
-                                      child: Column(
-                                        children: [
-                                          for (var i = 0; i < 50; i++)
-                                            const Detail()
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            )),
+                                      Visibility(
+                                        visible: _isExpanded,
+                                        child: Expanded(
+                                          flex: 2,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: AppColors.white,
+                                            ),
+                                            width: 300,
+                                            child: Column(
+                                              children: [
+                                                for (var i = 0; i < 50; i++)
+                                                  const Detail()
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  )),
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ],
