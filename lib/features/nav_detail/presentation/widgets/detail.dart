@@ -19,26 +19,37 @@ class _DetailState extends State<Detail> {
           children: [
             Text(
               "6 Kilo",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
-            ListTile(
-              title: Text("Zaspa"),
-              leading: Icon(Icons.arrow_forward),
-              trailing: Text("5 min"),
-              subtitle: Text("Departure every 7 minutes"),
+            Expanded(
+              child: ListTile(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(Icons.arrow_forward),
+                    Text("Zaspa",style: TextStyle(fontWeight: FontWeight.bold),),
+                  ],
+                ),
+                trailing: Text("5 min"),
+                subtitle: Text("Departure every 7 minutes"),
+              ),
             ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [Text("3 stops"), Icon(Icons.arrow_upward_rounded)],
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
+            // SizedBox(
+            //   height: 20,
+            // ),
+            Expanded(
               child: Padding(
-                padding: EdgeInsets.only(top:30.0),
-                child: Text("Megenagna", style: TextStyle(fontWeight: FontWeight.bold),),
+                padding: EdgeInsets.only(top:18.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [Text("3 stops"), Icon(Icons.arrow_upward_rounded)],
+                ),
+              ),
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Text("Megenagna", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
               ),
             ),
             Divider()
