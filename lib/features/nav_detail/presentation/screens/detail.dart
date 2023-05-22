@@ -1,4 +1,5 @@
 import 'package:bus_navigation/core/utils/utils.dart';
+import 'package:bus_navigation/features/nav_detail/presentation/widgets/bus_mode.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/detail.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/walk_mode.dart';
 import 'package:flutter/material.dart';
@@ -95,13 +96,15 @@ class _SidePageState extends State<SidePage> {
                               children: [
                                 Expanded(
                                   flex: 1,
-                                  child: Container(
-                                    width: 150,
-                                    color: Colors.blue[200],
-                                    child: Column(children: [
-                                      for (var i = 0; i < 50; i++)
-                                        const WalkMode()
-                                    ]),
+                                  child: Card(
+                                    child: Container(
+                                      width: 150,
+                                      color: Colors.white,
+                                      child: Column(children: [
+                                        for (var i = 0; i < 50; i++)
+                                          const BusMode()
+                                      ]),
+                                    ),
                                   ),
                                 ),
                                 Visibility(

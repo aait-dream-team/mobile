@@ -13,7 +13,7 @@ class _DetailState extends State<Detail> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        height: 200,
+        height: 252,
         child: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -27,12 +27,20 @@ class _DetailState extends State<Detail> {
               trailing: Text("5 min"),
               subtitle: Text("Departure every 7 minutes"),
             ),
+            SizedBox(
+              height: 20,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-              Text("3 stops"),
-              Icon(Icons.arrow_upward_rounded)
-            ],)
+              children: [Text("3 stops"), Icon(Icons.arrow_upward_rounded)],
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: EdgeInsets.only(top:30.0),
+                child: Text("Megenagna", style: TextStyle(fontWeight: FontWeight.bold),),
+              ),
+            )
           ],
         ),
       ),

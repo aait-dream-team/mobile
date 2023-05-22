@@ -9,7 +9,7 @@ enum TimeType {
 
 class TimeIcon extends StatelessWidget {
   final TimeType type;
-  final DateTime time;
+  final String time;
 
   const TimeIcon({
     Key? key,
@@ -42,7 +42,7 @@ class TimeIcon extends StatelessWidget {
         style: TextStyle(
           color: textColor,
         ),
-        '${time.hour} :${time.minute}',
+        time,
       ),
     );
   }
