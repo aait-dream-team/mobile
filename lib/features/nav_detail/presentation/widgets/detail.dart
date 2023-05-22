@@ -40,7 +40,8 @@ class _DetailState extends State<Detail> {
                 padding: EdgeInsets.only(top:30.0),
                 child: Text("Megenagna", style: TextStyle(fontWeight: FontWeight.bold),),
               ),
-            )
+            ),
+            Divider()
           ],
         ),
       ),
