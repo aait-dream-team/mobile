@@ -1,5 +1,7 @@
 import 'package:bus_navigation/core/utils/colors.dart';
 import 'package:bus_navigation/features/history/presentation/screens/history_page.dart';
+import 'package:bus_navigation/features/nav_detail/data_provider/mock_data.dart';
+import 'package:bus_navigation/features/nav_detail/presentation/screens/detail.dart';
 import 'package:bus_navigation/features/search/presentation/screens/search_result_page.dart';
 import 'package:flutter/material.dart';
 
@@ -25,10 +27,8 @@ class _HomePageState extends State<HomePage> {
     // TODO(Biruk): Remove Search Results from the bottom nav bar.
     SearchResults(),
     RouteHistory(),
-    const Center(
-      child: Text(
-        "Settings",
-      ),
+    SidePage(
+      navDetailModel: navDetailModel,
     ),
   ];
   @override

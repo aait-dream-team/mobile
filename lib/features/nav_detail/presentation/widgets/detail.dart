@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../model/nav_detail_model.dart';
+
 class Detail extends StatefulWidget {
-  const Detail({super.key});
+  final Leg leg;
+  const Detail({super.key, required this.leg});
 
   @override
   State<Detail> createState() => _DetailState();
@@ -14,20 +17,23 @@ class _DetailState extends State<Detail> {
       padding: const EdgeInsets.all(8.0),
       child: Container(
         height: 252,
-        child: const Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "6 Kilo",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              widget.leg.from,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
-            Expanded(
+            const Expanded(
               child: ListTile(
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Icon(Icons.arrow_forward),
-                    Text("Zaspa",style: TextStyle(fontWeight: FontWeight.bold),),
+                    Text(
+                      "Zaspa",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ],
                 ),
                 trailing: Text("5 min"),
@@ -37,9 +43,9 @@ class _DetailState extends State<Detail> {
             // SizedBox(
             //   height: 20,
             // ),
-            Expanded(
+            const Expanded(
               child: Padding(
-                padding: EdgeInsets.only(top:18.0),
+                padding: EdgeInsets.only(top: 18.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [Text("3 stops"), Icon(Icons.arrow_upward_rounded)],
@@ -49,10 +55,14 @@ class _DetailState extends State<Detail> {
             Expanded(
               child: Align(
                 alignment: Alignment.bottomLeft,
-                child: Text("Megenagna", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+                child: Text(
+                  widget.leg.to,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 18),
+                ),
               ),
             ),
-            Divider()
+            const Divider()
           ],
         ),
       ),

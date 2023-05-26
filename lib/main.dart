@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: initScreen == 0 || initScreen == null
           ? OnBoardingPage.route
-          : SidePage.route,
+          : HomePage.route,
 
       // home: const OnBoardingPage(),
     );

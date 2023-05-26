@@ -1,57 +1,39 @@
-import 'package:bus_navigation/core/utils/utils.dart';
-import 'package:bus_navigation/features/nav_detail/presentation/widgets/bus_mode.dart';
-import 'package:bus_navigation/features/nav_detail/presentation/widgets/detail.dart';
-import 'package:bus_navigation/features/nav_detail/presentation/widgets/walk_mode.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import 'package:bus_navigation/core/utils/utils.dart';
+import 'package:bus_navigation/features/nav_detail/presentation/widgets/bus_mode.dart';
+import 'package:bus_navigation/features/nav_detail/presentation/widgets/detail.dart';
+
+import '../../model/nav_detail_model.dart';
+
 class SidePage extends StatefulWidget {
-  static const String route = '/d';
+  static const String route = '/SidePage';
+  final NavDetailModel navDetailModel;
+  const SidePage({
+    Key? key,
+    required this.navDetailModel,
+  }) : super(key: key);
 
   @override
   _SidePageState createState() => _SidePageState();
 }
 
 class _SidePageState extends State<SidePage> {
-  int _counter = 0;
-  final ValueNotifier<double> _sheetWidthNotifier = ValueNotifier(200.0);
   final double _expandedWidth = 400.0;
   bool _isExpanded = false;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final ScrollController _controller1 = ScrollController();
-    bool _isScrolling = false;
-
-    final ScrollController _controller2 = ScrollController();
-
-    // _controller1.addListener(() {
-    //   _controller2.jumpTo(_controller1.offset);
-    // });
-
-    // _controller2.addListener(() {
-    //   _controller1.jumpTo(_controller2.offset);
-    // });
-
-    // @override
-    // void dispose() {
-    //   _controller1.dispose();
-    //   _controller2.dispose();
-    //   super.dispose();
-    // }
-
     return MaterialApp(
       home: Scaffold(
         body: SafeArea(
           child: Column(
             children: [
-              SizedBox(height: 100,),
+              const SizedBox(
+                height: 100,
+              ),
               Expanded(
                 child: Stack(
                   children: [
@@ -81,7 +63,9 @@ class _SidePageState extends State<SidePage> {
                                   child: Container(
                                     color: Colors.white,
                                     child: Icon(
-                                      _isExpanded ? Icons.arrow_forward_ios : Icons.arrow_back_ios,
+                                      _isExpanded
+                                          ? Icons.arrow_forward_ios
+                                          : Icons.arrow_back_ios,
                                       color: Colors.black,
                                     ),
                                   ),
@@ -104,10 +88,10 @@ class _SidePageState extends State<SidePage> {
                                           child: Container(
                                             width: 150,
                                             color: Colors.white,
-                                            child: Column(children: [
-                                              for (var i = 0; i < 50; i++)
-                                                const BusMode()
-                                            ]),
+                                            child: List1(
+                                              navDetailModel:
+                                                  widget.navDetailModel,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -116,17 +100,14 @@ class _SidePageState extends State<SidePage> {
                                         child: Expanded(
                                           flex: 2,
                                           child: Container(
-                                            decoration: BoxDecoration(
-                                              color: AppColors.white,
-                                            ),
-                                            width: 300,
-                                            child: Column(
-                                              children: [
-                                                for (var i = 0; i < 50; i++)
-                                                  const Detail()
-                                              ],
-                                            ),
-                                          ),
+                                              decoration: BoxDecoration(
+                                                color: AppColors.white,
+                                              ),
+                                              width: 300,
+                                              child: List2(
+                                                navDetailModel:
+                                                    widget.navDetailModel,
+                                              )),
                                         ),
                                       )
                                     ],
@@ -144,5 +125,41 @@ class _SidePageState extends State<SidePage> {
         ),
       ),
     );
+  }
+}
+
+class List1 extends StatelessWidget {
+  final NavDetailModel navDetailModel;
+  List1({
+    Key? key,
+    required this.navDetailModel,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> modes = [];
+    for (var i = 0; i < navDetailModel.legs.length; i++) {
+      modes.add(BusMode(leg: navDetailModel.legs[i]));
+    }
+
+    return Column(children: modes);
+  }
+}
+
+class List2 extends StatelessWidget {
+  final NavDetailModel navDetailModel;
+  const List2({
+    Key? key,
+    required this.navDetailModel,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> modes = [];
+    for (var i = 0; i < navDetailModel.legs.length; i++) {
+      modes.add(Detail(leg: navDetailModel.legs[i]));
+    }
+
+    return Column(children: modes);
   }
 }

@@ -1,8 +1,10 @@
+import 'package:bus_navigation/features/nav_detail/model/nav_detail_model.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/time_icon.dart';
 import 'package:flutter/material.dart';
 
 class BusMode extends StatelessWidget {
-  const BusMode({super.key});
+  final Leg leg;
+  const BusMode({super.key, required this.leg});
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +12,9 @@ class BusMode extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const TimeIcon(type: TimeType.start, time: "11:30"),
+          TimeIcon(
+              type: TimeType.start,
+              time: "${leg.startTime.hour}: ${leg.startTime.minute}"),
           const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -19,11 +23,14 @@ class BusMode extends StatelessWidget {
                 child: Icon(Icons.directions_bus),
               ),
               Padding(
-                padding: EdgeInsets.all(2.0),
+                padding: const EdgeInsets.all(2.0),
                 child: Card(
                   child: Padding(
-                    padding: EdgeInsets.all(3.0),
-                    child: Text("12",style: TextStyle(fontWeight: FontWeight.bold),),
+                    padding: const EdgeInsets.all(3.0),
+                    child: Text(
+                      'A2S',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
               ),
@@ -49,7 +56,9 @@ class BusMode extends StatelessWidget {
               ],
             ),
           ),
-          TimeIcon(type: TimeType.transit, time: "11:37"),
+          TimeIcon(
+              type: TimeType.transit,
+              time: "${leg.endTime.hour}: ${leg.endTime.minute}"),
           Divider(),
         ],
       ),
