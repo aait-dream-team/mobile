@@ -1,8 +1,8 @@
-import 'package:bus_navigation/features/search/repository/route_search_repository.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
 import '../models/RouteResultModel.dart';
+import '../repository/route_search_repository.dart';
 
 part 'search_event.dart';
 part 'search_state.dart';

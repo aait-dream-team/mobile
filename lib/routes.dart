@@ -28,5 +28,6 @@ class PageRouter {
           );
         });
     }
+    return null;
   }
 }
