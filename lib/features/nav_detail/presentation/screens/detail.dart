@@ -35,26 +35,6 @@ class _SidePageState extends State<SidePage> {
 
   @override
   Widget build(BuildContext context) {
-    final ScrollController _controller1 = ScrollController();
-    bool _isScrolling = false;
-
-    final ScrollController _controller2 = ScrollController();
-
-    // _controller1.addListener(() {
-    //   _controller2.jumpTo(_controller1.offset);
-    // });
-
-    // _controller2.addListener(() {
-    //   _controller1.jumpTo(_controller2.offset);
-    // });
-
-    // @override
-    // void dispose() {
-    //   _controller1.dispose();
-    //   _controller2.dispose();
-    //   super.dispose();
-    // }
-
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.transparent,

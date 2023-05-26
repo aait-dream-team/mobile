@@ -70,7 +70,9 @@ class PageRouter {
         });
       case SidePage.route:
         return MaterialPageRoute(builder: (context) {
-          return SidePage();
+          return SidePage(
+            navDetailModel: navDetailModel,
+          );
         });
     }
     return null;
