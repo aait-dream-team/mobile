@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:google_places_flutter/google_places_flutter.dart';
-import 'package:google_places_flutter/model/prediction.dart';
 import 'package:latlong2/latlong.dart';
 import 'screen_arguments.dart';
 import 'choose_from_map.dart';
@@ -19,7 +17,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchWidget extends State<SearchPage> {
   final ScreenArguments screenArguments;
-  TextEditingController controller = TextEditingController();
+
   _SearchWidget({required this.screenArguments});
 
   Future<Position> _determinePosition() async {
@@ -68,46 +66,63 @@ class _SearchWidget extends State<SearchPage> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: GooglePlaceAutoCompleteTextField(
-                  textEditingController: controller,
-                  googleAPIKey: "AIzaSyB3y-BJEX5eXs0BgwdNWuK2BvMz6lNqS4w",
-                  inputDecoration: InputDecoration(
-                    hintText: 'Location',
-                    suffixIcon: IconButton(
-                      // onPressed: .clear,
-                      onPressed: () {
-                        controller.clear();
-                      },
-                      icon: Icon(Icons.clear),
-                    ),
-                    prefixIcon: IconButton(
-                      icon: const Icon(Icons.arrow_back_ios_new),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40.0),
-                    ),
+              child: TypeAheadField(
+                suggestionsBoxDecoration: const SuggestionsBoxDecoration(
+                  elevation: 0.00,
+                ),
+                textFieldConfiguration: TextFieldConfiguration(
+                    decoration: InputDecoration(
+                  hintText: 'Location',
+                  suffixIcon: IconButton(
+                    // onPressed: .clear,
+                    onPressed: () {
+                      FocusScope.of(context).unfocus();
+                    },
+                    icon: Icon(Icons.clear),
                   ),
-                  debounceTime: 800, // default 600 ms,
-
-                  countries: ['et'], // optional by default null is set
-                  isLatLngRequired:
-                      true, // if you required coordinates from place detail
-                  getPlaceDetailWithLatLng: (Prediction prediction) {
-                    // this method will return latlng with place detail
-                        screenArguments.func(LatLng(double.parse(prediction.lat!) , double.parse(prediction.lng!)), prediction.description);
-
-                  }, // this callback is called when isLatLngRequired is true
-                  itmClick: (Prediction prediction) {
-                    controller.text = prediction.description!;
-                    controller.selection = TextSelection.fromPosition(
-                        TextPosition(offset: prediction.description!.length));
-                        Navigator.pop(context);
-
-                  }),
+                  prefixIcon: IconButton(
+                    icon: const Icon(Icons.arrow_back_ios_new),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(40.0),
+                  ),
+                )),
+                suggestionsCallback: (pattern) async {
+                  return await [
+                    'ልደታ',
+                    'Stadium',
+                    'Lideta',
+                    '4 ኪሎ',
+                    '6 ኪሎ',
+                    '5 ኪሎ',
+                    'Piyassa',
+                    '4 ኪሎ',
+                    'Kirkos',
+                    'ካዛንችስ',
+                    'ልደታ',
+                    'Stadium',
+                    'Lideta'
+                  ];
+                },
+                itemBuilder: (context, suggestion) {
+                  return ListTile(
+                    leading: Icon(Icons.pin_drop),
+                    title: Text(suggestion),
+                    visualDensity: VisualDensity(vertical: 3),
+                  );
+                },
+                onSuggestionSelected: (suggestion) {
+                  screenArguments.func(LatLng(4.44, 5.55), suggestion);
+                  Navigator.pop(context);
+                },
               ),
+            ),
+            Divider(
+              thickness: 0.3,
+            ),
             Row(
               children: [
                 Expanded(
@@ -140,9 +155,7 @@ class _SearchWidget extends State<SearchPage> {
                     child: ElevatedButton.icon(
                       onPressed: () async {
                         final Position val = await _determinePosition();
-                        screenArguments.func(
-                            LatLng(val.latitude, val.longitude),
-                            'Your Current Location');
+                        screenArguments.func(LatLng(val.latitude, val.longitude), 'Your Current Location');
                         Navigator.pop(context);
                       },
                       icon: Icon(Icons.my_location,
@@ -176,8 +189,7 @@ class _SearchWidget extends State<SearchPage> {
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
                     onTap: () {
-                      screenArguments.func(
-                          LatLng(40.4, 30.7), 'Location $index');
+                      screenArguments.func(LatLng(40.4, 30.7),'Location $index');
                       Navigator.pop(context);
                     },
                     leading:

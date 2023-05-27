@@ -12,6 +12,7 @@ class RoutesBloc extends Bloc<RoutesEvent, RoutesState> {
     on<RoutesEvent>((event, emit) {
       // TODO: implement event handler
       if (event is PointPicked){
+        // print('from ${event.from.name}|${event.from.location}, to: ${event.to.name}|${event.to.location}');
         emit(RoutesPinPoint(from: event.from, to: event.to));
       }
     });
