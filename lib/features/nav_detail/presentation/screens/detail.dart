@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import 'package:bus_navigation/core/utils/utils.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/bus_mode.dart';
@@ -31,9 +30,9 @@ class _SidePageState extends State<SidePage> {
         body: SafeArea(
           child: Column(
             children: [
-              const SizedBox(
-                height: 100,
-              ),
+              // const SizedBox(
+              //   height: 100,
+              // ),
               Expanded(
                 child: Stack(
                   children: [
