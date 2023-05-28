@@ -1,4 +1,4 @@
-import 'package:bus_navigation/features/routes/presentation/screens/screen_arguments.dart';
+import 'package:bus_navigation/features/routes/presentation/screens/screen_arguments_routes_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
@@ -7,7 +7,7 @@ import 'package:latlong2/latlong.dart';
 class MapPage extends StatefulWidget {
   static const String route = '/MapChoice';
 
-  final ScreenArguments screenArguments;
+  final ScreenArgumentsRoutesArgs screenArguments;
 
   MapPage({
     required this.screenArguments
@@ -18,7 +18,7 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
 
-  final ScreenArguments screenArguments;
+  final ScreenArgumentsRoutesArgs screenArguments;
 
   _MapPageState({
     required this.screenArguments

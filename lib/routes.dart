@@ -1,10 +1,13 @@
 import 'package:bus_navigation/features/history/presentation/screens/history_page.dart';
+import 'package:bus_navigation/features/home/presentation/widgets/screen_argumnets_home.dart';
 import 'package:bus_navigation/features/onBoarding/presentation/screens/onBoarding_page.dart';
+import 'package:bus_navigation/features/routes/presentation/screens/screen_argument.dart';
+import 'package:bus_navigation/features/routes/presentation/screens/screen_arguments_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:bus_navigation/features/home/presentation/home_page.dart';
 import 'package:bus_navigation/features/routes/presentation/screens/routes_page.dart';
 import 'package:bus_navigation/features/routes/presentation/screens/search_routes_page.dart';
-import 'package:bus_navigation/features/routes/presentation/screens/screen_arguments.dart';
+import 'package:bus_navigation/features/routes/presentation/screens/screen_arguments_routes_args.dart';
 import 'package:bus_navigation/features/routes/presentation/screens/choose_from_map.dart';
 
 class PageRouter {
@@ -13,11 +16,13 @@ class PageRouter {
     switch (settings.name) {
       case HomePage.route:
         return MaterialPageRoute(builder: (context) {
-          return const HomePage();
+          return HomePage(
+            screenArgument: ScreenArgument(),
+          );
         });
       case RouteHistory.route:
         return MaterialPageRoute(builder: (context) {
-          return RoutesPage();
+          return RouteHistory();
         });
       case OnBoardingPage.route:
         return MaterialPageRoute(builder: (context) {
@@ -25,18 +30,27 @@ class PageRouter {
         });
       case RoutesPage.route:
         return MaterialPageRoute(builder: (context) {
-          return const RoutesPage();
+          if (args is ScreenArgumentsRoutes) {
+            return HomePage(
+              index: 1,
+              screenArgument: args,
+            );
+          }
+          return const HomePage(
+            index: 1,
+          );
+          //  RoutesPage();
         });
       case SearchPage.route:
         return MaterialPageRoute(builder: (context) {
-          if (args  is ScreenArguments){
+          if (args is ScreenArgumentsRoutesArgs) {
             return SearchPage(screenArguments: args);
           }
           return const Text('data');
         });
       case MapPage.route:
         return MaterialPageRoute(builder: (context) {
-          if (args  is ScreenArguments){
+          if (args is ScreenArgumentsRoutesArgs) {
             return MapPage(screenArguments: args);
           }
           return const Text('data');

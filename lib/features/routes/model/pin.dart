@@ -4,5 +4,5 @@ class PinPoint {
   final String name;
   final LatLng location;
 
-  PinPoint({required this.name, required this.location});
+  const PinPoint({required this.name, required this.location});
 }
