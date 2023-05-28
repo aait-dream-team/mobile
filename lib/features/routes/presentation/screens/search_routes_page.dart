@@ -4,7 +4,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:latlong2/latlong.dart';
-import 'screen_arguments.dart';
+import 'screen_arguments_routes_args.dart';
 import 'choose_from_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:io';
@@ -12,7 +12,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class SearchPage extends StatefulWidget {
   static const String route = "/SearchRoute";
-  final ScreenArguments screenArguments;
+  final ScreenArgumentsRoutesArgs screenArguments;
   const SearchPage({super.key, required this.screenArguments});
 
   @override
@@ -21,7 +21,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchWidget extends State<SearchPage> {
-  final ScreenArguments screenArguments;
+  final ScreenArgumentsRoutesArgs screenArguments;
   TextEditingController controller = TextEditingController();
 
   _SearchWidget({required this.screenArguments});

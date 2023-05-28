@@ -5,7 +5,8 @@ import 'package:bus_navigation/features/navigate/presentation/screens/navigation
 
 import 'package:bus_navigation/features/routes/presentation/screens/routes_page.dart';
 import 'package:bus_navigation/features/routes/bloc/routes_bloc.dart';
-
+import 'package:bus_navigation/features/routes/presentation/screens/screen_argument.dart';
+import 'package:bus_navigation/features/routes/presentation/screens/screen_arguments_routes.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,34 +16,47 @@ import '../bloc/home_bloc.dart';
 
 class HomePage extends StatefulWidget {
   static const String route = "/homepage";
-
+  final int index;
+  final ScreenArgument? screenArgument;
   const HomePage({
+    this.index = 0,
+     this.screenArgument,
     super.key,
   });
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState(index:index, screenArgument:screenArgument);
 }
 
 class _HomePageState extends State<HomePage> {
   int index = 0;
-  final HomeBloc _homeBloc = HomeBloc()..add(MapLoadEvent());
-  final RoutesBloc _routesBloc = RoutesBloc()..add(RoutesInitialEvent());
-  
+  final ScreenArgument? screenArgument;
+  _HomePageState({
+    required this.index,
+     this.screenArgument,
+  });
+  // final HomeBloc _homeBloc = HomeBloc()..add(MapLoadEvent());
+
   @override
   Widget build(BuildContext context) {
     List<Widget> screens = [
       // Providing the bloc at this level so that the map state doesn't reset
       // when navigating between states
-      BlocProvider.value(value: _homeBloc, child: const HomeWidget()),
+      // BlocProvider.value(value: _homeBloc, child: const HomeWidget()),
+      const HomeWidget(),
       // SearchResults(),
-      BlocProvider.value(value: _routesBloc, child: const RoutesPage()),
+      // BlocProvider.value(value: _routesBloc, child: const RoutesPage()),
+      screenArgument is ScreenArgumentsRoutes ? RoutesPage(screenArgumentsRoutes: screenArgument as ScreenArgumentsRoutes,)  : const RoutesPage(),
       SearchResults(),
       RouteHistory(),
       NavigationPage(),
     ];
     return Scaffold(
-      body: screens[index],
+      body: MultiBlocProvider(providers: [
+        BlocProvider<RoutesBloc>(
+            create: (BuildContext context) => RoutesBloc()),
+        BlocProvider<HomeBloc>(create: (BuildContext context) => HomeBloc()),
+      ], child: screens[index]),
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
             indicatorColor: AppColors.greyShade300,
