@@ -28,7 +28,7 @@ class _RoutesWidget extends State<RoutesPage> {
         toController.text = '${state.to.name}, ${state.to.location}';
       }
       return Padding(
-        padding: EdgeInsets.fromLTRB(10, 40, 10, 0),
+        padding: const EdgeInsets.fromLTRB(10, 40, 10, 0),
         child: Column(
           children: [
             Padding(

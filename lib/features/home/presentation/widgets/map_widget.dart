@@ -82,7 +82,9 @@ class _MapWidget extends State<MapWidget>
                           ElevatedButton(
                             // create the second option button
                             onPressed:
-                                () {}, // call the callback function when pressed
+                                () {
+                                  
+                                }, // call the callback function when pressed
                             child:
                                 Text('Set Arrival'), // display the button label
                           ),
