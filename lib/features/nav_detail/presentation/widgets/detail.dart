@@ -30,7 +30,7 @@ class _DetailState extends State<Detail> {
                     Text("Zaspa",style: TextStyle(fontWeight: FontWeight.bold),),
                   ],
                 ),
-                trailing: Text("5 min"),
+                trailing: Text("5 min", style: TextStyle(fontWeight: FontWeight.bold),),
                 subtitle: Text("Departure every 7 minutes"),
               ),
             ),
