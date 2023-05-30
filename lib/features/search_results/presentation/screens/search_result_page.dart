@@ -1,10 +1,12 @@
-import 'package:bus_navigation/features/search/bloc/search_bloc.dart';
-import 'package:bus_navigation/features/search/data_provider/route_search_data_provider.dart';
-import 'package:bus_navigation/features/search/repository/route_search_repository.dart';
+import 'package:bus_navigation/features/nav_detail/data_provider/mock_data.dart';
+import 'package:bus_navigation/features/nav_detail/presentation/screens/detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/colors.dart';
+import '../../bloc/search_bloc.dart';
+import '../../data_provider/route_search_data_provider.dart';
+import '../../repository/route_search_repository.dart';
 import '../widgets/depature_datetime.dart';
 import '../widgets/route_result.dart';
 
@@ -25,6 +27,7 @@ class _RouteSearchState extends State<SearchResults> {
     DateTime dateTime = DateTime.now();
     return Scaffold(
       // TODO: Aman this does not belong here removie it.
+      // TODO: Aman this does not belong here remove it.
       floatingActionButton: TextButton(
         onPressed: () => {
           showModalBottomSheet(
@@ -83,8 +86,13 @@ class _RouteSearchState extends State<SearchResults> {
                           child: Container(
                               margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                               color: Colors.black26,
-                              child: RouteWidget(
-                                result: route,
+                              child: InkWell(
+                                onTap: () => Navigator.pushNamed(
+                                    context, SidePage.route,
+                                    arguments: navDetailModel),
+                                child: RouteWidget(
+                                  result: route,
+                                ),
                               ))))
                       .cast<SliverToBoxAdapter>()
                       .toList());

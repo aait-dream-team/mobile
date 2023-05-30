@@ -3,16 +3,20 @@ import 'package:bus_navigation/features/onBoarding/presentation/screens/onBoardi
 import 'package:bus_navigation/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 
 import 'features/nav_detail/presentation/screens/detail.dart';
 
 int? initScreen;
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   initScreen = await preferences.getInt('initScreen');
   await preferences.setInt('initScreen', 1);
+
+  await FlutterMapTileCaching.initialise();
+  await FMTC.instance('mapStore').manage.createAsync();
   runApp(const MyApp());
 }
 
@@ -31,7 +35,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: initScreen == 0 || initScreen == null
           ? OnBoardingPage.route
-          : SidePage.route,
+          : HomePage.route,
 
       // home: const OnBoardingPage(),
     );

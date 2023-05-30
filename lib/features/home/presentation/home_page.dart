@@ -1,7 +1,14 @@
 import 'package:bus_navigation/core/utils/colors.dart';
 import 'package:bus_navigation/features/history/presentation/screens/history_page.dart';
-import 'package:bus_navigation/features/search/presentation/screens/search_result_page.dart';
+import 'package:bus_navigation/features/nav_detail/data_provider/mock_data.dart';
+import 'package:bus_navigation/features/nav_detail/presentation/screens/detail.dart';
+import 'package:bus_navigation/features/home/presentation/screens/home_page.dart';
+import 'package:bus_navigation/features/navigate/presentation/screens/navigation_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../search_results/presentation/screens/search_result_page.dart';
+import '../bloc/home_bloc.dart';
 
 class HomePage extends StatefulWidget {
   static const String route = "/homepage";
@@ -25,14 +32,21 @@ class _HomePageState extends State<HomePage> {
     // TODO(Biruk): Remove Search Results from the bottom nav bar.
     SearchResults(),
     RouteHistory(),
-    const Center(
-      child: Text(
-        "Settings",
-      ),
+    SidePage(
+      navDetailModel: navDetailModel,
     ),
   ];
+  final HomeBloc _homeBloc = HomeBloc()..add(MapLoadEvent());
   @override
   Widget build(BuildContext context) {
+    List<Widget> screens = [
+      // Providing the bloc at this level so that the map state doesn't reset
+      // when navigating between states
+      BlocProvider.value(value: _homeBloc, child: const HomeWidget()),
+      SearchResults(),
+      RouteHistory(),
+      NavigationPage(),
+    ];
     return Scaffold(
       body: screens[index],
       bottomNavigationBar: NavigationBarTheme(
