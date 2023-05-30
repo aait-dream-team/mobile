@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../../../core/utils/colors.dart';
 import '../../bloc/search_bloc.dart';
@@ -61,8 +62,11 @@ class _RouteSearchState extends State<SearchResults> {
         ),
       ),
       body: BlocProvider(
-        create: (context) =>
-            SearchBloc(repository: widget.repository)..add(LoadSearchEvent()),
+        create: (context) => SearchBloc(repository: widget.repository)
+          ..add(LoadSearchEvent(
+              departureDate: DateTime.now(),
+              from: LatLng(9.02022800242961, 38.837161824062505),
+              to: LatLng(9.033278935161835,  38.733492007126955))),
         child: BlocBuilder<SearchBloc, SearchState>(
           builder: (context, state) {
             if (state is SearchInitialState || state is SearchLoadingState) {
@@ -75,7 +79,7 @@ class _RouteSearchState extends State<SearchResults> {
               return Center(child: Text(state.msg));
             }
             if (state is SearchSuccessState) {
-              final list = state.result;
+              final list = state.results;
 
               return CustomScrollView(
                   slivers: list
