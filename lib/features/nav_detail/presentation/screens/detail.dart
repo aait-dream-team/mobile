@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:bus_navigation/features/nav_detail/presentation/widgets/left_floating_action_button.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/train_mode.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/walk_expanded.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/walk_mode.dart';
@@ -35,48 +36,42 @@ class _SidePageState extends State<SidePage> {
       home: Scaffold(
         backgroundColor: Colors.transparent,
         extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          toolbarHeight: 100,
-          backgroundColor: Colors.transparent,
-          title: RouteWidget(
-            result: RouteSearchResultModel(
-                departureInMinutes: 15,
-                transports: [
-                  const Transport(RouteSegmentType.train, "S1"),
-                  const Transport(RouteSegmentType.tram, "U6"),
-                ],
-                totalDuration: 45,
-                departureTime: DateTime(2023, 4, 24, 19, 30),
-                arrivalTime: DateTime(2023, 4, 24, 20, 15),
-                walkingTime: 10),
+        floatingActionButton: ConstrainedBox(
+          constraints: const BoxConstraints(
+              minWidth: 56.0,
+              minHeight: 56.0), // Adjust the constraints as needed
+          child: FloatingActionButton(
+            onPressed: () {
+              // Add your desired action here
+            },
+            child: Container(
+              width: 600,
+              child: const Row(children: [
+                Expanded(child: Icon(Icons.play_arrow)),
+                Expanded(child: Text("Start")),
+              ]),
+            ),
           ),
         ),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(right: 100.0),
-          child: FloatingActionButton.extended(
-            onPressed: () {},
-            icon: Icon(Icons.play_arrow),
-            label: Text('Start'),
-          ),
-        ),
+        floatingActionButtonLocation: const LeftFloatingActionButtonLocation(),
         body: SafeArea(
           child: Column(
             children: [
+              RouteWidget(
+                result: RouteSearchResultModel(
+                    departureInMinutes: 15,
+                    transports: [
+                      const Transport(RouteSegmentType.train, "S1"),
+                      const Transport(RouteSegmentType.tram, "U6"),
+                    ],
+                    totalDuration: 45,
+                    departureTime: DateTime(2023, 4, 24, 19, 30),
+                    arrivalTime: DateTime(2023, 4, 24, 20, 15),
+                    walkingTime: 10),
+              ),
               Expanded(
                 child: Stack(
                   children: [
-                    RouteWidget(
-                      result: RouteSearchResultModel(
-                          departureInMinutes: 15,
-                          transports: [
-                            const Transport(RouteSegmentType.train, "S1"),
-                            const Transport(RouteSegmentType.tram, "U6"),
-                          ],
-                          totalDuration: 45,
-                          departureTime: DateTime(2023, 4, 24, 19, 30),
-                          arrivalTime: DateTime(2023, 4, 24, 20, 15),
-                          walkingTime: 10),
-                    ),
                     Container(
                       color: Colors.white,
                       child: Center(child: NavigationPage()),
@@ -121,7 +116,7 @@ class _SidePageState extends State<SidePage> {
                                         flex: 1,
                                         child: Column(
                                           children: [
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 70,
                                             ),
                                             Card(
@@ -143,7 +138,7 @@ class _SidePageState extends State<SidePage> {
                                           flex: 2,
                                           child: Column(
                                             children: [
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 70,
                                               ),
                                               Container(
@@ -166,18 +161,6 @@ class _SidePageState extends State<SidePage> {
                         ),
                       ),
                     ),
-                    // RouteWidget(
-                    //   result: RouteSearchResultModel(
-                    //       departureInMinutes: 15,
-                    //       transports: [
-                    //         const Transport(RouteSegmentType.train, "S1"),
-                    //         const Transport(RouteSegmentType.tram, "U6"),
-                    //       ],
-                    //       totalDuration: 45,
-                    //       departureTime: DateTime(2023, 4, 24, 19, 30),
-                    //       arrivalTime: DateTime(2023, 4, 24, 20, 15),
-                    //       walkingTime: 10),
-                    // ),
                   ],
                 ),
               ),

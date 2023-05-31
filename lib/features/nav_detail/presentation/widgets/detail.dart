@@ -13,6 +13,8 @@ class Detail extends StatefulWidget {
 class _DetailState extends State<Detail> {
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, bottom: 8),
       child: Container(
@@ -21,45 +23,50 @@ class _DetailState extends State<Detail> {
             bottom: BorderSide(width: 1, color: Colors.grey),
           ),
         ),
-        height: 230,
+        height: screenHeight * 0.32,
         width: 300,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Text(
-                widget.leg.from,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(
+                  widget.leg.from,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 18),
+                ),
               ),
-            ),
-            Expanded(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      widget.leg.routeLongName!,
+              Expanded(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        widget.leg.routeLongName!,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Text(
+                      '${widget.leg.duration} min',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                  ),
-                  Text(
-                    '${widget.leg.duration} min',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Expanded(child: Text("${widget.leg.agencyName}")),
-            Expanded(child: Text("${widget.leg.intermediateStops!.length} Stops")),
-            Expanded(
-              child: Text(
-                widget.leg.to,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              Expanded(child: Text("${widget.leg.agencyName}")),
+              Expanded(
+                  child: Text("${widget.leg.intermediateStops!.length} Stops")),
+              Expanded(
+                child: Text(
+                  widget.leg.to,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 18),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -22,7 +22,10 @@ class WalkModeExpanded extends StatelessWidget {
             padding: const EdgeInsets.only(left: 8.0, right: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [Text("${leg.distance}"), Text("${leg.duration}")],
+              children: [
+                Text("${leg.distance} m "),
+                Text("${leg.duration} min")
+              ],
             ),
           ),
         ],

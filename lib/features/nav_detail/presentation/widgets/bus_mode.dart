@@ -8,10 +8,12 @@ class BusMode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, bottom: 8),
       child: Container(
-        height: 230,
+        height: screenHeight * 0.32,
         decoration: const BoxDecoration(
           border: Border(
             bottom: BorderSide(width: 1, color: Colors.grey),
