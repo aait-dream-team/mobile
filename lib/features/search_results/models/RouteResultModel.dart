@@ -2,15 +2,15 @@
 enum RouteSegmentType { walking, bus, train, tram }
 
 class RouteSearchResultModel {
-  final int departureInMinutes;
+  final Duration departure;
   final List<Transport> transports;
-  final int totalDuration;
+  final Duration totalDuration;
   final DateTime departureTime;
   final DateTime arrivalTime;
-  final int walkingTime;
+  final Duration walkingTime;
 
   const RouteSearchResultModel({
-    required this.departureInMinutes,
+    required this.departure,
     required this.transports,
     required this.totalDuration,
     required this.departureTime,
