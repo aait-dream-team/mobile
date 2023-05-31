@@ -14,55 +14,51 @@ class _DetailState extends State<Detail> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(top: 8.0, bottom: 8),
       child: Container(
-        height: 252,
+        decoration: const BoxDecoration(
+          border: Border(
+            bottom: BorderSide(width: 1, color: Colors.grey),
+          ),
+        ),
+        height: 230,
+        width: 300,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              widget.leg.from,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            ),
-            const Expanded(
-              child: ListTile(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(Icons.arrow_forward),
-                    Text(
-                      "Zaspa",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                trailing: Text("5 min"),
-                subtitle: Text("Departure every 7 minutes"),
-              ),
-            ),
-            // SizedBox(
-            //   height: 20,
-            // ),
-            const Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(top: 18.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text("3 stops"), Icon(Icons.arrow_upward_rounded)],
-                ),
+            Expanded(
+              child: Text(
+                widget.leg.from,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
             ),
             Expanded(
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Text(
-                  widget.leg.to,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 18),
-                ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      widget.leg.routeLongName!,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Text(
+                    '${widget.leg.duration} min',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
             ),
-            const Divider()
+            Expanded(child: Text("${widget.leg.agencyName}")),
+            Expanded(child: Text("${widget.leg.intermediateStops!.length} Stops")),
+            Expanded(
+              child: Text(
+                widget.leg.to,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+            ),
           ],
         ),
       ),

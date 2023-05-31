@@ -10,6 +10,11 @@ class Leg {
   final String from;
   final String to;
   final int duration;
+  final double? distance;
+  final String? routeShortName;
+  final String? routeLongName;
+  final List? intermediateStops;
+  final String? agencyName;
 
   Leg({
     required this.startTime,
@@ -18,6 +23,11 @@ class Leg {
     required this.from,
     required this.to,
     required this.duration,
+    this.distance,
+    this.routeShortName,
+    this.routeLongName,
+    this.intermediateStops,
+    this.agencyName,
   });
 
   factory Leg.fromMap(Map<String, dynamic> map) {
@@ -28,12 +38,17 @@ class Leg {
       from: map['from']['name'] as String,
       to: map['to']['name'] as String,
       duration: map['duration'] as int,
+      distance: map['distance'] as double,
+      routeShortName: map['routeShortName'] as String,
+      routeLongName: map['routeLongName'] as String,
+      intermediateStops: map['intermediateStops'] as List,
+      agencyName: map['agencyName'] as String,
     );
   }
 
   @override
   String toString() {
-    return 'Leg(startTime: $startTime, endTime: $endTime, mode: $mode, from: $from, to: $to, duration: $duration)';
+    return 'Leg(startTime: $startTime, endTime: $endTime, mode: $mode, from: $from, to: $to, duration: $duration, distance: $distance)';
   }
 }
 

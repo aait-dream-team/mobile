@@ -8,59 +8,73 @@ class BusMode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          TimeIcon(
-              type: TimeType.start,
-              time: "${leg.startTime.hour}: ${leg.startTime.minute}"),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(2.0),
-                child: Icon(Icons.directions_bus),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: Text(
-                      'A2S',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0, bottom: 8),
+      child: Container(
+        height: 230,
+        decoration: const BoxDecoration(
+          border: Border(
+            bottom: BorderSide(width: 1, color: Colors.grey),
           ),
-          Center(
-            child: Column(
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            TimeIcon(
+                type: TimeType.start,
+                time: "${leg.startTime.hour}: ${leg.startTime.minute}"),
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: 2, // Width of the line
-                  height: 100, // Height of the line
-                  color: Colors.black,
-                ), // Space between line and circle
-                Container(
-                  width: 20, // Diameter of the circle
-                  height: 20, // Diameter of the circle
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.black,
+                const Padding(
+                  padding: EdgeInsets.all(2.0),
+                  child: Icon(Icons.directions_bus),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(2.0),
+                  child: Card(
+                    child: Padding(
+                      padding: EdgeInsets.all(3.0),
+                      child: Text(
+                        "${leg.routeShortName}",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ),
                 ),
               ],
             ),
-          ),
-          TimeIcon(
-              type: TimeType.transit,
-              time: "${leg.endTime.hour}: ${leg.endTime.minute}"),
-          Divider(),
-        ],
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 2, // Width of the line
+                    height: 100, // Height of the line
+                    color: Colors.black,
+                  ), // Space between line and circle
+                  Container(
+                    width: 20, // Diameter of the circle
+                    height: 20, // Diameter of the circle
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 2, // Width of the circle's outline
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: TimeIcon(
+                  type: TimeType.transit,
+                  time: "${leg.endTime.hour}: ${leg.endTime.minute}"),
+            ),
+          ],
+        ),
       ),
     );
   }
