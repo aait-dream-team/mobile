@@ -78,13 +78,13 @@ class _RouteSearchState extends State<SearchResults> {
                         child: Container(
                             margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             color: Colors.black26,
-                              child: InkWell(
-                                onTap: () => Navigator.pushNamed(
-                                    context, SidePage.route,
-                                    arguments: navDetailModel),
+                            child: InkWell(
+                              onTap: () => Navigator.pushNamed(
+                                  context, SidePage.route,
+                                  arguments: [route.$1, route.$2]),
                               child: RouteWidget(
                                 result: route.$1,
-                                ),
+                              ),
                             ))))
                     .cast<SliverToBoxAdapter>()
                     .toList(),

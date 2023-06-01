@@ -2,7 +2,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
-import '../data_provider/parsing_util.dart';
+import '../../nav_detail/model/nav_detail_model.dart';
 import '../models/RouteResultModel.dart';
 import '../repository/route_search_repository.dart';
 

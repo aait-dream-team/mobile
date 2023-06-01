@@ -4,16 +4,16 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 class Leg {
-  final DateTime startTime;
+  final DateTime startTime; // legs[i].startTime
   final DateTime endTime;
   final String mode;
   final String from;
   final String to;
-  final int duration;
+  final double duration;
+  final String legGeometry;
   final double? distance;
   final String? routeShortName;
   final String? routeLongName;
-  final List? intermediateStops;
   final String? agencyName;
 
   Leg({
@@ -23,10 +23,10 @@ class Leg {
     required this.from,
     required this.to,
     required this.duration,
+    required this.legGeometry,
     this.distance,
     this.routeShortName,
     this.routeLongName,
-    this.intermediateStops,
     this.agencyName,
   });
 
@@ -37,12 +37,12 @@ class Leg {
       mode: map['mode'] as String,
       from: map['from']['name'] as String,
       to: map['to']['name'] as String,
-      duration: map['duration'] as int,
+      duration: map['duration'] as double,
+      legGeometry: map['legGeometry']['points'] as String,
       distance: map['distance'] as double,
-      routeShortName: map['routeShortName'] as String,
-      routeLongName: map['routeLongName'] as String,
-      intermediateStops: map['intermediateStops'] as List,
-      agencyName: map['agencyName'] as String,
+      routeShortName: (map['routeShortName']).toString(),
+      routeLongName: (map['routeLongName']).toString(),
+      agencyName: (map['agencyName']).toString(),
     );
   }
 
@@ -53,10 +53,10 @@ class Leg {
 }
 
 class NavDetailModel {
-  final DateTime startTime;
-  final DateTime endTime;
-  final int duration;
-  final List<Leg> legs;
+  final DateTime startTime; // startTime
+  final DateTime endTime; // endTime
+  final int duration; // duration
+  final List<Leg> legs; // legs
 
   NavDetailModel({
     required this.startTime,
@@ -71,7 +71,7 @@ class NavDetailModel {
       endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
       duration: map['duration'] as int,
       legs: List<Leg>.from(
-        (map['legs'] as List<Leg>).map<Leg>(
+        (map['legs'] as List).map(
           (x) => Leg.fromMap(x as Map<String, dynamic>),
         ),
       ),

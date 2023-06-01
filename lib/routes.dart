@@ -1,10 +1,12 @@
 import 'package:bus_navigation/features/nav_detail/data_provider/mock_data.dart';
+import 'package:bus_navigation/features/nav_detail/model/nav_detail_model.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/screens/detail.dart';
 import 'package:bus_navigation/features/history/presentation/screens/history_page.dart';
 import 'package:bus_navigation/features/home/presentation/widgets/screen_argumnets_home.dart';
 import 'package:bus_navigation/features/onBoarding/presentation/screens/onBoarding_page.dart';
 import 'package:bus_navigation/features/routes/presentation/screens/screen_argument.dart';
 import 'package:bus_navigation/features/routes/presentation/screens/screen_arguments_routes.dart';
+import 'package:bus_navigation/features/search_results/models/RouteResultModel.dart';
 import 'package:flutter/material.dart';
 import 'package:bus_navigation/features/home/presentation/home_page.dart';
 import 'package:bus_navigation/features/routes/presentation/screens/routes_page.dart';
@@ -59,9 +61,12 @@ class PageRouter {
         });
       case SidePage.route:
         return MaterialPageRoute(builder: (context) {
-          return SidePage(
-            navDetailModel: navDetailModel,
-          );
+          if (args is List) {
+            return SidePage(
+                navDetailModel: args[1], routeSearchResultModel: args[0]);
+          }
+          print(args);
+          return const Text("Error");
         });
     }
     return null;

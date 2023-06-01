@@ -53,7 +53,6 @@ class _HomePageState extends State<HomePage> {
             )
           : const RoutesPage(),
       RouteHistory(),
-      NavigationPage(),
     ];
     return Scaffold(
       body: MultiBlocProvider(providers: [

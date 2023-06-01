@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:bus_navigation/features/search_results/data_provider/parsing_util.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:latlong2/latlong.dart';
 
+import '../../nav_detail/model/nav_detail_model.dart';
 import '../models/RouteResultModel.dart';
 
 class RouteSearchDataProvider {
