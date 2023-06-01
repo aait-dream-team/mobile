@@ -8,14 +8,14 @@ class WalkMode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 30,
+      height: 50,
       decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(width: 1, color: Colors.grey),
         ),
       ),
       child: const Center(
-        child: Column(children: [Icon(Icons.directions_walk),]),
+        child: Icon(Icons.directions_walk),
       ),
     );
   }
