@@ -10,8 +10,6 @@ import 'package:bus_navigation/features/routes/presentation/screens/screen_argum
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../search_results/presentation/screens/search_result_page.dart';
 import '../bloc/home_bloc.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,12 +18,13 @@ class HomePage extends StatefulWidget {
   final ScreenArgument? screenArgument;
   const HomePage({
     this.index = 0,
-     this.screenArgument,
+    this.screenArgument,
     super.key,
   });
 
   @override
-  State<HomePage> createState() => _HomePageState(index:index, screenArgument:screenArgument);
+  State<HomePage> createState() =>
+      _HomePageState(index: index, screenArgument: screenArgument);
 }
 
 class _HomePageState extends State<HomePage> {
@@ -33,7 +32,7 @@ class _HomePageState extends State<HomePage> {
   final ScreenArgument? screenArgument;
   _HomePageState({
     required this.index,
-     this.screenArgument,
+    this.screenArgument,
   });
   // final HomeBloc _homeBloc = HomeBloc()..add(MapLoadEvent());
 
@@ -46,8 +45,11 @@ class _HomePageState extends State<HomePage> {
       const HomeWidget(),
       // SearchResults(),
       // BlocProvider.value(value: _routesBloc, child: const RoutesPage()),
-      screenArgument is ScreenArgumentsRoutes ? RoutesPage(screenArgumentsRoutes: screenArgument as ScreenArgumentsRoutes,)  : const RoutesPage(),
-      SearchResults(),
+      screenArgument is ScreenArgumentsRoutes
+          ? RoutesPage(
+              screenArgumentsRoutes: screenArgument as ScreenArgumentsRoutes,
+            )
+          : const RoutesPage(),
       RouteHistory(),
       NavigationPage(),
     ];

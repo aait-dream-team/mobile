@@ -13,8 +13,6 @@ class SearchResults extends StatefulWidget {
   static const String route = "/search";
   final RouteSearchRepository repository =
       RouteSearchRepository(dataProvider: RouteSearchDataProvider());
-  SearchResults({super.key});
-
   @override
   State<SearchResults> createState() => _RouteSearchState();
 }
@@ -45,57 +43,48 @@ class _RouteSearchState extends State<SearchResults> {
         },
         child: const Icon(Icons.add),
       ),
-      appBar: AppBar(
-        backgroundColor: AppColors.white12,
-        elevation: 0,
-        title: const Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text("Search Results",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 30,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.5)),
-          ],
-        ),
-      ),
-      body: BlocProvider(
-        create: (context) => SearchBloc(repository: widget.repository)
-          ..add(LoadSearchEvent(
-              departureDate: DateTime.now(),
-              from: LatLng(9.02022800242961, 38.837161824062505),
-              to: LatLng(9.033278935161835,  38.733492007126955))),
-        child: BlocBuilder<SearchBloc, SearchState>(
-          builder: (context, state) {
-            if (state is SearchInitialState || state is SearchLoadingState) {
-              return const Padding(
+      body: BlocBuilder<SearchBloc, SearchState>(
+        builder: (context, state) {
+          if (state is SearchInitialState) {
+            return const Padding(
                 padding: EdgeInsets.all(16.0),
-                child: Center(child: CircularProgressIndicator(strokeWidth: 7)),
-              );
-            }
-            if (state is SearchLoadFailedState) {
-              return Center(child: Text(state.msg));
-            }
-            if (state is SearchSuccessState) {
-              final list = state.results;
+                child: Center(child: Text("Enter source and destination")));
+          }
+          if (state is SearchInitialState || state is SearchLoadingState) {
+            return const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Center(child: CircularProgressIndicator(strokeWidth: 7)),
+            );
+          }
+          if (state is SearchLoadFailedState) {
+            return Center(child: Text(state.msg));
+          }
+          if (state is SearchSuccessState) {
+            final list = state.results;
 
-              return CustomScrollView(
-                  slivers: list
-                      .map((route) => SliverToBoxAdapter(
-                          child: Container(
-                              margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              color: Colors.black26,
-                              child: RouteWidget(
-                                result: route,
-                              ))))
-                      .cast<SliverToBoxAdapter>()
-                      .toList());
-            }
-            return const Center(child: Text("SomeThing Went Wrong"));
-          },
-        ),
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<SearchBloc>().add(LoadSearchEvent(
+                    departureDate: state.departureDate,
+                    from: state.from,
+                    to: state.to));
+              },
+              child: CustomScrollView(
+                slivers: list
+                    .map((route) => SliverToBoxAdapter(
+                        child: Container(
+                            margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            color: Colors.black26,
+                            child: RouteWidget(
+                              result: route.$1,
+                            ))))
+                    .cast<SliverToBoxAdapter>()
+                    .toList(),
+              ),
+            );
+          }
+          return const Center(child: Text("Something Went Wrong"));
+        },
       ),
       bottomSheet: const Text(
         "Search results don't belong here. Here for testing purposes",

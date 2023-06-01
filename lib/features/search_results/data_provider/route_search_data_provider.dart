@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:bus_navigation/features/search_results/data_provider/parsing_util.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
@@ -7,10 +8,19 @@ import 'package:latlong2/latlong.dart';
 import '../models/RouteResultModel.dart';
 
 class RouteSearchDataProvider {
-  Future<List<RouteSearchResultModel>> getSearchResults(
+  Future<List<(RouteSearchResultModel, NavDetailModel)>> getSearchResults(
       LatLng from, LatLng to, DateTime departureDate) async {
     var data = await getApiContent(from, to, departureDate);
-    return getRoutes(data);
+    var details = getItineraries(data)
+        .cast<Map<String, dynamic>>()
+        .map(NavDetailModel.fromMap)
+        .toList();
+    var routes = getRoutes(data);
+    List<(RouteSearchResultModel, NavDetailModel)> results = [];
+    for (int i = 0; i < routes.length; i++) {
+      results.add((routes[i], details[i]));
+    }
+    return results;
   }
 
   List<RouteSearchResultModel> getRoutes(dynamic data) {

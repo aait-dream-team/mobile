@@ -1,5 +1,6 @@
 import 'package:bus_navigation/features/routes/model/pin.dart';
 import 'package:bus_navigation/features/routes/presentation/screens/screen_arguments_routes.dart';
+import 'package:bus_navigation/features/search_results/bloc/search_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
@@ -27,8 +28,17 @@ class _RoutesWidget extends State<RoutesPage> {
   @override
   Widget build(BuildContext context) {
     print(screenArgumentsRoutes);
-    return BlocBuilder<RoutesBloc, RoutesState>(builder: (context, state) {
-      if (screenArgumentsRoutes != null  ) {
+    return BlocConsumer<RoutesBloc, RoutesState>(listener: (context, state) {
+      if (state is RoutesPinPoint &&
+          state.from.name != '' &&
+          state.to.name != "") {
+        context.read<SearchBloc>().add(LoadSearchEvent(
+            from: state.from.location,
+            to: state.to.location,
+            departureDate: DateTime.now()));
+      }
+    }, builder: (context, state) {
+      if (screenArgumentsRoutes != null) {
         if (screenArgumentsRoutes!.type == 'from') {
           context.read<RoutesBloc>().add(PointPicked(
               from: PinPoint(
@@ -52,7 +62,6 @@ class _RoutesWidget extends State<RoutesPage> {
       if (state is RoutesPinPoint) {
         fromController.text = state.from.name;
         toController.text = state.to.name;
-        
       }
       return Padding(
         padding: const EdgeInsets.fromLTRB(10, 40, 10, 0),
