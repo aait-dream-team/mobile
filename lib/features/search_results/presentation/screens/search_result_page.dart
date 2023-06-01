@@ -1,3 +1,5 @@
+import 'package:bus_navigation/features/nav_detail/data_provider/mock_data.dart';
+import 'package:bus_navigation/features/nav_detail/presentation/screens/detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
@@ -23,6 +25,7 @@ class _RouteSearchState extends State<SearchResults> {
     int depature = 0;
     DateTime dateTime = DateTime.now();
     return Scaffold(
+      // TODO: Aman this does not belong here removie it.
       // TODO: Aman this does not belong here remove it.
       floatingActionButton: TextButton(
         onPressed: () => {
@@ -75,8 +78,13 @@ class _RouteSearchState extends State<SearchResults> {
                         child: Container(
                             margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             color: Colors.black26,
-                            child: RouteWidget(
-                              result: route.$1,
+                              child: InkWell(
+                                onTap: () => Navigator.pushNamed(
+                                    context, SidePage.route,
+                                    arguments: navDetailModel),
+                              child: RouteWidget(
+                                result: route.$1,
+                                ),
                             ))))
                     .cast<SliverToBoxAdapter>()
                     .toList(),
