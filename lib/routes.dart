@@ -70,9 +70,19 @@ class PageRouter {
         });
       case SidePage.route:
         return MaterialPageRoute(builder: (context) {
-          return SidePage(
-            navDetailModel: navDetailModel,
-          );
+          if (args is List) {
+            return SidePage(
+                navDetailModel: args[1], routeSearchResultModel: args[0]);
+          }
+          return const Text("Error");
+        });
+      case SidePage.route:
+        return MaterialPageRoute(builder: (context) {
+          if (args is List) {
+            return SidePage(
+                navDetailModel: args[1], routeSearchResultModel: args[0]);
+          }
+          return const Text("Error");
         });
     }
     return null;
