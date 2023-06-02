@@ -1,8 +1,14 @@
 import 'package:bus_navigation/features/home/bloc/home_bloc.dart';
+import 'package:bus_navigation/features/home/presentation/widgets/screen_argumnets_home.dart';
+import 'package:bus_navigation/features/routes/bloc/routes_bloc.dart';
+import 'package:bus_navigation/features/routes/model/pin.dart';
+import 'package:bus_navigation/features/routes/presentation/screens/screen_arguments_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
+import 'package:bus_navigation/features/routes/presentation/screens/routes_page.dart';
+import 'package:latlong2/latlong.dart';
 
 class MapWidget extends StatefulWidget {
   const MapWidget({super.key});
@@ -73,16 +79,34 @@ class _MapWidget extends State<MapWidget>
                         children: [
                           ElevatedButton(
                             // create the first option button
-                            onPressed:
-                                () {}, // call the callback function when pressed
+                            onPressed: () {
+                              BlocProvider.of<RoutesBloc>(context).add(
+                                  PointPicked(
+                                      from: PinPoint(
+                                          name: 'Pin Location',
+                                          location: state.pinPosition),
+                                      to: PinPoint(
+                                          name: '',
+                                          location: state.pinPosition)));
+                              Navigator.pushNamed(context, RoutesPage.route,
+                                  arguments: ScreenArgumentsRoutes(
+                                      type: 'from',
+                                      name: "Pin Location",
+                                      location: state.pinPosition));
+                            }, // call the callback function when pressed
                             child: Text(
                                 'Set Destination'), // display the button label
                           ),
                           SizedBox(width: 8.0), // add some horizontal space
                           ElevatedButton(
                             // create the second option button
-                            onPressed:
-                                () {}, // call the callback function when pressed
+                            onPressed: () {
+                              Navigator.pushNamed(context, RoutesPage.route,
+                                  arguments: ScreenArgumentsRoutes(
+                                      type: 'to',
+                                      name: "Pin Location",
+                                      location: state.pinPosition));
+                            }, // call the callback function when pressed
                             child:
                                 Text('Set Arrival'), // display the button label
                           ),

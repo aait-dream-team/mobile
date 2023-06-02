@@ -4,51 +4,62 @@ import 'package:bus_navigation/features/nav_detail/data_provider/mock_data.dart'
 import 'package:bus_navigation/features/nav_detail/presentation/screens/detail.dart';
 import 'package:bus_navigation/features/home/presentation/screens/home_page.dart';
 import 'package:bus_navigation/features/navigate/presentation/screens/navigation_screen.dart';
+
+import 'package:bus_navigation/features/routes/presentation/screens/routes_page.dart';
+import 'package:bus_navigation/features/routes/bloc/routes_bloc.dart';
+import 'package:bus_navigation/features/routes/presentation/screens/screen_argument.dart';
+import 'package:bus_navigation/features/routes/presentation/screens/screen_arguments_routes.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../search_results/presentation/screens/search_result_page.dart';
 import '../bloc/home_bloc.dart';
 
 class HomePage extends StatefulWidget {
   static const String route = "/homepage";
-
+  final int index;
+  final ScreenArgument? screenArgument;
   const HomePage({
+    this.index = 0,
+    this.screenArgument,
     super.key,
   });
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() =>
+      _HomePageState(index: index, screenArgument: screenArgument);
 }
 
 class _HomePageState extends State<HomePage> {
   int index = 0;
-  List<Widget> screens = [
-    const Center(
-      child: Text(
-        "Home",
-      ),
-    ),
-    // TODO(Biruk): Remove Search Results from the bottom nav bar.
-    SearchResults(),
-    RouteHistory(),
-    SidePage(
-      navDetailModel: navDetailModel,
-    ),
-  ];
-  final HomeBloc _homeBloc = HomeBloc()..add(MapLoadEvent());
+  final ScreenArgument? screenArgument;
+  _HomePageState({
+    required this.index,
+    this.screenArgument,
+  });
+  // final HomeBloc _homeBloc = HomeBloc()..add(MapLoadEvent());
+
   @override
   Widget build(BuildContext context) {
     List<Widget> screens = [
       // Providing the bloc at this level so that the map state doesn't reset
       // when navigating between states
-      BlocProvider.value(value: _homeBloc, child: const HomeWidget()),
-      SearchResults(),
+      // BlocProvider.value(value: _homeBloc, child: const HomeWidget()),
+      const HomeWidget(),
+      // SearchResults(),
+      // BlocProvider.value(value: _routesBloc, child: const RoutesPage()),
+      screenArgument is ScreenArgumentsRoutes
+          ? RoutesPage(
+              screenArgumentsRoutes: screenArgument as ScreenArgumentsRoutes,
+            )
+          : const RoutesPage(),
       RouteHistory(),
-      NavigationPage(),
     ];
     return Scaffold(
-      body: screens[index],
+      body: MultiBlocProvider(providers: [
+        BlocProvider<RoutesBloc>(
+            create: (BuildContext context) => RoutesBloc()),
+        BlocProvider<HomeBloc>(create: (BuildContext context) => HomeBloc()),
+      ], child: screens[index]),
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
             indicatorColor: AppColors.greyShade300,

@@ -1,6 +1,8 @@
+import 'package:latlong2/latlong.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
+import '../../nav_detail/model/nav_detail_model.dart';
 import '../models/RouteResultModel.dart';
 import '../repository/route_search_repository.dart';
 
@@ -19,11 +21,23 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           emit(SearchLoadingState());
 
           try {
-            final value = await repository.getSearchResults();
-            emit(SearchSuccessState(result: value));
+            final value = await repository.getSearchResults(
+                event.from, event.to, event.departureDate);
+            emit(SearchSuccessState(
+                results: value,
+                from: event.from,
+                to: event.to,
+                departureDate: event.departureDate));
           } catch (e) {
-            emit(SearchLoadFailedState(msg: e.toString()));
+            emit(SearchLoadFailedState(
+                msg: e.toString(),
+                from: event.from,
+                to: event.to,
+                departureDate: event.departureDate));
           }
+        }
+        if (event is InitSearch) {
+          emit(SearchInitialState());
         }
       },
     );

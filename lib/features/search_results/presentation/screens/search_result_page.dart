@@ -2,6 +2,7 @@ import 'package:bus_navigation/features/nav_detail/data_provider/mock_data.dart'
 import 'package:bus_navigation/features/nav_detail/presentation/screens/detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../../../core/utils/colors.dart';
 import '../../bloc/search_bloc.dart';
@@ -14,8 +15,6 @@ class SearchResults extends StatefulWidget {
   static const String route = "/search";
   final RouteSearchRepository repository =
       RouteSearchRepository(dataProvider: RouteSearchDataProvider());
-  SearchResults({super.key});
-
   @override
   State<SearchResults> createState() => _RouteSearchState();
 }
@@ -47,59 +46,53 @@ class _RouteSearchState extends State<SearchResults> {
         },
         child: const Icon(Icons.add),
       ),
-      appBar: AppBar(
-        backgroundColor: AppColors.white12,
-        elevation: 0,
-        title: const Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text("Search Results",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 30,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.5)),
-          ],
-        ),
-      ),
-      body: BlocProvider(
-        create: (context) =>
-            SearchBloc(repository: widget.repository)..add(LoadSearchEvent()),
-        child: BlocBuilder<SearchBloc, SearchState>(
-          builder: (context, state) {
-            if (state is SearchInitialState || state is SearchLoadingState) {
-              return const Padding(
+      body: BlocBuilder<SearchBloc, SearchState>(
+        builder: (context, state) {
+          if (state is SearchInitialState) {
+            return const Padding(
                 padding: EdgeInsets.all(16.0),
-                child: Center(child: CircularProgressIndicator(strokeWidth: 7)),
-              );
-            }
-            if (state is SearchLoadFailedState) {
-              return Center(child: Text(state.msg));
-            }
-            if (state is SearchSuccessState) {
-              final list = state.result;
+                child: Center(child: Text("Enter source and destination")));
+          }
+          if (state is SearchInitialState || state is SearchLoadingState) {
+            return const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Center(child: CircularProgressIndicator(strokeWidth: 7)),
+            );
+          }
+          if (state is SearchLoadFailedState) {
+            return Center(child: Text(state.msg));
+          }
+          if (state is SearchSuccessState) {
+            final list = state.results;
 
-              return CustomScrollView(
-                  slivers: list
-                      .map((route) => SliverToBoxAdapter(
-                          child: Container(
-                              margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                              color: Colors.black26,
-                              child: InkWell(
-                                onTap: () => Navigator.pushNamed(
-                                    context, SidePage.route,
-                                    arguments: navDetailModel),
-                                child: RouteWidget(
-                                  result: route,
-                                ),
-                              ))))
-                      .cast<SliverToBoxAdapter>()
-                      .toList());
-            }
-            return const Center(child: Text("SomeThing Went Wrong"));
-          },
-        ),
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<SearchBloc>().add(LoadSearchEvent(
+                    departureDate: state.departureDate,
+                    from: state.from,
+                    to: state.to));
+              },
+              child: CustomScrollView(
+                slivers: list
+                    .map((route) => SliverToBoxAdapter(
+                        child: Container(
+                            margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            color: Colors.black26,
+                            child: InkWell(
+                              onTap: () => Navigator.pushNamed(
+                                  context, SidePage.route,
+                                  arguments: [route.$1, route.$2]),
+                              child: RouteWidget(
+                                result: route.$1,
+                              ),
+                            ))))
+                    .cast<SliverToBoxAdapter>()
+                    .toList(),
+              ),
+            );
+          }
+          return const Center(child: Text("Something Went Wrong"));
+        },
       ),
       bottomSheet: const Text(
         "Search results don't belong here. Here for testing purposes",

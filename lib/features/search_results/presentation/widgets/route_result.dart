@@ -62,14 +62,14 @@ class RouteWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '${result.departureInMinutes}',
+                        '${result.departure.inHours >= 1 ? result.departure.inHours : result.departure.inMinutes}',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: largeFontSize,
                         ),
                       ),
                       Text(
-                        'min',
+                        result.departure.inHours >= 1 ? "hour" : "min",
                         style: TextStyle(
                           fontSize: mediumFontSize,
                         ),
@@ -112,7 +112,7 @@ class RouteWidget extends StatelessWidget {
                                       ))
                                   .toList()
                                 ..add(Row(children: [
-                                  Text('${result.totalDuration} min')
+                                  Text('${result.totalDuration.inMinutes} min')
                                 ])))
                               : [
                                   Row(
@@ -133,7 +133,7 @@ class RouteWidget extends StatelessWidget {
                                       const SizedBox(width: 8),
                                     ],
                                   ),
-                                  Text('${result.totalDuration} min'),
+                                  Text('${result.totalDuration.inMinutes} min'),
                                 ],
                     ),
                   // Second row: departure time, duration, arrival time and walking time
@@ -148,7 +148,7 @@ class RouteWidget extends StatelessWidget {
                             color: Colors.white, fontSize: mediumFontSize),
                       ),
                       if (showArrivalAndWalkingTime)
-                        Text('${result.totalDuration} min'),
+                        Text('${result.totalDuration.inMinutes} min'),
                       if (showArrivalAndWalkingTime)
                         Chip(
                           label: Text(
@@ -161,7 +161,7 @@ class RouteWidget extends StatelessWidget {
                         Row(
                           children: [
                             const Icon(Icons.directions_walk),
-                            Text('${result.walkingTime} min'),
+                            Text('${result.walkingTime.inMinutes} min'),
                           ],
                         ),
                     ],

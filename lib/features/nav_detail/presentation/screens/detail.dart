@@ -17,10 +17,12 @@ import '../../model/nav_detail_model.dart';
 class SidePage extends StatefulWidget {
   static const String route = '/SidePage';
   final NavDetailModel navDetailModel;
-  const SidePage({
-    Key? key,
-    required this.navDetailModel,
-  }) : super(key: key);
+  final RouteSearchResultModel routeSearchResultModel;
+  const SidePage(
+      {Key? key,
+      required this.navDetailModel,
+      required this.routeSearchResultModel})
+      : super(key: key);
 
   @override
   _SidePageState createState() => _SidePageState();
@@ -58,23 +60,20 @@ class _SidePageState extends State<SidePage> {
           child: Column(
             children: [
               RouteWidget(
-                result: RouteSearchResultModel(
-                    departureInMinutes: 15,
-                    transports: [
-                      const Transport(RouteSegmentType.train, "S1"),
-                      const Transport(RouteSegmentType.tram, "U6"),
-                    ],
-                    totalDuration: 45,
-                    departureTime: DateTime(2023, 4, 24, 19, 30),
-                    arrivalTime: DateTime(2023, 4, 24, 20, 15),
-                    walkingTime: 10),
+                result: widget.routeSearchResultModel,
               ),
               Expanded(
                 child: Stack(
                   children: [
                     Container(
                       color: Colors.white,
-                      child: Center(child: NavigationPage()),
+                      child: Center(
+                          child: NavigationPage(
+                        polylineString: widget.navDetailModel.legs
+                            .map((e) => e.legGeometry)
+                            .cast<String>()
+                            .toList(),
+                      )),
                     ),
                     Align(
                       alignment: Alignment.centerRight,
