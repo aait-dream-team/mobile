@@ -68,22 +68,6 @@ class PageRouter {
           print(args);
           return const Text("Error");
         });
-      case SidePage.route:
-        return MaterialPageRoute(builder: (context) {
-          if (args is List) {
-            return SidePage(
-                navDetailModel: args[1], routeSearchResultModel: args[0]);
-          }
-          return const Text("Error");
-        });
-      case SidePage.route:
-        return MaterialPageRoute(builder: (context) {
-          if (args is List) {
-            return SidePage(
-                navDetailModel: args[1], routeSearchResultModel: args[0]);
-          }
-          return const Text("Error");
-        });
     }
     return null;
   }
