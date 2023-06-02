@@ -107,14 +107,17 @@ class RouteWidget extends StatelessWidget {
                                           if (showIconsAndRouteNumbers)
                                             const SizedBox(width: 4),
                                           if (showIconsAndRouteNumbers)
-                                            Text(transport.routeNumber),
+                                            SizedBox(
+                                                width: size.width / 10,
+                                                child: Text(
+                                                  transport.routeNumber,
+                                                  overflow: TextOverflow
+                                                      .ellipsis, // Set the overflow property to ellipsis or fade
+                                                )),
                                           const SizedBox(width: 8),
                                         ],
                                       ))
-                                  .toList()
-                                ..add(Row(children: [
-                                  Text('${result.totalDuration.inMinutes} min')
-                                ])))
+                                  .toList())
                               : [
                                   Row(
                                     children: [
