@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:bus_navigation/features/nav_detail/data_provider/mock_data.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/left_floating_action_button.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/train_mode.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/walk_expanded.dart';
@@ -124,7 +125,8 @@ class _SidePageState extends State<SidePage> {
                                                 color: Colors.white,
                                                 child: List1(
                                                   navDetailModel:
-                                                      widget.navDetailModel,
+                                                      navDetailModel,
+                                                      currentIndex: 4,
                                                 ),
                                               ),
                                             ),
@@ -173,21 +175,65 @@ class _SidePageState extends State<SidePage> {
 
 class List1 extends StatelessWidget {
   final NavDetailModel navDetailModel;
-  List1({
-    Key? key,
-    required this.navDetailModel,
-  }) : super(key: key);
+  final int currentIndex;
+  List1({Key? key, required this.navDetailModel, required this.currentIndex})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     List<Widget> modes = [];
     for (var i = 0; i < navDetailModel.legs.length; i++) {
-      if (navDetailModel.legs[i].mode == "WALK") {
-        modes.add(WalkMode(leg: navDetailModel.legs[i]));
-      } else if (navDetailModel.legs[i].mode == "BUS") {
-        modes.add(BusMode(leg: navDetailModel.legs[i]));
+      if (i < currentIndex) {
+        if (navDetailModel.legs[i].mode == "WALK") {
+          modes.add(WalkMode(
+            leg: navDetailModel.legs[i],
+            color: Colors.grey,
+          ));
+        } else if (navDetailModel.legs[i].mode == "BUS") {
+          modes.add(BusMode(
+            leg: navDetailModel.legs[i],
+            color: Colors.grey,
+          ));
+        } else {
+          modes.add(TrainMode(
+            leg: navDetailModel.legs[i],
+            color: Colors.grey,
+          ));
+        }
+      } else if (i > currentIndex) {
+        if (navDetailModel.legs[i].mode == "WALK") {
+          modes.add(WalkMode(
+            leg: navDetailModel.legs[i],
+            color: Colors.white,
+          ));
+        } else if (navDetailModel.legs[i].mode == "BUS") {
+          modes.add(BusMode(
+            leg: navDetailModel.legs[i],
+            color: Colors.white,
+          ));
+        } else {
+          modes.add(TrainMode(
+            leg: navDetailModel.legs[i],
+            color: Colors.white,
+          ));
+        }
       } else {
-        modes.add(TrainMode(leg: navDetailModel.legs[i]));
+        if (navDetailModel.legs[i].mode == "WALK") {
+          modes.add(WalkMode(
+            leg: navDetailModel.legs[i],
+            color: Colors.green,
+          ));
+        } else if (navDetailModel.legs[i].mode == "BUS") {
+          modes.add(BusMode(
+            leg: navDetailModel.legs[i],
+            color: Colors.green,
+          ));
+        } else {
+          modes.add(TrainMode(
+            leg: navDetailModel.legs[i],
+            color: Colors.green,
+          ));
+        }
       }
     }
 
@@ -207,7 +253,7 @@ class List2 extends StatelessWidget {
     List<Widget> modes = [];
     for (var i = 0; i < navDetailModel.legs.length; i++) {
       if (navDetailModel.legs[i].mode == "WALK") {
-        modes.add(WalkModeExpanded(leg: navDetailModel.legs[i]));
+        modes.add(WalkModeExpanded(leg: navDetailModel.legs[i],color: Colors.white,));
       } else {
         modes.add(Detail(leg: navDetailModel.legs[i]));
       }

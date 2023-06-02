@@ -5,7 +5,8 @@ import '../../model/nav_detail_model.dart';
 
 class TrainMode extends StatelessWidget {
   final Leg leg;
-  const TrainMode({super.key, required this.leg});
+  final Color color;
+  const TrainMode({super.key, required this.leg, required this.color});
 
   @override
   Widget build(BuildContext context) {

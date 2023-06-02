@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 class BusMode extends StatelessWidget {
   final Leg leg;
-  const BusMode({super.key, required this.leg});
+  final Color color;
+  const BusMode({super.key, required this.leg, required this.color});
 
   @override
   Widget build(BuildContext context) {

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class WalkMode extends StatelessWidget {
   final Leg leg;
-  const WalkMode({super.key, required this.leg});
+  final Color color;
+  const WalkMode({super.key, required this.leg, required this.color});
 
   @override
   Widget build(BuildContext context) {
