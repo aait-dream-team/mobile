@@ -90,19 +90,19 @@ class NavigateMapWidget extends StatelessWidget {
         }
         if (state.currentInnerIndex > 0) {
           oldLegs.add(state.legs[state.currentIndex]
-              .sublist(0, state.currentInnerIndex));
+              .sublist(0, state.currentInnerIndex + 1));
         }
         var newLegs = [];
         if (state.currentInnerIndex <
             state.legs[state.currentIndex].length - 1) {
           newLegs = [
-            state.legs[state.currentIndex].sublist(state.currentInnerIndex,
-                state.legs[state.currentIndex].length - 1)
+            state.legs[state.currentIndex].sublist(
+                state.currentInnerIndex, state.legs[state.currentIndex].length)
           ];
         }
         if (state.currentIndex < state.legs.length - 1) {
-          newLegs.addAll(state.legs
-              .sublist(state.currentIndex + 1, state.legs.length - 1));
+          newLegs.addAll(
+              state.legs.sublist(state.currentIndex + 1, state.legs.length));
         }
         return StreamBuilder<Position>(
             stream: Geolocator.getPositionStream(
