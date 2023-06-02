@@ -65,7 +65,7 @@ class Leg {
       duration: map['duration'] as double,
       legGeometry: map['legGeometry']['points'] as String,
       intermidateStops: (map['intermediateStops'] != null)
-          ? (map['intermediateStops'] as List<Map<String, dynamic>>)
+          ? (map['intermediateStops'] as List)
               .map((e) => IntermediateStop.fromMap(e))
               .toList()
           : null,
