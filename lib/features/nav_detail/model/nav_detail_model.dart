@@ -3,6 +3,17 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
+class Step {
+  final double distance;
+  final String relativeDirection;
+  final String streetName;
+
+  Step(
+      {required this.distance,
+      required this.relativeDirection,
+      required this.streetName});
+}
+
 class Leg {
   final DateTime startTime; // legs[i].startTime
   final DateTime endTime;
@@ -15,20 +26,21 @@ class Leg {
   final String? routeShortName;
   final String? routeLongName;
   final String? agencyName;
+  final List<Step>? steps;
 
-  Leg({
-    required this.startTime,
-    required this.endTime,
-    required this.mode,
-    required this.from,
-    required this.to,
-    required this.duration,
-    required this.legGeometry,
-    this.distance,
-    this.routeShortName,
-    this.routeLongName,
-    this.agencyName,
-  });
+  Leg(
+      {required this.startTime,
+      required this.endTime,
+      required this.mode,
+      required this.from,
+      required this.to,
+      required this.duration,
+      required this.legGeometry,
+      this.distance,
+      this.routeShortName,
+      this.routeLongName,
+      this.agencyName,
+      this.steps});
 
   factory Leg.fromMap(Map<String, dynamic> map) {
     return Leg(
@@ -43,6 +55,15 @@ class Leg {
       routeShortName: (map['routeShortName']).toString(),
       routeLongName: (map['routeLongName']).toString(),
       agencyName: (map['agencyName']).toString(),
+      steps: List<Step>.from(
+        (map['steps'] as List).map(
+          (x) => Step(
+            distance: x['distance'] as double,
+            relativeDirection: x['relativeDirection'] as String,
+            streetName: x['streetName'] as String,
+          ),
+        ),
+      ),
     );
   }
 
