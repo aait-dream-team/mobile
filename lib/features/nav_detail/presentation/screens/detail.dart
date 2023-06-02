@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:bus_navigation/core/local_notification/local_notification.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/left_floating_action_button.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/train_mode.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/walk_expanded.dart';
@@ -18,6 +19,7 @@ class SidePage extends StatefulWidget {
   static const String route = '/SidePage';
   final NavDetailModel navDetailModel;
   final RouteSearchResultModel routeSearchResultModel;
+
   const SidePage(
       {Key? key,
       required this.navDetailModel,
@@ -45,6 +47,10 @@ class _SidePageState extends State<SidePage> {
           child: FloatingActionButton(
             onPressed: () {
               // Add your desired action here
+              LocalNotificationDataProvider localNotificationDataProvider =
+                  LocalNotificationDataProvider();
+              localNotificationDataProvider.initializeNotifications();
+              localNotificationDataProvider.showNotifications();
             },
             child: Container(
               width: 600,
