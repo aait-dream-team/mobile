@@ -7,10 +7,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../widgets/navigation_map.dart';
 
 class NavigationPage extends StatefulWidget {
+  final List<String> polylineString;
   final NavigationRepository repository =
       NavigationRepository(dataProvider: NavigationDataProvider());
 
-  NavigationPage({super.key});
+  NavigationPage({super.key, required this.polylineString});
 
   @override
   State<NavigationPage> createState() => _NavigationPage();
@@ -20,8 +21,11 @@ class _NavigationPage extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => NavigationBloc(repository: widget.repository)
-          ..add(LoadNavigationEvent()),
-          child: NavigateMapWidget(),);
+      create: (context) => NavigationBloc(repository: widget.repository)
+        ..add(LoadNavigationEvent()),
+      child: NavigateMapWidget(
+        polylineString: widget.polylineString,
+      ),
+    );
   }
 }

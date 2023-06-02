@@ -15,8 +15,8 @@ class NavigationDataProvider {
     List<List<LatLng>> latLngList = points
         .map((geo) => polylinePoints
             .decodePolyline(geo)
-            .map((e) => LatLng(e.latitude, e.longitude))
-            .toList())
+              .map((e) => LatLng(e.latitude, e.longitude))
+              .toList())
         .toList();
     return latLngList;
   }

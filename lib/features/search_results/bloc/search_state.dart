@@ -9,8 +9,8 @@ class SearchLoadingState extends SearchState {}
 
 class SearchLoadFailedState extends SearchState {
   final String msg;
-  LatLng from, to;
-  DateTime departureDate;
+  final LatLng from, to;
+  final DateTime departureDate;
 
   SearchLoadFailedState(
       {required this.msg,
@@ -20,9 +20,9 @@ class SearchLoadFailedState extends SearchState {
 }
 
 class SearchSuccessState extends SearchState {
-  final List<RouteSearchResultModel> results;
-  LatLng from, to;
-  DateTime departureDate;
+  final List<(RouteSearchResultModel, NavDetailModel)> results;
+  final LatLng from, to;
+  final DateTime departureDate;
 
   SearchSuccessState(
       {required this.results,
