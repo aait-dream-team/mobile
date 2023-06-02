@@ -2,6 +2,29 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:latlong2/latlong.dart';
+
+class IntermediateStop {
+  final String name;
+  final LatLng location;
+  final DateTime arrivalTime;
+  final DateTime departureTime;
+
+  IntermediateStop(
+      {required this.name,
+      required this.location,
+      required this.arrivalTime,
+      required this.departureTime});
+
+  factory IntermediateStop.fromMap(Map<String, dynamic> map) {
+    return IntermediateStop(
+        name: map["name"] as String,
+        location: LatLng(map["lat"] as double, map["lon"] as double),
+        arrivalTime: DateTime.fromMillisecondsSinceEpoch(map["arrival"] as int),
+        departureTime:
+            DateTime.fromMillisecondsSinceEpoch(map["departure"] as int));
+  }
+}
 
 class Leg {
   final DateTime startTime; // legs[i].startTime
@@ -11,6 +34,7 @@ class Leg {
   final String to;
   final double duration;
   final String legGeometry;
+  final List<IntermediateStop>? intermidateStops;
   final double? distance;
   final String? routeShortName;
   final String? routeLongName;
@@ -24,6 +48,7 @@ class Leg {
     required this.to,
     required this.duration,
     required this.legGeometry,
+    this.intermidateStops,
     this.distance,
     this.routeShortName,
     this.routeLongName,
@@ -39,6 +64,11 @@ class Leg {
       to: map['to']['name'] as String,
       duration: map['duration'] as double,
       legGeometry: map['legGeometry']['points'] as String,
+      intermidateStops: (map['intermediateStops'] != null)
+          ? (map['intermediateStops'] as List<Map<String, dynamic>>)
+              .map((e) => IntermediateStop.fromMap(e))
+              .toList()
+          : null,
       distance: map['distance'] as double,
       routeShortName: (map['routeShortName']).toString(),
       routeLongName: (map['routeLongName']).toString(),
