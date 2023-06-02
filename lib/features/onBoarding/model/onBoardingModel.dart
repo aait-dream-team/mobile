@@ -1,4 +1,3 @@
-import 'package:bus_navigation/core/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingModel {
