@@ -14,6 +14,7 @@ const Map<String, IconData> _relativeDirectionIcons = {
   'ELEVATOR': Icons.elevator,
   'UTURN_LEFT': Icons.u_turn_left,
   'UTURN_RIGHT': Icons.u_turn_right,
+  "CONTINUE": Icons.arrow_upward,
 };
 
 class WalkModeExpanded extends StatefulWidget {
@@ -50,35 +51,38 @@ class _WalkModeExpandedState extends State<WalkModeExpanded> {
                 Expanded(
                     // flex: 1,
                     child: Text("${widget.leg.duration ~/ 60} min")),
-                Expanded(
-                  // flex: 2,
-                  child: SizedBox(
-                    // width: 95,
-                    child: PopupMenuButton(
-                        // child: Text("Steps"),
-                        icon: const Row(
-                          children: [
-                            Expanded(child: Text('Steps')),
-                            Expanded(child: Icon(Icons.arrow_drop_down)),
-                          ],
-                        ),
-                        onSelected: (value) {
-                          setState(() {
-                            // _selectedStep = value;
-                          });
-                        },
-                        itemBuilder: (context) => widget.leg.steps!.map((e) {
-                              return PopupMenuItem(
-                                value: e.streetName,
-                                child: ListTile(
-                                  leading: Icon(_relativeDirectionIcons[
-                                      e.relativeDirection]!),
-                                  title: Text(e.streetName),
-                                  subtitle: Text(
-                                      "${(e.distance / 1000).toStringAsFixed(2)} km"),
-                                ),
-                              );
-                            }).toList()),
+                Visibility(
+                  visible: widget.leg.steps!.length > 1,
+                  child: Expanded(
+                    // flex: 2,
+                    child: SizedBox(
+                      // width: 95,
+                      child: PopupMenuButton(
+                          // child: Text("Steps"),
+                          icon: const Row(
+                            children: [
+                              Expanded(child: Text('Steps')),
+                              Expanded(child: Icon(Icons.arrow_drop_down)),
+                            ],
+                          ),
+                          onSelected: (value) {
+                            setState(() {
+                              // _selectedStep = value;
+                            });
+                          },
+                          itemBuilder: (context) => widget.leg.steps!.map((e) {
+                                return PopupMenuItem(
+                                  value: e.streetName,
+                                  child: ListTile(
+                                    leading: Icon(_relativeDirectionIcons[
+                                        e.relativeDirection]!),
+                                    title: Text(e.streetName),
+                                    subtitle: Text(
+                                        "${(e.distance / 1000).toStringAsFixed(2)} km"),
+                                  ),
+                                );
+                              }).toList()),
+                    ),
                   ),
                 ),
               ],
