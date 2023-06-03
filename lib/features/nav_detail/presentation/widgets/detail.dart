@@ -4,7 +4,10 @@ import '../../model/nav_detail_model.dart';
 
 class Detail extends StatefulWidget {
   final Leg leg;
-  const Detail({super.key, required this.leg});
+  final int index;
+  final int currentIndex;
+  // final Color color;
+  const Detail({super.key, required this.leg, required this.index,required this.currentIndex});
 
   @override
   State<Detail> createState() => _DetailState();
@@ -14,15 +17,35 @@ class _DetailState extends State<Detail> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0, bottom: 8),
-      child: Container(
-        decoration: const BoxDecoration(
+    BoxDecoration decoration;
+    if (widget.index > widget.currentIndex){
+      decoration = const BoxDecoration(
+          color: Colors.white,
           border: Border(
             bottom: BorderSide(width: 1, color: Colors.grey),
           ),
-        ),
+        );
+    }
+    else if(widget.index < widget.currentIndex){
+      decoration = const BoxDecoration(
+          color: Colors.grey,
+          border: Border(
+            bottom: BorderSide(width: 1, color: Colors.grey),
+          ),
+        );
+    }
+    else{
+      decoration = const BoxDecoration(
+          color: Colors.green,
+          border: Border(
+            bottom: BorderSide(width: 1, color: Colors.grey),
+          ),
+        );
+    }
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0, bottom: 8),
+      child: Container(
+        decoration: decoration,
         height: screenHeight * 0.32,
         width: 300,
         child: Padding(

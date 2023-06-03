@@ -5,22 +5,45 @@ import '../../model/nav_detail_model.dart';
 
 class TrainMode extends StatelessWidget {
   final Leg leg;
-  final Color color;
-  const TrainMode({super.key, required this.leg, required this.color});
+  final int index;
+  final int currentIndex;
+  // final Color color;
+  const TrainMode({super.key, required this.leg, required this.index, required this.currentIndex});
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
+    BoxDecoration decoration;
+    if (index > currentIndex){
+      decoration = const BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            bottom: BorderSide(width: 1, color: Colors.grey),
+          ),
+        );
+    }
+    else if(index < currentIndex){
+      decoration = const BoxDecoration(
+          color: Colors.grey,
+          border: Border(
+            bottom: BorderSide(width: 1, color: Colors.grey),
+          ),
+        );
+    }
+    else{
+      decoration = const BoxDecoration(
+          color: Colors.green,
+          border: Border(
+            bottom: BorderSide(width: 1, color: Colors.grey),
+          ),
+        );
+    }
 
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, bottom: 8),
       child: Container(
         height: screenHeight * 0.32,
-        decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(width: 1, color: Colors.grey),
-          ),
-        ),
+        decoration: decoration,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [

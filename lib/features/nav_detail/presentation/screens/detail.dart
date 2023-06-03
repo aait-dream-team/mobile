@@ -109,54 +109,55 @@ class _SidePageState extends State<SidePage> {
                             ),
                             Expanded(
                               child: SingleChildScrollView(
-                                  scrollDirection: Axis.vertical,
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
+                                scrollDirection: Axis.vertical,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Column(
+                                        children: [
+                                          const SizedBox(
+                                            height: 70,
+                                          ),
+                                          Card(
+                                            child: Container(
+                                              width: 150,
+                                              color: Colors.white,
+                                              child: List1(
+                                                navDetailModel: navDetailModel,
+                                                currentIndex: 4,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Visibility(
+                                      visible: _isExpanded,
+                                      child: Expanded(
+                                        flex: 2,
                                         child: Column(
                                           children: [
                                             const SizedBox(
                                               height: 70,
                                             ),
-                                            Card(
-                                              child: Container(
-                                                width: 150,
-                                                color: Colors.white,
-                                                child: List1(
+                                            Container(
+                                                decoration: BoxDecoration(
+                                                  color: AppColors.white,
+                                                ),
+                                                width: 300,
+                                                child: List2(
                                                   navDetailModel:
                                                       navDetailModel,
-                                                      currentIndex: 4,
-                                                ),
-                                              ),
-                                            ),
+                                                  currentIndex: 3,
+                                                )),
                                           ],
                                         ),
                                       ),
-                                      Visibility(
-                                        visible: _isExpanded,
-                                        child: Expanded(
-                                          flex: 2,
-                                          child: Column(
-                                            children: [
-                                              const SizedBox(
-                                                height: 70,
-                                              ),
-                                              Container(
-                                                  decoration: BoxDecoration(
-                                                    color: AppColors.white,
-                                                  ),
-                                                  width: 300,
-                                                  child: List2(
-                                                    navDetailModel:
-                                                        widget.navDetailModel,
-                                                  )),
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  )),
+                                    )
+                                  ],
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -183,57 +184,21 @@ class List1 extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> modes = [];
     for (var i = 0; i < navDetailModel.legs.length; i++) {
-      if (i < currentIndex) {
-        if (navDetailModel.legs[i].mode == "WALK") {
-          modes.add(WalkMode(
-            leg: navDetailModel.legs[i],
-            color: Colors.grey,
-          ));
-        } else if (navDetailModel.legs[i].mode == "BUS") {
-          modes.add(BusMode(
-            leg: navDetailModel.legs[i],
-            color: Colors.grey,
-          ));
-        } else {
-          modes.add(TrainMode(
-            leg: navDetailModel.legs[i],
-            color: Colors.grey,
-          ));
-        }
-      } else if (i > currentIndex) {
-        if (navDetailModel.legs[i].mode == "WALK") {
-          modes.add(WalkMode(
-            leg: navDetailModel.legs[i],
-            color: Colors.white,
-          ));
-        } else if (navDetailModel.legs[i].mode == "BUS") {
-          modes.add(BusMode(
-            leg: navDetailModel.legs[i],
-            color: Colors.white,
-          ));
-        } else {
-          modes.add(TrainMode(
-            leg: navDetailModel.legs[i],
-            color: Colors.white,
-          ));
-        }
+      if (navDetailModel.legs[i].mode == "WALK") {
+        modes.add(WalkMode(
+          leg: navDetailModel.legs[i],
+          index: i,currentIndex: currentIndex,
+        ));
+      } else if (navDetailModel.legs[i].mode == "BUS") {
+        modes.add(BusMode(
+          leg: navDetailModel.legs[i],
+          index: i,currentIndex: currentIndex,
+        ));
       } else {
-        if (navDetailModel.legs[i].mode == "WALK") {
-          modes.add(WalkMode(
-            leg: navDetailModel.legs[i],
-            color: Colors.green,
-          ));
-        } else if (navDetailModel.legs[i].mode == "BUS") {
-          modes.add(BusMode(
-            leg: navDetailModel.legs[i],
-            color: Colors.green,
-          ));
-        } else {
-          modes.add(TrainMode(
-            leg: navDetailModel.legs[i],
-            color: Colors.green,
-          ));
-        }
+        modes.add(TrainMode(
+          leg: navDetailModel.legs[i],
+          index: i,currentIndex: currentIndex,
+        ));
       }
     }
 
@@ -243,20 +208,28 @@ class List1 extends StatelessWidget {
 
 class List2 extends StatelessWidget {
   final NavDetailModel navDetailModel;
-  const List2({
-    Key? key,
-    required this.navDetailModel,
-  }) : super(key: key);
+  final int currentIndex;
+  const List2(
+      {Key? key, required this.navDetailModel, required this.currentIndex})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     List<Widget> modes = [];
     for (var i = 0; i < navDetailModel.legs.length; i++) {
-      if (navDetailModel.legs[i].mode == "WALK") {
-        modes.add(WalkModeExpanded(leg: navDetailModel.legs[i],color: Colors.white,));
-      } else {
-        modes.add(Detail(leg: navDetailModel.legs[i]));
-      }
+      
+        if (navDetailModel.legs[i].mode == "WALK") {
+          modes.add(WalkModeExpanded(
+            leg: navDetailModel.legs[i],
+            index: i,currentIndex: currentIndex,
+          ));
+        } else {
+          modes.add(Detail(
+            leg: navDetailModel.legs[i],
+            index: i,currentIndex: currentIndex,
+          ));
+        }
+      
     }
 
     return Column(children: modes);
