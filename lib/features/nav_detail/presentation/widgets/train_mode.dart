@@ -22,7 +22,7 @@ class WalkMode extends StatelessWidget {
     }
     else if(index < currentIndex){
       decoration = const BoxDecoration(
-          color: Colors.grey,
+          color: Color.fromARGB(255, 213, 210, 210),
           border: Border(
             bottom: BorderSide(width: 1, color: Colors.grey),
           ),
@@ -30,7 +30,7 @@ class WalkMode extends StatelessWidget {
     }
     else{
       decoration = const BoxDecoration(
-          color: Colors.green,
+          color: Color.fromARGB(255, 105, 211, 109),
           border: Border(
             bottom: BorderSide(width: 1, color: Colors.grey),
           ),

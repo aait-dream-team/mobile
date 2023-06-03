@@ -149,7 +149,7 @@ class _SidePageState extends State<SidePage> {
                                                 child: List2(
                                                   navDetailModel:
                                                       navDetailModel,
-                                                  currentIndex: 3,
+                                                  currentIndex: 4,
                                                 )),
                                           ],
                                         ),
