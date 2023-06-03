@@ -29,29 +29,29 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  awesome_notifications: ^0.7.4+1
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.2
+  flutter_dotenv: ^5.0.2
+  flutter_local_notifications: ^14.1.1
+  flutter_map: ^4.0.0
+  flutter_map_tile_caching: ^8.0.0
+  flutter_polyline_points: ^1.0.0
+  flutter_typeahead: ^4.3.8
+  geolocator: ^9.0.2
+  google_places_flutter: ^2.0.5
   http: ^0.13.5
   intl: ^0.18.1
+  latlong2: ^0.8.1
+  material_floating_search_bar_2: ^0.5.0
   path: ^1.8.2
   path_provider: ^2.0.14
   shared_preferences: ^2.1.1
   shimmer: ^2.0.0
   sliver_tools: ^0.2.10
   sqflite: ^2.2.7
-  flutter_map: ^4.0.0
-  latlong2: ^0.8.1
-  material_floating_search_bar_2: ^0.5.0
-  flutter_map_tile_caching: ^8.0.0
-  flutter_polyline_points: ^1.0.0
-
-  flutter_typeahead: ^4.3.8
-  geolocator: ^9.0.2
-  google_places_flutter: ^2.0.5
-  flutter_dotenv: ^5.0.2  
-  flutter_local_notifications: ^14.1.1
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -70,7 +70,6 @@ flutter:
   assets:
     - assets/onBoarding/
     - .env
-
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

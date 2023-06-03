@@ -86,6 +86,13 @@ class RouteSearchDataProvider {
     if (response.statusCode == 200) {
       // parse the response body as JSON
       var data = jsonDecode(response.body);
+
+      // print(data['plan']['itineraries'][0]['legs'][1]['tripId']);
+      // print(data['plan']['itineraries'][0]['legs'][1]['duration']);
+      // print(data['plan']['itineraries'][0]['legs'][1]['startTime']);
+
+      // print(data['plan']['itineraries'][0]['legs']);
+
       return data;
     } else {
       // handle the error

@@ -1,4 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:math';
+
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:bus_navigation/core/local_notification/local_notification.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/left_floating_action_button.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/train_mode.dart';
@@ -45,12 +48,19 @@ class _SidePageState extends State<SidePage> {
               minWidth: 56.0,
               minHeight: 56.0), // Adjust the constraints as needed
           child: FloatingActionButton(
-            onPressed: () {
+            onPressed: () async {
               // Add your desired action here
-              LocalNotificationDataProvider localNotificationDataProvider =
-                  LocalNotificationDataProvider();
-              localNotificationDataProvider.initializeNotifications();
-              localNotificationDataProvider.showNotifications();
+              bool isallowed =
+                  await AwesomeNotifications().isNotificationAllowed();
+
+              if (!isallowed) {
+                AwesomeNotifications().requestPermissionToSendNotifications();
+              } else {
+                bool yes = await LocalNotificationDataProvider.instantNotify(
+                    title: 'Start Navigation',
+                    body: 'This simple notification is from Flutter App');
+                print(yes);
+              }
             },
             child: Container(
               width: 600,
