@@ -1,6 +1,6 @@
 import 'package:bus_navigation/features/home/bloc/home_bloc.dart';
 import 'package:bus_navigation/features/routes/bloc/routes_bloc.dart';
-import 'package:bus_navigation/features/routes/model/pin.dart';
+import 'package:bus_navigation/features/routes/models/pin.dart';
 import 'package:bus_navigation/features/routes/presentation/screens/screen_arguments_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

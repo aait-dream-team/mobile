@@ -10,6 +10,7 @@ class LocalDB {
 
   // ignore: constant_identifier_names
   static const _table_history = 'RouteHistory';
+  static const _table_recent = 'RecentRoutes';
 
   LocalDB._privateConstructor();
   static final LocalDB instance = LocalDB._privateConstructor();
@@ -37,7 +38,8 @@ class LocalDB {
 
   Future<void> _onCreate(Database db, int version) async {
     await db.execute(
-        "CREATE TABLE $_table_history(id INTEGER PRIMARY KEY, startPoint TEXT, endPoint TEXT, date INT )");
+        "CREATE TABLE $_table_history(id INTEGER PRIMARY KEY, startPoint TEXT, endPoint TEXT, date INT )"
+        "CREATE TABLE $_table_recent(id INTEGER PRIMARY KEY, name TEXT, lat STRING, long STRING )");
   }
 
   // Fetch all routes
@@ -48,9 +50,22 @@ class LocalDB {
     return routes;
   }
 
+  Future getRecentRoutes() async {
+    Database db = await instance.database;
+
+    var routes = await db.rawQuery("select * from $_table_recent;");
+    return routes;
+  }
+
   Future insertRoute(dynamic route) async {
     Database db = await instance.database;
 
     await db.insert(_table_history, route);
+  }
+
+  Future insertRecentRoute(dynamic recentRoute) async {
+    Database db = await instance.database;
+
+    await db.insert(_table_recent, recentRoute);
   }
 }

@@ -62,7 +62,6 @@ class _SearchWidget extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(api_key);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.fromLTRB(10, 45, 10, 0),
@@ -103,6 +102,7 @@ class _SearchWidget extends State<SearchPage> {
 
                   }, // this callback is called when isLatLngRequired is true
                   itmClick: (Prediction prediction) {
+                    print('here to predict');
                     controller.text = prediction.description!;
                     controller.selection = TextSelection.fromPosition(
                         TextPosition(offset: prediction.description!.length));

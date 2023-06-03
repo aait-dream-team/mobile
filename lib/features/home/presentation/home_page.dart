@@ -52,11 +52,7 @@ class _HomePageState extends State<HomePage> {
       RouteHistory(),
     ];
     return Scaffold(
-      body: MultiBlocProvider(providers: [
-        BlocProvider<RoutesBloc>(
-            create: (BuildContext context) => RoutesBloc()),
-        BlocProvider<HomeBloc>(create: (BuildContext context) => HomeBloc()),
-      ], child: screens[index]),
+      body:  screens[index],
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
             indicatorColor: AppColors.greyShade300,
