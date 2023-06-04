@@ -50,17 +50,10 @@ class _SidePageState extends State<SidePage> {
           child: FloatingActionButton(
             onPressed: () async {
               // Add your desired action here
-              bool isallowed =
-                  await AwesomeNotifications().isNotificationAllowed();
 
-              if (!isallowed) {
-                AwesomeNotifications().requestPermissionToSendNotifications();
-              } else {
-                bool yes = await LocalNotificationDataProvider.instantNotify(
-                    title: 'Start Navigation',
-                    body: 'This simple notification is from Flutter App');
-                print(yes);
-              }
+              await LocalNotificationDataProvider.instantNotify(
+                  title: 'Start Navigation',
+                  body: 'This simple notification is from Flutter App');
             },
             child: Container(
               width: 600,
