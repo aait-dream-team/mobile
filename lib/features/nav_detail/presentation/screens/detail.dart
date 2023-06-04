@@ -15,15 +15,20 @@ import 'package:flutter/material.dart';
 import 'package:bus_navigation/core/utils/utils.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/bus_mode.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/detail.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../navigate/bloc/navigation_bloc.dart';
+import '../../../navigate/data_provider/navigation_data_provider.dart';
+import '../../../navigate/repository/navigation_repository.dart';
 import '../../model/nav_detail_model.dart';
 
 class SidePage extends StatefulWidget {
   static const String route = '/SidePage';
   final NavDetailModel navDetailModel;
   final RouteSearchResultModel routeSearchResultModel;
-
-  const SidePage(
+  final NavigationRepository repository =
+      NavigationRepository(dataProvider: NavigationDataProvider());
+  SidePage(
       {Key? key,
       required this.navDetailModel,
       required this.routeSearchResultModel})
@@ -39,144 +44,144 @@ class _SidePageState extends State<SidePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.transparent,
-        extendBodyBehindAppBar: true,
-        floatingActionButton: ConstrainedBox(
-          constraints: const BoxConstraints(
-              minWidth: 56.0,
-              minHeight: 56.0), // Adjust the constraints as needed
-          child: FloatingActionButton(
-            onPressed: () async {
-              // Add your desired action here
-
-              await LocalNotificationDataProvider.instantNotify(
-                  title: 'Start Navigation',
-                  body: 'This simple notification is from Flutter App');
-            },
-            child: Container(
-              width: 600,
-              child: const Row(children: [
-                Expanded(child: Icon(Icons.play_arrow)),
-                Expanded(child: Text("Start")),
-              ]),
-            ),
-          ),
-        ),
-        floatingActionButtonLocation: const LeftFloatingActionButtonLocation(),
-        body: SafeArea(
-          child: Column(
-            children: [
-              RouteWidget(
-                result: widget.routeSearchResultModel,
-              ),
-              Expanded(
-                child: Stack(
-                  children: [
-                    Container(
-                      color: Colors.white,
-                      child: Center(
-                          child: NavigationPage(
-                        polylineString: widget.navDetailModel.legs
-                            .map((e) => e.legGeometry)
-                            .cast<String>()
-                            .toList(),
-                      )),
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: AnimatedContainer(
-                        duration: const Duration(
-                          milliseconds: 30,
-                        ),
-                        width: _isExpanded ? _expandedWidth : 150.0,
-                        child: Row(
-                          children: [
-                            IconButton(
-                              icon: Container(
-                                width: 200,
-                                height: 200,
-                                child: Card(
-                                  child: Container(
-                                    color: Colors.white,
-                                    child: Icon(
-                                      _isExpanded
-                                          ? Icons.arrow_forward_ios
-                                          : Icons.arrow_back_ios,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _isExpanded = !_isExpanded;
-                                });
-                              },
-                            ),
-                            Expanded(
-                              child: SingleChildScrollView(
-                                  scrollDirection: Axis.vertical,
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Column(
-                                          children: [
-                                            const SizedBox(
-                                              height: 70,
-                                            ),
-                                            Card(
-                                              child: Container(
-                                                width: 150,
-                                                color: Colors.white,
-                                                child: List1(
-                                                  navDetailModel:
-                                                      widget.navDetailModel,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Visibility(
-                                        visible: _isExpanded,
-                                        child: Expanded(
-                                          flex: 2,
-                                          child: Column(
-                                            children: [
-                                              const SizedBox(
-                                                height: 70,
-                                              ),
-                                              Container(
-                                                  decoration: BoxDecoration(
-                                                    color: AppColors.white,
-                                                  ),
-                                                  width: 300,
-                                                  child: List2(
-                                                    navDetailModel:
-                                                        widget.navDetailModel,
-                                                  )),
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  )),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+    return BlocProvider(
+        create: (context) => NavigationBloc(repository: widget.repository)
+          ..add(LoadNavigationEvent(
+              polylineString: widget.navDetailModel.legs
+                  .map((e) => e.legGeometry)
+                  .cast<String>()
+                  .toList())),
+        child: MaterialApp(home: BlocBuilder<NavigationBloc, NavigationState>(
+            builder: ((context, state) {
+          return Scaffold(
+            backgroundColor: Colors.transparent,
+            extendBodyBehindAppBar: true,
+            floatingActionButton: ConstrainedBox(
+              constraints: const BoxConstraints(
+                  minWidth: 56.0,
+                  minHeight: 56.0), // Adjust the constraints as needed
+              child: FloatingActionButton(
+                onPressed: () {
+                  BlocProvider.of<NavigationBloc>(context)
+                      .add(StartNavigationEvent());
+                },
+                child: Container(
+                  width: 600,
+                  child: const Row(children: [
+                    Expanded(child: Icon(Icons.play_arrow)),
+                    Expanded(child: Text("Start")),
+                  ]),
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+            floatingActionButtonLocation:
+                const LeftFloatingActionButtonLocation(),
+            body: SafeArea(
+              child: Column(
+                children: [
+                  RouteWidget(
+                    result: widget.routeSearchResultModel,
+                  ),
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        Container(
+                          color: Colors.white,
+                          child: Center(child: NavigationPage()),
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: AnimatedContainer(
+                            duration: const Duration(
+                              milliseconds: 30,
+                            ),
+                            width: _isExpanded ? _expandedWidth : 150.0,
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  icon: Container(
+                                    width: 200,
+                                    height: 200,
+                                    child: Card(
+                                      child: Container(
+                                        color: Colors.white,
+                                        child: Icon(
+                                          _isExpanded
+                                              ? Icons.arrow_forward_ios
+                                              : Icons.arrow_back_ios,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _isExpanded = !_isExpanded;
+                                    });
+                                  },
+                                ),
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                      scrollDirection: Axis.vertical,
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Column(
+                                              children: [
+                                                const SizedBox(
+                                                  height: 70,
+                                                ),
+                                                Card(
+                                                  child: Container(
+                                                    width: 150,
+                                                    color: Colors.white,
+                                                    child: List1(
+                                                      navDetailModel:
+                                                          widget.navDetailModel,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Visibility(
+                                            visible: _isExpanded,
+                                            child: Expanded(
+                                              flex: 2,
+                                              child: Column(
+                                                children: [
+                                                  const SizedBox(
+                                                    height: 70,
+                                                  ),
+                                                  Container(
+                                                      decoration: BoxDecoration(
+                                                        color: AppColors.white,
+                                                      ),
+                                                      width: 300,
+                                                      child: List2(
+                                                        navDetailModel: widget
+                                                            .navDetailModel,
+                                                      )),
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      )),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }))));
   }
 }
 

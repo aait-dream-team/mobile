@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:latlong2/latlong.dart';
 import 'screen_arguments_routes_args.dart';
 import 'choose_from_map.dart';
 import 'package:geolocator/geolocator.dart';
-import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class SearchPage extends StatefulWidget {
@@ -96,7 +94,7 @@ class _SearchWidget extends State<SearchPage> {
                     ),
                   ),
                   debounceTime: 800, // default 600 ms,
-                  countries: ['et'], // optional by default null is set
+                  countries: const ['et'], // optional by default null is set
                   isLatLngRequired:
                       true, // if you required coordinates from place detail
                   getPlaceDetailWithLatLng: (Prediction prediction) {
@@ -170,7 +168,7 @@ class _SearchWidget extends State<SearchPage> {
                 ),
               ],
             ),
-            Row(children: <Widget>[
+            Row(children: const <Widget>[
               Expanded(child: Divider()),
               Text("Recent"),
               Expanded(child: Divider()),

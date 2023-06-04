@@ -1,6 +1,5 @@
 import 'package:bus_navigation/features/onBoarding/presentation/widgets/onBoarding_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../model/onBoardingModel.dart';
 

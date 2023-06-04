@@ -1,6 +1,7 @@
 import 'package:bus_navigation/core/utils/colors.dart';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../models/RouteResultModel.dart';
 
@@ -106,14 +107,17 @@ class RouteWidget extends StatelessWidget {
                                           if (showIconsAndRouteNumbers)
                                             const SizedBox(width: 4),
                                           if (showIconsAndRouteNumbers)
-                                            Text(transport.routeNumber),
+                                            SizedBox(
+                                                width: size.width / 10,
+                                                child: Text(
+                                                  transport.routeNumber,
+                                                  overflow: TextOverflow
+                                                      .ellipsis, // Set the overflow property to ellipsis or fade
+                                                )),
                                           const SizedBox(width: 8),
                                         ],
                                       ))
-                                  .toList()
-                                ..add(Row(children: [
-                                  Text('${result.totalDuration.inMinutes} min')
-                                ])))
+                                  .toList())
                               : [
                                   Row(
                                     children: [
@@ -142,7 +146,7 @@ class RouteWidget extends StatelessWidget {
                     children: [
                       Chip(
                         label: Text(
-                            '${result.departureTime.hour}:${result.departureTime.minute}'),
+                            DateFormat("HH:mm").format(result.departureTime)),
                         backgroundColor: AppColors.greenAccent,
                         labelStyle: TextStyle(
                             color: Colors.white, fontSize: mediumFontSize),
@@ -152,7 +156,7 @@ class RouteWidget extends StatelessWidget {
                       if (showArrivalAndWalkingTime)
                         Chip(
                           label: Text(
-                              '${result.arrivalTime.hour}:${result.arrivalTime.minute}'),
+                              DateFormat("HH:mm").format(result.arrivalTime)),
                           backgroundColor: AppColors.blueAccent,
                           labelStyle: TextStyle(
                               color: AppColors.white, fontSize: mediumFontSize),
