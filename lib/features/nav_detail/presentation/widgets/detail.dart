@@ -49,7 +49,9 @@ class _DetailState extends State<Detail> {
                       ),
                     ),
                     Text(
-                      '${widget.leg.duration} min',
+                      widget.leg.duration < 60
+                          ? '${widget.leg.duration} min'
+                          : '${(widget.leg.duration / 60).toStringAsFixed(1)} hrs',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],

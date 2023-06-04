@@ -46,7 +46,8 @@ class _WalkModeExpandedState extends State<WalkModeExpanded> {
               children: [
                 Expanded(
                   // flex: 2,
-                  child: Text("${widget.leg.distance} m "),
+                  child: Text(
+                      "${(widget.leg.distance! / 1000).toStringAsFixed(2)} km"),
                 ),
                 Expanded(
                     // flex: 1,

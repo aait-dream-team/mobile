@@ -56,23 +56,18 @@ class _SidePageState extends State<SidePage> {
           return Scaffold(
             backgroundColor: Colors.transparent,
             extendBodyBehindAppBar: true,
-            floatingActionButton: ConstrainedBox(
-              constraints: const BoxConstraints(
-                  minWidth: 56.0,
-                  minHeight: 56.0), // Adjust the constraints as needed
-              child: FloatingActionButton(
-                onPressed: () {
-                  BlocProvider.of<NavigationBloc>(context)
-                      .add(StartNavigationEvent());
-                },
-                child: Container(
-                  width: 600,
-                  child: const Row(children: [
-                    Expanded(child: Icon(Icons.play_arrow)),
-                    Expanded(child: Text("Start")),
-                  ]),
-                ),
+            floatingActionButton: FloatingActionButton.extended(
+              label: const Text('Start'), // <-- Text
+              backgroundColor: Colors.blueAccent,
+              icon: const Icon(
+                // <-- Icon
+                Icons.play_circle,
+                size: 24.0,
               ),
+              onPressed: () {
+                BlocProvider.of<NavigationBloc>(context)
+                    .add(StartNavigationEvent());
+              },
             ),
             floatingActionButtonLocation:
                 const LeftFloatingActionButtonLocation(),
