@@ -27,7 +27,6 @@ class _RoutesWidget extends State<RoutesPage> {
   _RoutesWidget({this.screenArgumentsRoutes});
   @override
   Widget build(BuildContext context) {
-    print(screenArgumentsRoutes);
     return BlocConsumer<RoutesBloc, RoutesState>(listener: (context, state) {
       if (state is RoutesPinPoint &&
           state.from.name != '' &&

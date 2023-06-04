@@ -57,8 +57,7 @@ class _DetailState extends State<Detail> {
               ),
               Expanded(child: Text("${widget.leg.agencyName}")),
               Expanded(
-                  // TODO(Biruk) : don't hard code this.
-                  child: Text("5 Stops")),
+                  child: Text("${widget.leg.intermidateStops?.length ?? 0} Stops")),
               Expanded(
                 child: Text(
                   widget.leg.to,

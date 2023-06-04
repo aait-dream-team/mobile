@@ -1,10 +1,7 @@
-import 'package:bus_navigation/features/nav_detail/data_provider/mock_data.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/screens/detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:latlong2/latlong.dart';
 
-import '../../../../core/utils/colors.dart';
 import '../../bloc/search_bloc.dart';
 import '../../data_provider/route_search_data_provider.dart';
 import '../../repository/route_search_repository.dart';

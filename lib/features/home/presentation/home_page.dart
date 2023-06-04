@@ -1,9 +1,6 @@
 import 'package:bus_navigation/core/utils/colors.dart';
 import 'package:bus_navigation/features/history/presentation/screens/history_page.dart';
-import 'package:bus_navigation/features/nav_detail/data_provider/mock_data.dart';
-import 'package:bus_navigation/features/nav_detail/presentation/screens/detail.dart';
 import 'package:bus_navigation/features/home/presentation/screens/home_page.dart';
-import 'package:bus_navigation/features/navigate/presentation/screens/navigation_screen.dart';
 
 import 'package:bus_navigation/features/routes/presentation/screens/routes_page.dart';
 import 'package:bus_navigation/features/routes/bloc/routes_bloc.dart';

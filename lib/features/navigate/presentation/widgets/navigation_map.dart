@@ -5,29 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
 class NavigateMapWidget extends StatelessWidget {
-  final List<String> polylineString;
+  static List<Color> routeColors = [
+    const Color.fromARGB(255, 14, 129, 222),
+    const Color.fromARGB(255, 41, 159, 159),
+    const Color.fromARGB(255, 5, 112, 58),
+    const Color.fromARGB(255, 26, 193, 110),
+    const Color.fromARGB(255, 146, 235, 43),
+    const Color.fromARGB(255, 170, 255, 0),
+  ];
   // Create a map controller
   final MapController _mapController = MapController();
 
-  // Create a list of polylines for each leg of the route
-  final List<Polyline> _routePolylines = [];
-
-  NavigateMapWidget({super.key, required this.polylineString});
-
-  Color _randomColor() {
-    var random = Random();
-    // Generate a random integer between 0 and 255 for each color channel
-    int r = random.nextInt(256);
-    int g = random.nextInt(256);
-    int b = random.nextInt(256);
-
-    // Create a color object with full opacity and the random values
-    return Color.fromARGB(170, r, g, b);
-  }
+  NavigateMapWidget({super.key});
 
   LatLngBounds _createPolylinesAndBounds(List<List<LatLng>> routeData) {
     // Initialize the bounds with the first point of the route
@@ -57,7 +50,6 @@ class NavigateMapWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<List<LatLng>> polylinePoints = parsePoints(polylineString);
     return BlocBuilder<NavigationBloc, NavigationState>(
         builder: ((context, state) {
       if (state is NavigationSuccessState) {
@@ -68,7 +60,8 @@ class NavigateMapWidget extends StatelessWidget {
             zoom: 11.0,
             onMapReady: () {
               // Fit the bounds when the map is created
-              _mapController.fitBounds(_createPolylinesAndBounds(state.legs));
+              _mapController
+                  .fitBounds(_createPolylinesAndBounds(state.routePoints));
             },
           ),
           children: [
@@ -77,31 +70,106 @@ class NavigateMapWidget extends StatelessWidget {
                 userAgentPackageName: 'com.example.app',
                 tileProvider: FMTC.instance('mapStore').getTileProvider()),
             PolylineLayer(
-              polylines: parsePoints(polylineString)
+              polylines: state.routePoints
+                  .asMap()
+                  .entries
                   .map((e) => Polyline(
-                        color: _randomColor(),
-                        strokeWidth: 6.0,
-                        points: e,
+                        color: routeColors[min(e.key, routeColors.length - 1)],
+                        strokeWidth: 7.0,
+                        points: e.value,
                       ))
                   .cast<Polyline>()
                   .toList(),
             ),
           ],
         );
+      } else if (state is NavigationRoutingState) {
+        var oldLegs = [];
+        if (state.currentIndex > 0) {
+          oldLegs = state.legs.sublist(0, state.currentIndex);
+        }
+        if (state.currentInnerIndex > 0) {
+          oldLegs.add(state.legs[state.currentIndex]
+              .sublist(0, state.currentInnerIndex + 1));
+        }
+        var newLegs = [];
+        if (state.currentInnerIndex <
+            state.legs[state.currentIndex].length - 1) {
+          newLegs = [
+            state.legs[state.currentIndex].sublist(
+                state.currentInnerIndex, state.legs[state.currentIndex].length)
+          ];
+        }
+        if (state.currentIndex < state.legs.length - 1) {
+          newLegs.addAll(
+              state.legs.sublist(state.currentIndex + 1, state.legs.length));
+        }
+        return StreamBuilder<Position>(
+            stream: Geolocator.getPositionStream(
+                locationSettings: const LocationSettings(
+                    accuracy: LocationAccuracy.bestForNavigation)),
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data != null) {
+                var location =
+                    LatLng(snapshot.data!.latitude, snapshot.data!.longitude);
+                BlocProvider.of<NavigationBloc>(context)
+                    .add(UpdateUserLocationEvent(location));
+              }
+              return FlutterMap(
+                mapController: _mapController,
+                options: MapOptions(
+                  center:
+                      LatLng(9.0229687, 38.7747978), // Initial center location
+                  zoom: 11.0,
+                  onMapReady: () {
+                    // Fit the bounds when the map is created
+                    _mapController
+                        .fitBounds(_createPolylinesAndBounds(state.legs));
+                  },
+                ),
+                children: [
+                  TileLayer(
+                      urlTemplate:
+                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      userAgentPackageName: 'com.example.app',
+                      tileProvider:
+                          FMTC.instance('mapStore').getTileProvider()),
+                  PolylineLayer(
+                    polylines: [
+                      oldLegs.map((e) => Polyline(
+                            color: const Color.fromARGB(255, 64, 70, 75),
+                            strokeWidth: 8.0,
+                            points: e,
+                          )),
+                      newLegs.map((e) => Polyline(
+                            color: const Color.fromARGB(255, 14, 129, 222),
+                            strokeWidth: 8.0,
+                            points: e,
+                          ))
+                    ].expand((element) => element).toList(),
+                  ),
+                  MarkerLayer(
+                    markers: [
+                      Marker(
+                          point: state.userLocation,
+                          builder: (context) => const Icon(
+                                Icons.location_on,
+                                color: Color.fromARGB(255, 0, 255, 8),
+                              ),
+                          width: 42),
+                      Marker(
+                          point: state.userPointInRoute,
+                          builder: (context) => const Icon(Icons.location_on,
+                              color: Color.fromARGB(255, 233, 42, 29)),
+                          width: 40)
+                    ],
+                  ),
+                ],
+              );
+            });
       } else {
         return const Center(child: CircularProgressIndicator());
       }
     }));
-  }
-
-  static List<List<LatLng>> parsePoints(List<String> polylineStrings) {
-    PolylinePoints polylinePoints = PolylinePoints();
-
-    return polylineStrings
-        .map((e) => polylinePoints
-            .decodePolyline(e)
-            .map((e) => LatLng(e.latitude, e.longitude))
-            .toList())
-        .toList();
   }
 }
