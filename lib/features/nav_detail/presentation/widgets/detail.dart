@@ -49,7 +49,9 @@ class _DetailState extends State<Detail> {
                       ),
                     ),
                     Text(
-                      '${widget.leg.duration} min',
+                      widget.leg.duration < 60
+                          ? '${widget.leg.duration} min'
+                          : '${(widget.leg.duration / 60).toStringAsFixed(1)} hrs',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -57,7 +59,20 @@ class _DetailState extends State<Detail> {
               ),
               Expanded(child: Text("${widget.leg.agencyName}")),
               Expanded(
-                  child: Text("${widget.leg.intermidateStops?.length ?? 0} Stops")),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                    Text("${widget.leg.intermidateStops?.length ?? 0} Stops"),
+                    PopupMenuButton(
+                        itemBuilder: (context) => widget.leg.intermidateStops!
+                            .map((e) => PopupMenuItem(
+                                    child: ListTile(
+                                  title: Text(e.name),
+                                  subtitle: Text(
+                                      'Arrival Time ${e.arrivalTime.hour}:${e.arrivalTime.minute}'),
+                                )))
+                            .toList())
+                  ])),
               Expanded(
                 child: Text(
                   widget.leg.to,

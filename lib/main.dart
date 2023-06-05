@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:bus_navigation/features/home/bloc/home_bloc.dart';
 import 'package:bus_navigation/features/home/presentation/home_page.dart';
 import 'package:bus_navigation/features/onBoarding/presentation/screens/onBoarding_page.dart';
@@ -25,6 +26,20 @@ Future<void> main() async {
 
   await FlutterMapTileCaching.initialise();
   await FMTC.instance('mapStore').manage.createAsync();
+
+  AwesomeNotifications().initialize('resource://drawable/ic_launcher', [
+    // notification icon
+    NotificationChannel(
+      channelGroupKey: 'basic_test',
+      channelKey: 'basic',
+      channelName: 'Basic notifications',
+      channelDescription: 'Notification channel for basic tests',
+      channelShowBadge: true,
+      importance: NotificationImportance.High,
+      enableVibration: true,
+    ),
+  ]);
+
   runApp(const MyApp());
 }
 

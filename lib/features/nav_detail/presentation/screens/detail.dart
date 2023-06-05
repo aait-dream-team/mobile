@@ -1,4 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:math';
+
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:bus_navigation/core/local_notification/local_notification.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/left_floating_action_button.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/train_mode.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/walk_expanded.dart';
@@ -52,23 +56,18 @@ class _SidePageState extends State<SidePage> {
           return Scaffold(
             backgroundColor: Colors.transparent,
             extendBodyBehindAppBar: true,
-            floatingActionButton: ConstrainedBox(
-              constraints: const BoxConstraints(
-                  minWidth: 56.0,
-                  minHeight: 56.0), // Adjust the constraints as needed
-              child: FloatingActionButton(
-                onPressed: () {
-                  BlocProvider.of<NavigationBloc>(context)
-                      .add(StartNavigationEvent());
-                },
-                child: Container(
-                  width: 600,
-                  child: const Row(children: [
-                    Expanded(child: Icon(Icons.play_arrow)),
-                    Expanded(child: Text("Start")),
-                  ]),
-                ),
+            floatingActionButton: FloatingActionButton.extended(
+              label: const Text('Start'), // <-- Text
+              backgroundColor: Colors.blueAccent,
+              icon: const Icon(
+                // <-- Icon
+                Icons.play_circle,
+                size: 24.0,
               ),
+              onPressed: () {
+                BlocProvider.of<NavigationBloc>(context)
+                    .add(StartNavigationEvent());
+              },
             ),
             floatingActionButtonLocation:
                 const LeftFloatingActionButtonLocation(),

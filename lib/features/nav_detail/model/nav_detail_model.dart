@@ -1,6 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-
 import 'package:latlong2/latlong.dart';
+
+class Step {
+  final double distance;
+  final String relativeDirection;
+  final String streetName;
+
+  Step(
+      {required this.distance,
+      required this.relativeDirection,
+      required this.streetName});
+}
 
 class IntermediateStop {
   final String name;
@@ -37,6 +47,7 @@ class Leg {
   final String? routeShortName;
   final String? routeLongName;
   final String? agencyName;
+  final List<Step>? steps;
 
   Leg({
     required this.startTime,
@@ -51,6 +62,7 @@ class Leg {
     this.routeShortName,
     this.routeLongName,
     this.agencyName,
+    this.steps,
   });
 
   factory Leg.fromMap(Map<String, dynamic> map) {
@@ -71,6 +83,15 @@ class Leg {
       routeShortName: (map['routeShortName']).toString(),
       routeLongName: (map['routeLongName']).toString(),
       agencyName: (map['agencyName']).toString(),
+      steps: List<Step>.from(
+        (map['steps'] as List).map(
+          (x) => Step(
+            distance: x['distance'] as double,
+            relativeDirection: x['relativeDirection'] as String,
+            streetName: x['streetName'] as String,
+          ),
+        ),
+      ),
     );
   }
 
