@@ -13,6 +13,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(HomePinnedState(
             position: event.position,
             zoom: event.zoom,
+            name: event.name,
             pinPosition: event.pinPosition));
       } else if (event is MapLoadEvent) {
         emit(HomeInitialState());
