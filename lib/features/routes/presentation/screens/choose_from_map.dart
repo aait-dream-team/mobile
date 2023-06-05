@@ -10,10 +10,10 @@ class MapPage extends StatefulWidget {
 
   final ScreenArgumentsRoutesArgs screenArguments;
 
-  MapPage({required this.screenArguments});
+  const MapPage({super.key, required this.screenArguments});
   @override
   _MapPageState createState() =>
-      _MapPageState(screenArguments: this.screenArguments);
+      _MapPageState(screenArguments: screenArguments);
 }
 
 class _MapPageState extends State<MapPage> {
@@ -22,10 +22,10 @@ class _MapPageState extends State<MapPage> {
   _MapPageState({required this.screenArguments});
 
   // Create a map controller
-  MapController _mapController = MapController();
+  final MapController _mapController = MapController();
 
   // Create a pin icon
-  Icon _pinIcon = Icon(
+  final Icon _pinIcon = const Icon(
     Icons.location_pin,
     size: 40,
     color: Colors.red,
@@ -88,7 +88,7 @@ class _MapPageState extends State<MapPage> {
           Navigator.of(context).pop();
           Navigator.of(context).pop();
         },
-        child: Icon(Icons.check),
+        child: const Icon(Icons.check),
       ),
     );
   }

@@ -12,6 +12,8 @@ class SearchResults extends StatefulWidget {
   static const String route = "/search";
   final RouteSearchRepository repository =
       RouteSearchRepository(dataProvider: RouteSearchDataProvider());
+
+  SearchResults({super.key});
   @override
   State<SearchResults> createState() => _RouteSearchState();
 }

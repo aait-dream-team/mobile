@@ -83,7 +83,7 @@ class _MapWidget extends State<MapWidget>
                         .start, // align the content to the start
                     children: [
                       Text(
-                          "${state.pinPosition.latitude}, ${state.pinPosition.longitude}"), // display the text
+                          "${state.name}"), // display the text
                       const SizedBox(height: 16.0), // add some vertical space
                       Row(
                         // arrange the buttons in a row

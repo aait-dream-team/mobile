@@ -58,13 +58,13 @@ class TrainMode extends StatelessWidget {
                   child: Icon(Icons.directions_train),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(2.0),
+                  padding: const EdgeInsets.all(2.0),
                   child: Card(
                     child: Padding(
-                      padding: EdgeInsets.all(3.0),
+                      padding: const EdgeInsets.all(3.0),
                       child: Text(
                         "${leg.routeShortName}",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
