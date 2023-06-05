@@ -53,19 +53,32 @@ class _SidePageState extends State<SidePage> {
           return Scaffold(
             backgroundColor: Colors.transparent,
             extendBodyBehindAppBar: true,
-            floatingActionButton: FloatingActionButton.extended(
-              label: const Text('Start'), // <-- Text
-              backgroundColor: Colors.blueAccent,
-              icon: const Icon(
-                // <-- Icon
-                Icons.play_circle,
-                size: 24.0,
-              ),
-              onPressed: () {
-                BlocProvider.of<NavigationBloc>(context)
-                    .add(StartNavigationEvent());
-              },
-            ),
+            floatingActionButton: (state is NavigationRoutingState)
+                ? FloatingActionButton.extended(
+                    label: const Text('Cancel'), // <-- Text
+                    backgroundColor: Colors.redAccent,
+                    icon: const Icon(
+                      // <-- Icon
+                      Icons.cancel,
+                      size: 24.0,
+                    ),
+                    onPressed: () {
+                      // TODO: Biruk ADD CANCEL EVENT
+                    },
+                  )
+                : FloatingActionButton.extended(
+                    label: const Text('Start'), // <-- Text
+                    backgroundColor: Colors.green,
+                    icon: const Icon(
+                      // <-- Icon
+                      Icons.play_circle,
+                      size: 24.0,
+                    ),
+                    onPressed: () {
+                      BlocProvider.of<NavigationBloc>(context)
+                          .add(StartNavigationEvent());
+                    },
+                  ),
             floatingActionButtonLocation:
                 const LeftFloatingActionButtonLocation(),
             body: SafeArea(
