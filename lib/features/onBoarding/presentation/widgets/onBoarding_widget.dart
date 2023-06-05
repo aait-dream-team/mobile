@@ -40,7 +40,7 @@ class _OnBoardingWidgetState extends State<OnBoardingWidget> {
                     });
                   },
                   itemBuilder: (context, idx) {
-                    final _item = widget.pages[idx];
+                    final item = widget.pages[idx];
                     return Column(
                       children: [
                         Expanded(
@@ -48,7 +48,7 @@ class _OnBoardingWidgetState extends State<OnBoardingWidget> {
                           child: Padding(
                             padding: const EdgeInsets.all(32.0),
                             child: Image.asset(
-                              _item.image,
+                              item.image,
                             ),
                           ),
                         ),
@@ -57,26 +57,26 @@ class _OnBoardingWidgetState extends State<OnBoardingWidget> {
                             child: Column(children: [
                               Padding(
                                 padding: const EdgeInsets.all(16.0),
-                                child: Text(_item.title,
+                                child: Text(item.title,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .headline6
+                                        .titleLarge
                                         ?.copyWith(
                                           fontWeight: FontWeight.bold,
-                                          color: _item.textColor,
+                                          color: item.textColor,
                                         )),
                               ),
                               Container(
-                                constraints: BoxConstraints(maxWidth: 280),
+                                constraints: const BoxConstraints(maxWidth: 280),
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 24.0, vertical: 8.0),
-                                child: Text(_item.description,
+                                child: Text(item.description,
                                     textAlign: TextAlign.center,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyText2
+                                        .bodyMedium
                                         ?.copyWith(
-                                          color: _item.textColor,
+                                          color: item.textColor,
                                         )),
                               )
                             ]))

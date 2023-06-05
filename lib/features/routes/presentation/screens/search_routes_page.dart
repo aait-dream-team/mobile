@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:latlong2/latlong.dart';
@@ -15,7 +14,7 @@ class SearchPage extends StatefulWidget {
 
   @override
   State<SearchPage> createState() =>
-      _SearchWidget(screenArguments: this.screenArguments);
+      _SearchWidget(screenArguments: screenArguments);
 }
 
 class _SearchWidget extends State<SearchPage> {
@@ -99,7 +98,7 @@ class _SearchWidget extends State<SearchPage> {
                       true, // if you required coordinates from place detail
                   getPlaceDetailWithLatLng: (Prediction prediction) {
                     // this method will return latlng with place detail
-                    print("placeDetails" + prediction.lng.toString());
+                    print("placeDetails${prediction.lng}");
                     screenArguments.func(LatLng(double.parse(prediction.lng.toString()), double.parse(prediction.lat.toString())), prediction.description);
 
                   }, // this callback is called when isLatLngRequired is true
@@ -110,7 +109,7 @@ class _SearchWidget extends State<SearchPage> {
                     Navigator.pop(context);
                   }),
             ),
-            Divider(
+            const Divider(
               thickness: 0.3,
             ),
             Row(
@@ -129,7 +128,7 @@ class _SearchWidget extends State<SearchPage> {
                           style: TextStyle(
                               color: Colors.grey[700])), // lighter text color
                       style: ElevatedButton.styleFrom(
-                          primary: Colors.lightBlue.withOpacity(0.1),
+                          backgroundColor: Colors.lightBlue.withOpacity(0.1),
                           shadowColor: Colors.lightBlue.withOpacity(0.2),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(40),
@@ -156,7 +155,7 @@ class _SearchWidget extends State<SearchPage> {
                           style: TextStyle(
                               color: Colors.grey[700])), // lighter text color
                       style: ElevatedButton.styleFrom(
-                          primary: Colors.lightBlue.withOpacity(0.1),
+                          backgroundColor: Colors.lightBlue.withOpacity(0.1),
                           shadowColor: Colors.lightBlue.withOpacity(0.2),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(40),
@@ -168,7 +167,7 @@ class _SearchWidget extends State<SearchPage> {
                 ),
               ],
             ),
-            Row(children: const <Widget>[
+            const Row(children: <Widget>[
               Expanded(child: Divider()),
               Text("Recent"),
               Expanded(child: Divider()),
@@ -186,11 +185,11 @@ class _SearchWidget extends State<SearchPage> {
                       Navigator.pop(context);
                     },
                     leading:
-                        Icon(Icons.location_on_outlined), // location pin icon
+                        const Icon(Icons.location_on_outlined), // location pin icon
                     title: Text('Location $index'), // title of the suggestion
                     subtitle:
                         Text('Subtitle $index'), // subtitle of the suggestion
-                    trailing: Icon(Icons
+                    trailing: const Icon(Icons
                         .copy), // copy icon at the most left side of the row
                   );
                 },

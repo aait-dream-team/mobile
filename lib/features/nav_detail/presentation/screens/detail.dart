@@ -91,7 +91,7 @@ class _SidePageState extends State<SidePage> {
                             child: Row(
                               children: [
                                 IconButton(
-                                  icon: Container(
+                                  icon: SizedBox(
                                     width: 200,
                                     height: 200,
                                     child: Card(
@@ -184,7 +184,7 @@ class _SidePageState extends State<SidePage> {
 class List1 extends StatelessWidget {
   final NavDetailModel navDetailModel;
   final int currentIndex;
-  List1({Key? key, required this.navDetailModel, required this.currentIndex})
+  const List1({Key? key, required this.navDetailModel, required this.currentIndex})
       : super(key: key);
 
   @override

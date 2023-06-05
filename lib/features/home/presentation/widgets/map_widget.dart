@@ -7,6 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:bus_navigation/features/routes/presentation/screens/routes_page.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:geocoding/geocoding.dart';
 
 class MapWidget extends StatefulWidget {
   const MapWidget({super.key});
@@ -17,6 +19,17 @@ class MapWidget extends StatefulWidget {
 
 class _MapWidget extends State<MapWidget>
     with AutomaticKeepAliveClientMixin<MapWidget> {
+  Future<String> getNameFromLatLng(LatLng latlng) async {
+    print(latlng);
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(latlng.latitude, latlng.longitude);
+    Placemark place = placemarks[0];
+    String locationName =
+        "${place.name}, ${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode} ${place.country}";
+    print(locationName);
+    return locationName;
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -27,21 +40,23 @@ class _MapWidget extends State<MapWidget>
             zoom: state.zoom,
             maxZoom: 17.0,
             interactiveFlags: InteractiveFlag.all & ~InteractiveFlag.rotate,
-            onPositionChanged: ((position, hasGesture) {
+            onPositionChanged: ((position, hasGesture) async {
               if (state is HomePinnedState) {
                 context.read<HomeBloc>().add(MapPinChanged(
                     position: state.position,
                     zoom: state.zoom,
+                    name: await getNameFromLatLng(state.pinPosition),
                     pinPosition: state.pinPosition));
               } else {
                 context.read<HomeBloc>().add(
                     MapMoved(position: position.center!, zoom: position.zoom!));
               }
             }),
-            onTap: (tapPos, latlng) {
+            onTap: (tapPos, latlng) async {
               context.read<HomeBloc>().add(MapPinChanged(
                   position: state.position,
                   zoom: state.zoom,
+                  name: await getNameFromLatLng(latlng),
                   pinPosition: latlng));
             }),
         nonRotatedChildren: [
@@ -68,7 +83,7 @@ class _MapWidget extends State<MapWidget>
                         .start, // align the content to the start
                     children: [
                       Text(
-                          "${state.pinPosition.latitude}, ${state.pinPosition.longitude}"), // display the text
+                          "${state.name}"), // display the text
                       const SizedBox(height: 16.0), // add some vertical space
                       Row(
                         // arrange the buttons in a row
@@ -77,11 +92,11 @@ class _MapWidget extends State<MapWidget>
                         children: [
                           ElevatedButton(
                             // create the first option button
-                            onPressed: () {
+                            onPressed: () async {
                               BlocProvider.of<RoutesBloc>(context).add(
                                   PointPicked(
                                       from: PinPoint(
-                                          name: 'Pin Location',
+                                          name: state.name,
                                           location: state.pinPosition),
                                       to: PinPoint(
                                           name: '',
@@ -89,7 +104,7 @@ class _MapWidget extends State<MapWidget>
                               Navigator.pushNamed(context, RoutesPage.route,
                                   arguments: ScreenArgumentsRoutes(
                                       type: 'from',
-                                      name: "Pin Location",
+                                      name: state.name,
                                       location: state.pinPosition));
                             }, // call the callback function when pressed
                             child: const Text(
@@ -98,11 +113,11 @@ class _MapWidget extends State<MapWidget>
                           const SizedBox(width: 8.0), // add some horizontal space
                           ElevatedButton(
                             // create the second option button
-                            onPressed: () {
+                            onPressed: () async {
                               Navigator.pushNamed(context, RoutesPage.route,
                                   arguments: ScreenArgumentsRoutes(
                                       type: 'to',
-                                      name: "Pin Location",
+                                      name: state.name,
                                       location: state.pinPosition));
                             }, // call the callback function when pressed
                             child:

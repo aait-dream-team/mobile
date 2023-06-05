@@ -45,7 +45,7 @@ class _DetailState extends State<Detail> {
                     Expanded(
                       child: Text(
                         widget.leg.routeLongName!,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                     Text(

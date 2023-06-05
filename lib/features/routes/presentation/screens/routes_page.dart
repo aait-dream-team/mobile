@@ -92,7 +92,7 @@ class _RoutesWidget extends State<RoutesPage> {
                 },
                 decoration: InputDecoration(
                   hintText: 'From',
-                  prefixIcon: Icon(Icons.location_on),
+                  prefixIcon: const Icon(Icons.location_on),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
@@ -125,7 +125,7 @@ class _RoutesWidget extends State<RoutesPage> {
                 },
                 decoration: InputDecoration(
                   hintText: 'To',
-                  prefixIcon: Icon(Icons.location_on),
+                  prefixIcon: const Icon(Icons.location_on),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),

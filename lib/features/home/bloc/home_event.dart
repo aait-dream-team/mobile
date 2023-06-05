@@ -16,8 +16,9 @@ class MapPinChanged extends HomeEvent {
   final LatLng position;
   final double zoom;
   final LatLng pinPosition;
+  final String name;
 
-  MapPinChanged({required this.position, required this.zoom, required this.pinPosition});
+  MapPinChanged({required this.position,required this.name, required this.zoom, required this.pinPosition});
 }
 
 class BackButtonPressed extends HomeEvent {}
