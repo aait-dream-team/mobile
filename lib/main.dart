@@ -59,6 +59,10 @@ class MyApp extends StatelessWidget {
                 recentRouteRepository: RecentRouteRepository(
                     dataProvider: RecentRouteDataProvider()))),
         BlocProvider<HomeBloc>(create: (BuildContext context) => HomeBloc()),
+        BlocProvider<SearchBloc>(
+            create: (context) => SearchBloc(
+                repository: RouteSearchRepository(
+                    dataProvider: RouteSearchDataProvider())))
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

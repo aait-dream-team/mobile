@@ -1,4 +1,5 @@
 import 'package:bus_navigation/features/routes/models/pin.dart';
+import 'package:bus_navigation/features/routes/models/recent_route.dart';
 import 'package:bus_navigation/features/routes/presentation/screens/screen_arguments_routes.dart';
 import 'package:bus_navigation/features/search_results/bloc/search_bloc.dart';
 import 'package:flutter/material.dart';
@@ -23,11 +24,10 @@ class _RoutesWidget extends State<RoutesPage> {
   TextEditingController fromController = TextEditingController();
   TextEditingController toController = TextEditingController();
   ScreenArgumentsRoutes? screenArgumentsRoutes;
-
+  List<RecentRouteModel> recentRoutes = [];
   _RoutesWidget({this.screenArgumentsRoutes});
   @override
   Widget build(BuildContext context) {
-    // print(screenArgumentsRoutes);
     return BlocBuilder<RoutesBloc, RoutesState>(builder: (context, state) {
       if (screenArgumentsRoutes != null  ) {
         if (screenArgumentsRoutes!.type == 'from') {

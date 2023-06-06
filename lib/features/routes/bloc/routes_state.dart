@@ -9,7 +9,10 @@ class RoutesInitial extends RoutesState {
 
 class RoutesLoading extends RoutesState {}
 
-class RoutesLoaded extends RoutesState {}
+class RoutesLoaded extends RoutesState {
+  final List<RecentRouteModel> routes;
+  RoutesLoaded({required this.routes});
+}
 class RoutesPinPoint extends RoutesState {
       final PinPoint from;
       final PinPoint to;

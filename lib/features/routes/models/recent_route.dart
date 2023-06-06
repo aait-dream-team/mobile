@@ -5,21 +5,25 @@ class RecentRouteModel {
   final String name;
   final String lat;
   final String long;
+  final DateTime date;
   RecentRouteModel({
+    required this.date,
     required this.name,
     required this.lat,
     required this.long,
   });
 
   RecentRouteModel copyWith({
-    String? startPoint,
-    String? endPoint,
-    String? date,
+    String? name,
+    String? lat,
+    String? long,
+    DateTime? date
   }) {
     return RecentRouteModel(
-      name: startPoint ?? name,
-      lat: endPoint ?? lat,
-      long: date ?? long,
+      name: name ?? this.name,
+      lat:  lat ?? this.lat,
+      long: long ?? this.long,
+      date: date ?? this.date,
     );
   }
 
@@ -28,14 +32,16 @@ class RecentRouteModel {
       'name': name,
       'lat': lat,
       'long': long,
+      'date': date.millisecondsSinceEpoch,
     };
   }
 
   factory RecentRouteModel.fromMap(Map<String, dynamic> map) {
     return RecentRouteModel(
       name: map['name'] as String,
-      lat: map['lat'] as String,
-      long: map['long'] as String
+      lat: (map['lat'] as double).toString(),
+      long: (map['long'] as double).toString(),
+      date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
     );
   }
 
@@ -46,7 +52,7 @@ class RecentRouteModel {
 
   @override
   String toString() =>
-      'RecentRouteModel(name: $name, lat: $lat, long: $long)';
+      'RecentRouteModel(name: $name, lat: $lat, long: $long, date: $date)';
 
   @override
   bool operator ==(covariant RecentRouteModel other) {
@@ -54,9 +60,9 @@ class RecentRouteModel {
 
     return other.name == name &&
         other.lat == lat &&
-        other.long == long;
+        other.long == long && other.date == date;
   }
 
   @override
-  int get hashCode => name.hashCode ^ lat.hashCode ^ long.hashCode;
+  int get hashCode => name.hashCode ^ lat.hashCode ^ long.hashCode ^ date.hashCode;
 }

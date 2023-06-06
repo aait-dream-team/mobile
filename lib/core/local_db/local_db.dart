@@ -38,15 +38,16 @@ class LocalDB {
 
   Future<void> _onCreate(Database db, int version) async {
     await db.execute(
-        "CREATE TABLE $_table_history(id INTEGER PRIMARY KEY, startPoint TEXT, endPoint TEXT, date INT )"
-        "CREATE TABLE $_table_recent(id INTEGER PRIMARY KEY, name TEXT, lat STRING, long STRING )");
+        "CREATE TABLE $_table_history(id INTEGER PRIMARY KEY, startPoint TEXT, endPoint TEXT, date INT )");
+    await db.execute(
+        "CREATE TABLE $_table_recent(id INTEGER PRIMARY KEY, name TEXT, lat STRING, long STRING, date INT )");
   }
 
   // Fetch all routes
   Future getRoutes() async {
     Database db = await instance.database;
 
-    var routes = await db.rawQuery("select * from $_table_history;");
+    var routes = await db.rawQuery("select * from $_table_history;"); 
     return routes;
   }
 
@@ -65,7 +66,7 @@ class LocalDB {
 
   Future insertRecentRoute(dynamic recentRoute) async {
     Database db = await instance.database;
-
+    var routes = await db.rawQuery("select * from $_table_recent;");
     await db.insert(_table_recent, recentRoute);
   }
 }

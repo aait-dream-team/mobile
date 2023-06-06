@@ -9,13 +9,11 @@ class RecentRouteRepository {
   });
 
   Future<List<RecentRouteModel>> getAllRoutes() async {
-    return await dataProvider.getAllRoutes();
+    final data =  await dataProvider.getAllRecentRoutes();
+    return data;
   }
 
   Future<void> addRecentRoute(RecentRouteModel recent_route) async {
-    print('here');
-    print(recent_route);
-    print(recent_route.toMap());
-    // await dataProvider.addRoute(recent_route);
+    await dataProvider.addRoute(recent_route);
   }
 }
