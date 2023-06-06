@@ -160,17 +160,25 @@ class _SidePageState extends State<SidePage> {
                                                 const SizedBox(
                                                   height: 70,
                                                 ),
-                                                Card(
-                                                  child: Container(
-                                                    width: 150,
-                                                    color: Colors.white,
-                                                    child: List1(
-                                                      currentIndex: (state
-                                                              is NavigationRoutingState)
-                                                          ? state.currentIndex
-                                                          : 0,
-                                                      navDetailModel:
-                                                          widget.navDetailModel,
+                                                GestureDetector(
+                                                  onPanUpdate: (details) {
+                                                    setState(() {
+                                                      _isExpanded =
+                                                          !_isExpanded;
+                                                    });
+                                                  },
+                                                  child: Card(
+                                                    child: Container(
+                                                      width: 150,
+                                                      color: Colors.white,
+                                                      child: List1(
+                                                        currentIndex: (state
+                                                                is NavigationRoutingState)
+                                                            ? state.currentIndex
+                                                            : 0,
+                                                        navDetailModel: widget
+                                                            .navDetailModel,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
