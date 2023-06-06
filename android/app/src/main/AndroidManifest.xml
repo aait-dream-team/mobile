@@ -12,17 +12,7 @@
         android:label="bus_navigation"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-           <!-- Add these lines -->
-        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
-        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver>
-    <!-- End of added lines -->
+        
         <activity
             android:name=".MainActivity"
             android:exported="true"

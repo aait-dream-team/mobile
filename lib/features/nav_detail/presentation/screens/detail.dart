@@ -1,19 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:bus_navigation/core/local_notification/local_notification.dart';
 import 'package:bus_navigation/features/history/data_provider/route_history_data_provider.dart';
-import 'package:bus_navigation/features/history/models/RouteHistory.dart';
 import 'package:bus_navigation/features/history/repository/route_history_repository.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/left_floating_action_button.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/train_mode.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/walk_expanded.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/walk_mode.dart';
 import 'package:bus_navigation/features/navigate/presentation/screens/navigation_screen.dart';
-import 'package:bus_navigation/features/search_results/data_provider/route_search_data_provider.dart';
 import 'package:bus_navigation/features/search_results/models/RouteResultModel.dart';
 import 'package:bus_navigation/features/search_results/presentation/widgets/route_result.dart';
-import 'package:bus_navigation/features/search_results/repository/route_search_repository.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bus_navigation/core/utils/utils.dart';

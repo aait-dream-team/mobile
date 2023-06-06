@@ -22,27 +22,6 @@ class _RouteSearchState extends State<SearchResults> {
     int depature = 0;
     DateTime dateTime = DateTime.now();
     return Scaffold(
-      // TODO: Aman this does not belong here removie it.
-      // TODO: Aman this does not belong here remove it.
-      floatingActionButton: TextButton(
-        onPressed: () => {
-          showModalBottomSheet(
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(45))),
-            context: context,
-            builder: (context) => DatePicker(
-              onSave: (dep, date) => {
-                setState(() => {
-                      Navigator.pop(context),
-                      depature = dep,
-                      dateTime = date,
-                    })
-              },
-            ),
-          )
-        },
-        child: const Icon(Icons.add),
-      ),
       body: BlocBuilder<SearchBloc, SearchState>(
         builder: (context, state) {
           if (state is SearchInitialState) {

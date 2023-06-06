@@ -9,7 +9,7 @@ class LeftFloatingActionButtonLocation extends FloatingActionButtonLocation {
     final double y = scaffoldGeometry.scaffoldSize.height -
         scaffoldGeometry.floatingActionButtonSize.height -
         16;
-    return Offset(x, y);
+    return Offset(10, y);
   }
 
   @override

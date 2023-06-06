@@ -53,35 +53,38 @@ class NavigateMapWidget extends StatelessWidget {
     return BlocBuilder<NavigationBloc, NavigationState>(
         builder: ((context, state) {
       if (state is NavigationSuccessState) {
-        return FlutterMap(
-          mapController: _mapController,
-          options: MapOptions(
-            center: LatLng(9.0229687, 38.7747978), // Initial center location
-            zoom: 11.0,
-            onMapReady: () {
-              // Fit the bounds when the map is created
-              _mapController
-                  .fitBounds(_createPolylinesAndBounds(state.routePoints));
-            },
-          ),
-          children: [
-            TileLayer(
-                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                userAgentPackageName: 'com.example.app',
-                tileProvider: FMTC.instance('mapStore').getTileProvider()),
-            PolylineLayer(
-              polylines: state.routePoints
-                  .asMap()
-                  .entries
-                  .map((e) => Polyline(
-                        color: routeColors[min(e.key, routeColors.length - 1)],
-                        strokeWidth: 7.0,
-                        points: e.value,
-                      ))
-                  .cast<Polyline>()
-                  .toList(),
+        return SafeArea(
+          child: FlutterMap(
+            mapController: _mapController,
+            options: MapOptions(
+              center: LatLng(9.0229687, 38.7747978), // Initial center location
+              zoom: 11.0,
+              onMapReady: () {
+                // Fit the bounds when the map is created
+                _mapController
+                    .fitBounds(_createPolylinesAndBounds(state.routePoints));
+              },
             ),
-          ],
+            children: [
+              TileLayer(
+                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  userAgentPackageName: 'com.example.app',
+                  tileProvider: FMTC.instance('mapStore').getTileProvider()),
+              PolylineLayer(
+                polylines: state.routePoints
+                    .asMap()
+                    .entries
+                    .map((e) => Polyline(
+                          color:
+                              routeColors[min(e.key, routeColors.length - 1)],
+                          strokeWidth: 7.0,
+                          points: e.value,
+                        ))
+                    .cast<Polyline>()
+                    .toList(),
+              ),
+            ],
+          ),
         );
       } else if (state is NavigationRoutingState) {
         var oldLegs = [];

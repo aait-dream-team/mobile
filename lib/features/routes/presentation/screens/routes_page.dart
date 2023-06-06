@@ -1,6 +1,7 @@
 import 'package:bus_navigation/features/routes/model/pin.dart';
 import 'package:bus_navigation/features/routes/presentation/screens/screen_arguments_routes.dart';
 import 'package:bus_navigation/features/search_results/bloc/search_bloc.dart';
+import 'package:bus_navigation/features/search_results/presentation/widgets/depature_datetime.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
@@ -25,6 +26,8 @@ class _RoutesWidget extends State<RoutesPage> {
   ScreenArgumentsRoutes? screenArgumentsRoutes;
 
   _RoutesWidget({this.screenArgumentsRoutes});
+  int depature = 0;
+  DateTime dateTime = DateTime.now();
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<RoutesBloc, RoutesState>(listener: (context, state) {
@@ -130,7 +133,32 @@ class _RoutesWidget extends State<RoutesPage> {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
-                // TODO AMAN
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: IconButton(
+                onPressed: () => {
+                  showModalBottomSheet(
+                    shape: const RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(45))),
+                    context: context,
+                    builder: (context) => DatePicker(
+                      onSave: (dep, date) => {
+                        setState(() => {
+                              Navigator.pop(context),
+                              depature = dep,
+                              dateTime = date,
+                            })
+                      },
+                    ),
+                  )
+                },
+                icon: Icon(
+                  Icons.date_range_sharp,
+                  color: Colors.black45,
+                ),
               ),
             ),
             Expanded(
