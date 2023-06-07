@@ -11,8 +11,9 @@ part 'routes_state.dart';
 
 class RoutesBloc extends Bloc<RoutesEvent, RoutesState> {
   final RecentRouteRepository recentRouteRepository;
+  List<RecentRouteModel> routes = [];
 
-  RoutesBloc({required this.recentRouteRepository}) : super(RoutesInitial()) {
+  RoutesBloc({required this.recentRouteRepository}) : super(RoutesInitial(routes: [])) {
     on<RoutesEvent>((event, emit) async {
       // TODO: implement event handler
       if (event is PointPicked) {
@@ -34,15 +35,12 @@ class RoutesBloc extends Bloc<RoutesEvent, RoutesState> {
               long: event.to.location.longitude.toString(),
               date: DateTime.now()));
         }
-        emit(RoutesPinPoint(from: event.from, to: event.to));
+        emit(RoutesPinPoint(from: event.from, to: event.to, routes: routes));
       }
       else if (event is FetchRecentRoute) {
-        emit(RoutesLoading());
-        final data = await recentRouteRepository.getAllRoutes();
-
-        print('data: ');
-        print(data);
-        emit(RoutesLoaded(routes: data));
+        emit(RoutesLoading(routes: routes));
+        routes = await recentRouteRepository.getAllRoutes();        
+        emit(RoutesLoaded(routes: routes));
       }
     });
   }

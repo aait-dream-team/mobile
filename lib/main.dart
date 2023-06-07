@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<RoutesBloc>(
             create: (BuildContext context) => RoutesBloc(
                 recentRouteRepository: RecentRouteRepository(
-                    dataProvider: RecentRouteDataProvider()))),
+                    dataProvider: RecentRouteDataProvider()))..add(FetchRecentRoute())),
         BlocProvider<HomeBloc>(create: (BuildContext context) => HomeBloc()),
         BlocProvider<SearchBloc>(
             create: (context) => SearchBloc(

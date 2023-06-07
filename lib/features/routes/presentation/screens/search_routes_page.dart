@@ -69,11 +69,8 @@ class _SearchWidget extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RoutesBloc, RoutesState>(builder: (context, state) {
-      if (state is RoutesLoaded) {
-        recent_route = state.routes;
-      } else {
-        context.read<RoutesBloc>().add(FetchRecentRoute());
-      }
+      recent_route = state.routes;
+      print(state);
       return Scaffold(
         body: Padding(
           padding: const EdgeInsets.fromLTRB(10, 45, 10, 0),
@@ -197,15 +194,18 @@ class _SearchWidget extends State<SearchPage> {
                           return ListTile(
                             onTap: () {
                               screenArguments.func(
-                                  LatLng(double.parse(recent_route[index].lat),double.parse(recent_route[index].long)), recent_route[index].name);
+                                  LatLng(double.parse(recent_route[index].lat),
+                                      double.parse(recent_route[index].long)),
+                                  recent_route[index].name);
                               Navigator.pop(context);
                             },
                             leading: Icon(Icons
                                 .location_on_outlined), // location pin icon
-                            title: Text(
-                                recent_route[index].name), // title of the suggestion
-                            subtitle: Text(
-                                recent_route[index].date.toString()), // subtitle of the suggestion
+                            title: Text(recent_route[index]
+                                .name), // title of the suggestion
+                            subtitle: Text(recent_route[index]
+                                .date
+                                .toString()), // subtitle of the suggestion
                             trailing: Icon(Icons
                                 .copy), // copy icon at the most left side of the row
                           );
