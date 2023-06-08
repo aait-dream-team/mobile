@@ -1,9 +1,10 @@
-import 'package:bus_navigation/features/routes/model/pin.dart';
+// import 'package:bus_navigation/features/routes/model/pin.dart';
 import 'package:bus_navigation/features/routes/presentation/screens/screen_arguments_routes.dart';
 import 'package:bus_navigation/features/search_results/bloc/search_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
+import '../../models/pin.dart';
 import './search_routes_page.dart';
 import '../../bloc/routes_bloc.dart';
 import 'screen_arguments_routes_args.dart';

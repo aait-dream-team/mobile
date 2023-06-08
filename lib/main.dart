@@ -4,6 +4,8 @@ import 'package:bus_navigation/features/home/presentation/home_page.dart';
 import 'package:bus_navigation/features/onBoarding/presentation/screens/onBoarding_page.dart';
 import 'package:bus_navigation/features/routes/bloc/routes_bloc.dart';
 import 'package:bus_navigation/features/search_results/bloc/search_bloc.dart';
+import 'package:bus_navigation/features/routes/data_provider/recent_route_data_provider.dart';
+import 'package:bus_navigation/features/routes/repository/recent_route_repository.dart';
 import 'package:bus_navigation/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,13 +48,17 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+
   // This widget is the root of your xapplication.
   @override
   Widget build(BuildContext context) {
+    final RecentRouteRepository recentRouteRepository;
     return MultiBlocProvider(
       providers: [
         BlocProvider<RoutesBloc>(
-            create: (BuildContext context) => RoutesBloc()),
+            create: (BuildContext context) => RoutesBloc(
+                recentRouteRepository: RecentRouteRepository(
+                    dataProvider: RecentRouteDataProvider()))..add(FetchRecentRoute())),
         BlocProvider<HomeBloc>(create: (BuildContext context) => HomeBloc()),
         BlocProvider<SearchBloc>(
             create: (context) => SearchBloc(

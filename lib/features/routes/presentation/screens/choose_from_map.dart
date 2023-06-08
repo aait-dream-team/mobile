@@ -85,8 +85,8 @@ class _MapPageState extends State<MapPage> {
               "${place.name}, ${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode} ${place.country}";
           print(locationName);
           screenArguments.func(_centerLocation, locationName);
-          Navigator.of(context).pop();
-          Navigator.of(context).pop();
+          Navigator.pop(context);
+          Navigator.pop(context);
         },
         child: const Icon(Icons.check),
       ),

@@ -3,13 +3,10 @@ import 'package:bus_navigation/features/history/presentation/screens/history_pag
 import 'package:bus_navigation/features/home/presentation/screens/home_page.dart';
 
 import 'package:bus_navigation/features/routes/presentation/screens/routes_page.dart';
-import 'package:bus_navigation/features/routes/bloc/routes_bloc.dart';
 import 'package:bus_navigation/features/routes/presentation/screens/screen_argument.dart';
 import 'package:bus_navigation/features/routes/presentation/screens/screen_arguments_routes.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/home_bloc.dart';
 
 class HomePage extends StatefulWidget {
   static const String route = "/homepage";
@@ -52,11 +49,7 @@ class _HomePageState extends State<HomePage> {
       RouteHistory(),
     ];
     return Scaffold(
-      body: MultiBlocProvider(providers: [
-        BlocProvider<RoutesBloc>(
-            create: (BuildContext context) => RoutesBloc()),
-        BlocProvider<HomeBloc>(create: (BuildContext context) => HomeBloc()),
-      ], child: screens[index]),
+      body:  screens[index],
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
             indicatorColor: AppColors.greyShade300,
