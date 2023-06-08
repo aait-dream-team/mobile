@@ -1,10 +1,10 @@
-import 'package:bus_navigation/features/routes/models/pin.dart';
-import 'package:bus_navigation/features/routes/models/recent_route.dart';
+// import 'package:bus_navigation/features/routes/model/pin.dart';
 import 'package:bus_navigation/features/routes/presentation/screens/screen_arguments_routes.dart';
 import 'package:bus_navigation/features/search_results/bloc/search_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
+import '../../models/pin.dart';
 import './search_routes_page.dart';
 import '../../bloc/routes_bloc.dart';
 import 'screen_arguments_routes_args.dart';
@@ -24,12 +24,21 @@ class _RoutesWidget extends State<RoutesPage> {
   TextEditingController fromController = TextEditingController();
   TextEditingController toController = TextEditingController();
   ScreenArgumentsRoutes? screenArgumentsRoutes;
-  List<RecentRouteModel> recentRoutes = [];
+
   _RoutesWidget({this.screenArgumentsRoutes});
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RoutesBloc, RoutesState>(builder: (context, state) {
-      if (screenArgumentsRoutes != null  ) {
+    return BlocConsumer<RoutesBloc, RoutesState>(listener: (context, state) {
+      if (state is RoutesPinPoint &&
+          state.from.name != '' &&
+          state.to.name != "") {
+        context.read<SearchBloc>().add(LoadSearchEvent(
+            from: state.from.location,
+            to: state.to.location,
+            departureDate: DateTime.now()));
+      }
+    }, builder: (context, state) {
+      if (screenArgumentsRoutes != null) {
         if (screenArgumentsRoutes!.type == 'from') {
           context.read<RoutesBloc>().add(PointPicked(
               from: PinPoint(

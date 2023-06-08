@@ -1,9 +1,7 @@
 import 'package:bus_navigation/features/routes/bloc/routes_bloc.dart';
 import 'package:bus_navigation/features/routes/models/recent_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:latlong2/latlong.dart';
@@ -101,7 +99,7 @@ class _SearchWidget extends State<SearchPage> {
                       ),
                     ),
                     debounceTime: 800, // default 600 ms,
-                    countries: ['et'], // optional by default null is set
+                    countries: const ['et'], // optional by default null is set
                     isLatLngRequired:
                         true, // if you required coordinates from place detail
                     getPlaceDetailWithLatLng: (Prediction prediction) {
@@ -118,7 +116,7 @@ class _SearchWidget extends State<SearchPage> {
                       Navigator.pop(context);
                     }),
               ),
-              Divider(
+              const Divider(
                 thickness: 0.3,
               ),
               Row(
@@ -137,7 +135,7 @@ class _SearchWidget extends State<SearchPage> {
                             style: TextStyle(
                                 color: Colors.grey[700])), // lighter text color
                         style: ElevatedButton.styleFrom(
-                            primary: Colors.lightBlue.withOpacity(0.1),
+                            backgroundColor: Colors.lightBlue.withOpacity(0.1),
                             shadowColor: Colors.lightBlue.withOpacity(0.2),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(40),
@@ -164,7 +162,7 @@ class _SearchWidget extends State<SearchPage> {
                             style: TextStyle(
                                 color: Colors.grey[700])), // lighter text color
                         style: ElevatedButton.styleFrom(
-                            primary: Colors.lightBlue.withOpacity(0.1),
+                            backgroundColor: Colors.lightBlue.withOpacity(0.1),
                             shadowColor: Colors.lightBlue.withOpacity(0.2),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(40),
@@ -176,14 +174,14 @@ class _SearchWidget extends State<SearchPage> {
                   ),
                 ],
               ),
-              Row(children: <Widget>[
+              const Row(children: <Widget>[
                 Expanded(child: Divider()),
                 Text("Recent"),
                 Expanded(child: Divider()),
               ]),
               Expanded(
                 child: state is RoutesLoading
-                    ? Text("Loading")
+                    ? const Text("Loading")
                     : ListView.separated(
                         itemCount: recent_route.length,
                         separatorBuilder: (BuildContext context, int index) =>
@@ -199,14 +197,14 @@ class _SearchWidget extends State<SearchPage> {
                                   recent_route[index].name);
                               Navigator.pop(context);
                             },
-                            leading: Icon(Icons
+                            leading: const Icon(Icons
                                 .location_on_outlined), // location pin icon
                             title: Text(recent_route[index]
                                 .name), // title of the suggestion
                             subtitle: Text(recent_route[index]
                                 .date
                                 .toString()), // subtitle of the suggestion
-                            trailing: Icon(Icons
+                            trailing: const Icon(Icons
                                 .copy), // copy icon at the most left side of the row
                           );
                         },

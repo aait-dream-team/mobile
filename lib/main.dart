@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your xapplication.
   @override
   Widget build(BuildContext context) {
-    final RecentRouteRepository _recentRouteRepository;
+    final RecentRouteRepository recentRouteRepository;
     return MultiBlocProvider(
       providers: [
         BlocProvider<RoutesBloc>(

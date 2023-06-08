@@ -4,7 +4,6 @@ import 'package:bus_navigation/features/routes/models/recent_route.dart';
 import 'package:bus_navigation/features/routes/repository/recent_route_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import '../models/pin.dart';
 
 part 'routes_event.dart';
 part 'routes_state.dart';
@@ -13,7 +12,7 @@ class RoutesBloc extends Bloc<RoutesEvent, RoutesState> {
   final RecentRouteRepository recentRouteRepository;
   List<RecentRouteModel> routes = [];
 
-  RoutesBloc({required this.recentRouteRepository}) : super(RoutesInitial(routes: [])) {
+  RoutesBloc({required this.recentRouteRepository}) : super(const RoutesInitial(routes: [])) {
     on<RoutesEvent>((event, emit) async {
       // TODO: implement event handler
       if (event is PointPicked) {
