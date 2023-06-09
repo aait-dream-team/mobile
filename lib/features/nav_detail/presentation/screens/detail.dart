@@ -162,10 +162,16 @@ class _SidePageState extends State<SidePage> {
                                                 ),
                                                 GestureDetector(
                                                   onPanUpdate: (details) {
-                                                    setState(() {
-                                                      _isExpanded =
-                                                          !_isExpanded;
-                                                    });
+                                                    int sensitivity = 0;
+                                                    if (details.delta.dy >
+                                                            sensitivity ||
+                                                        details.delta.dy <
+                                                            -sensitivity) {
+                                                      setState(() {
+                                                        _isExpanded =
+                                                            !_isExpanded;
+                                                      });
+                                                    }
                                                   },
                                                   child: Card(
                                                     child: Container(
