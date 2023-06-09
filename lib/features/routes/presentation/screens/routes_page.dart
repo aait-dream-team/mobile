@@ -1,10 +1,11 @@
-import 'package:bus_navigation/features/routes/model/pin.dart';
+// import 'package:bus_navigation/features/routes/model/pin.dart';
 import 'package:bus_navigation/features/routes/presentation/screens/screen_arguments_routes.dart';
 import 'package:bus_navigation/features/search_results/bloc/search_bloc.dart';
 import 'package:bus_navigation/features/search_results/presentation/widgets/depature_datetime.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
+import '../../models/pin.dart';
 import './search_routes_page.dart';
 import '../../bloc/routes_bloc.dart';
 import 'screen_arguments_routes_args.dart';
@@ -95,7 +96,7 @@ class _RoutesWidget extends State<RoutesPage> {
                 },
                 decoration: InputDecoration(
                   hintText: 'From',
-                  prefixIcon: Icon(Icons.location_on),
+                  prefixIcon: const Icon(Icons.location_on),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
@@ -128,7 +129,7 @@ class _RoutesWidget extends State<RoutesPage> {
                 },
                 decoration: InputDecoration(
                   hintText: 'To',
-                  prefixIcon: Icon(Icons.location_on),
+                  prefixIcon: const Icon(Icons.location_on),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),

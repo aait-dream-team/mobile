@@ -15,4 +15,5 @@ class RouteSearchRepository {
       LatLng from, LatLng to, DateTime departureDate) async {
     return await dataProvider.getSearchResults(from, to, departureDate);
   }
+  
 }

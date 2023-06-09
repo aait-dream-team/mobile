@@ -47,7 +47,6 @@
 //                   );
 //                 },
 //                 onSuggestionSelected: (suggestion) {
-//                   screenArguments.func(LatLng(4.44, 5.55), suggestion);
-//                   Navigator.pop(context);
+//                     
 //                 },
 //               )
