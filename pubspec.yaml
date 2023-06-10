@@ -54,6 +54,7 @@ dependencies:
 
   geolocator: ^9.0.2
   turf: ^0.0.7
+  # flutter_tts: ^3.7.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0

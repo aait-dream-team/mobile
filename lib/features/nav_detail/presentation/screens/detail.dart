@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/left_floating_action_button.dart';
+import 'package:bus_navigation/features/nav_detail/presentation/widgets/stops.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/train_mode.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/walk_expanded.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/walk_mode.dart';
@@ -38,6 +39,7 @@ class SidePage extends StatefulWidget {
 class _SidePageState extends State<SidePage> {
   final double _expandedWidth = 400.0;
   bool _isExpanded = false;
+  bool isStarted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +66,7 @@ class _SidePageState extends State<SidePage> {
               onPressed: () {
                 BlocProvider.of<NavigationBloc>(context)
                     .add(StartNavigationEvent());
+                
               },
             ),
             floatingActionButtonLocation:
@@ -71,9 +74,11 @@ class _SidePageState extends State<SidePage> {
             body: SafeArea(
               child: Column(
                 children: [
-                  RouteWidget(
-                    result: widget.routeSearchResultModel,
-                  ),
+                  (state is NavigationRoutingState)
+                      ? Stops(title: "Sheromda",arrivalTime: DateTime.now(),):RouteWidget(
+                          result: widget.routeSearchResultModel,
+                        )
+                      ,
                   Expanded(
                     child: Stack(
                       children: [
