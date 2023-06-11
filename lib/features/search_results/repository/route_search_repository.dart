@@ -11,7 +11,8 @@ class RouteSearchRepository {
     required this.dataProvider,
   });
 
-  Future<List<(RouteSearchResultModel, NavDetailModel)>> getSearchResults(LatLng from, LatLng to, DateTime departureDate) async {
+  Future<List<(RouteSearchResultModel, NavDetailModel)>> getSearchResults(
+      LatLng from, LatLng to, DateTime departureDate) async {
     return await dataProvider.getSearchResults(from, to, departureDate);
   }
   

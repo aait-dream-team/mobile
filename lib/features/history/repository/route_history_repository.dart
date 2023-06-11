@@ -10,4 +10,8 @@ class RouteHistoryRepository {
   Future<Map<DateTime, List<RouteModel>>> getAllRoutes() async {
     return await dataProvider.getAllRoutes();
   }
+
+  Future<void> addRoute(RouteModel route) async {
+    await dataProvider.addRoute(route);
+  }
 }
