@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:bus_navigation/core/local_notification/local_notification.dart';
+import 'package:bus_navigation/core/text_to_speech/tts.dart';
 import 'package:bus_navigation/features/history/data_provider/route_history_data_provider.dart';
 import 'package:bus_navigation/features/history/repository/route_history_repository.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/left_floating_action_button.dart';
@@ -57,188 +58,199 @@ class _SidePageState extends State<SidePage> {
                   .map((e) => e.legGeometry)
                   .cast<String>()
                   .toList())),
-        child: MaterialApp(home: BlocBuilder<NavigationBloc, NavigationState>(
-            builder: ((context, state) {
-          if (state is NavigationRoutingState && !_isNavigationStarted) {
-            _isNavigationStarted = true;
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: BlocBuilder<NavigationBloc, NavigationState>(
+                builder: ((context, state) {
+              if (state is NavigationRoutingState && !_isNavigationStarted) {
+                _isNavigationStarted = true;
 
-            // Notify user that their navigation has started
-            LocalNotificationDataProvider.instantNotify(
-                title: 'Navigation Started',
-                body:
-                    'You have started your navigation  to {widget.navDetailModel.legs[-1].to}');
-            // Save the navigation to History
-            // widget.routeHistoryRepository.addRoute(RouteModel(
-            //   startPoint: widget.navDetailModel.legs[0].from,
-            //   endPoint: widget.navDetailModel.legs[-1].to,
-            //   date: DateTime.now(),
-            // ));
-          }
+                String text = 'You have started your navigation  to Bole';
+                // Notify user that their navigation has started
+                LocalNotificationDataProvider.instantNotify(
+                    title: 'Navigation Started', body: text);
+                TextToSpeechSingleton tts = TextToSpeechSingleton();
+                tts.speak(text);
 
-          return Scaffold(
-            backgroundColor: Colors.transparent,
-            extendBodyBehindAppBar: true,
-            floatingActionButton: (state is NavigationRoutingState)
-                ? FloatingActionButton.extended(
-                    label: const Text('Cancel'), // <-- Text
-                    backgroundColor: Colors.redAccent,
-                    icon: const Icon(
-                      // <-- Icon
-                      Icons.cancel,
-                      size: 24.0,
-                    ),
-                    onPressed: () {
-                      // TODO: Biruk ADD CANCEL EVENT
-                    },
-                  )
-                : FloatingActionButton.extended(
-                    label: const Text('Start'), // <-- Text
-                    backgroundColor: Colors.green,
-                    icon: const Icon(
-                      // <-- Icon
-                      Icons.play_circle,
-                      size: 24.0,
-                    ),
-                    onPressed: () {
-                      BlocProvider.of<NavigationBloc>(context)
-                          .add(StartNavigationEvent());
-                    },
-                  ),
-            floatingActionButtonLocation:
-                const LeftFloatingActionButtonLocation(),
-            body: SafeArea(
-              child: Column(
-                children: [
-                  (state is NavigationRoutingState)
-                      ? Stops(title: "Sheromda",arrivalTime: DateTime.now(),):RouteWidget(
-                          result: widget.routeSearchResultModel,
-                        )
-                      ,
-                  Expanded(
-                    child: Stack(
-                      children: [
-                        Container(
-                          color: Colors.white,
-                          child: Center(child: NavigationPage()),
+                // Save the navigation to History
+                // widget.routeHistoryRepository.addRoute(RouteModel(
+                //   startPoint: widget.navDetailModel.legs[0].from,
+                //   endPoint: widget.navDetailModel.legs[-1].to,
+                //   date: DateTime.now(),
+                // ));
+              }
+
+              return Scaffold(
+                backgroundColor: Colors.transparent,
+                extendBodyBehindAppBar: true,
+                floatingActionButton: (state is NavigationRoutingState)
+                    ? FloatingActionButton.extended(
+                        label: const Text('Cancel'), // <-- Text
+                        backgroundColor: Colors.redAccent,
+                        icon: const Icon(
+                          // <-- Icon
+                          Icons.cancel,
+                          size: 24.0,
                         ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: AnimatedContainer(
-                            duration: const Duration(
-                              milliseconds: 30,
+                        onPressed: () {
+                          // TODO: Biruk ADD CANCEL EVENT
+                        },
+                      )
+                    : FloatingActionButton.extended(
+                        label: const Text('Start'), // <-- Text
+                        backgroundColor: Colors.green,
+                        icon: const Icon(
+                          // <-- Icon
+                          Icons.play_circle,
+                          size: 24.0,
+                        ),
+                        onPressed: () {
+                          BlocProvider.of<NavigationBloc>(context)
+                              .add(StartNavigationEvent());
+                        },
+                      ),
+                floatingActionButtonLocation:
+                    const LeftFloatingActionButtonLocation(),
+                body: SafeArea(
+                  child: Column(
+                    children: [
+                      (state is NavigationRoutingState)
+                          ? Stops(
+                              title: "Sheromda",
+                              arrivalTime: DateTime.now(),
+                            )
+                          : RouteWidget(
+                              result: widget.routeSearchResultModel,
                             ),
-                            width: _isExpanded ? _expandedWidth : 150.0,
-                            child: Row(
-                              children: [
-                                IconButton(
-                                  icon: SizedBox(
-                                    width: 200,
-                                    height: 200,
-                                    child: Card(
-                                      child: Container(
-                                        color: Colors.white,
-                                        child: Icon(
-                                          _isExpanded
-                                              ? Icons.arrow_forward_ios
-                                              : Icons.arrow_back_ios,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      _isExpanded = !_isExpanded;
-                                    });
-                                  },
+                      Expanded(
+                        child: Stack(
+                          children: [
+                            Container(
+                              color: Colors.white,
+                              child: Center(child: NavigationPage()),
+                            ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: AnimatedContainer(
+                                duration: const Duration(
+                                  milliseconds: 30,
                                 ),
-                                Expanded(
-                                  child: SingleChildScrollView(
-                                      scrollDirection: Axis.vertical,
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              children: [
-                                                const SizedBox(
-                                                  height: 70,
-                                                ),
-                                                GestureDetector(
-                                                  onPanUpdate: (details) {
-                                                    int sensitivity = 0;
-                                                    if (details.delta.dy >
-                                                            sensitivity ||
-                                                        details.delta.dy <
-                                                            -sensitivity) {
-                                                      setState(() {
-                                                        _isExpanded =
-                                                            !_isExpanded;
-                                                      });
-                                                    }
-                                                  },
-                                                  child: Card(
-                                                    child: Container(
-                                                      width: 150,
-                                                      color: Colors.white,
-                                                      child: List1(
-                                                        currentIndex: (state
-                                                                is NavigationRoutingState)
-                                                            ? state.currentIndex
-                                                            : 0,
-                                                        navDetailModel: widget
-                                                            .navDetailModel,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
+                                width: _isExpanded ? _expandedWidth : 150.0,
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                      icon: SizedBox(
+                                        width: 200,
+                                        height: 200,
+                                        child: Card(
+                                          child: Container(
+                                            color: Colors.white,
+                                            child: Icon(
+                                              _isExpanded
+                                                  ? Icons.arrow_forward_ios
+                                                  : Icons.arrow_back_ios,
+                                              color: Colors.black,
                                             ),
                                           ),
-                                          Visibility(
-                                            visible: _isExpanded,
-                                            child: Expanded(
-                                              flex: 2,
-                                              child: Column(
-                                                children: [
-                                                  const SizedBox(
-                                                    height: 70,
-                                                  ),
-                                                  Container(
-                                                      decoration: BoxDecoration(
-                                                        color: AppColors.white,
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _isExpanded = !_isExpanded;
+                                        });
+                                      },
+                                    ),
+                                    Expanded(
+                                      child: SingleChildScrollView(
+                                          scrollDirection: Axis.vertical,
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                flex: 1,
+                                                child: Column(
+                                                  children: [
+                                                    const SizedBox(
+                                                      height: 70,
+                                                    ),
+                                                    GestureDetector(
+                                                      onPanUpdate: (details) {
+                                                        int sensitivity = 0;
+                                                        if (details.delta.dy >
+                                                                sensitivity ||
+                                                            details.delta.dy <
+                                                                -sensitivity) {
+                                                          setState(() {
+                                                            _isExpanded =
+                                                                !_isExpanded;
+                                                          });
+                                                        }
+                                                      },
+                                                      child: Card(
+                                                        child: Container(
+                                                          width: 150,
+                                                          color: Colors.white,
+                                                          child: List1(
+                                                            currentIndex: (state
+                                                                    is NavigationRoutingState)
+                                                                ? state
+                                                                    .currentIndex
+                                                                : -1,
+                                                            navDetailModel: widget
+                                                                .navDetailModel,
+                                                          ),
+                                                        ),
                                                       ),
-                                                      width: 300,
-                                                      child: List2(
-                                                        navDetailModel: widget
-                                                            .navDetailModel,
-                                                      )),
-                                                ],
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          )
-                                        ],
-                                      )),
+                                              Visibility(
+                                                visible: _isExpanded,
+                                                child: Expanded(
+                                                  flex: 2,
+                                                  child: Column(
+                                                    children: [
+                                                      const SizedBox(
+                                                        height: 70,
+                                                      ),
+                                                      Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color:
+                                                                AppColors.white,
+                                                          ),
+                                                          width: 300,
+                                                          child: List2(
+                                                            navDetailModel: widget
+                                                                .navDetailModel,
+                                                          )),
+                                                    ],
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          )),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-          );
-        }))));
+                ),
+              );
+            }))));
   }
 }
 
 class List1 extends StatelessWidget {
   final NavDetailModel navDetailModel;
   final int currentIndex;
-  const List1({Key? key, required this.navDetailModel, required this.currentIndex})
+  const List1(
+      {Key? key, required this.navDetailModel, required this.currentIndex})
       : super(key: key);
 
   @override

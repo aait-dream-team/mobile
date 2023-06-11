@@ -1,3 +1,4 @@
+import 'package:bus_navigation/core/text_to_speech/tts.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_tts/flutter_tts.dart';
 
@@ -12,7 +13,7 @@ class Stops extends StatefulWidget {
 
 class _StopsState extends State<Stops> {
   // FlutterTts ftts = FlutterTts();
-  bool isMute = false;
+  bool isMute = TextToSpeechSingleton().soundEnabled;
   @override
   Widget build(BuildContext context) {
     // ignore: sized_box_for_whitespace
@@ -37,32 +38,15 @@ class _StopsState extends State<Stops> {
             onPressed: () async {
               setState(() {
                 isMute = !isMute;
-                print("object");
+                TextToSpeechSingleton().soundEnabled = isMute;
               });
-
-              // //your custom configuration
-              // await ftts.setLanguage("en-US");
-              // await ftts.setSpeechRate(0.5); //speed of speech
-              // await ftts.setVolume(1.0); //volume of speech
-              // await ftts.setPitch(1); //pitc of sound
-
-              //play text to sp
-              // var result =
-              //     await ftts.speak("Hello World, this is Flutter Campus.");
-              // if (result == 1) {
-              //   //speaking
-
-              // } else {
-              //   //not speaking
-              //   print("Hey I am not speaking");
-              // }
             },
             icon: isMute
-                ? Icon(
+                ? const Icon(
                     Icons.volume_off_rounded,
                     color: Colors.white,
                   )
-                : Icon(
+                : const Icon(
                     Icons.volume_down_rounded,
                     color: Colors.white,
                   )),
