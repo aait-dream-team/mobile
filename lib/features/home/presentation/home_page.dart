@@ -94,14 +94,7 @@ class _HomePageState extends State<HomePage> {
               ),
               label: 'History',
             ),
-            NavigationDestination(
-              icon: Icon(
-                Icons.settings,
-                color: AppColors.grey,
-              ),
-              selectedIcon: const Icon(Icons.settings),
-              label: 'Settings',
-            ),
+            
           ],
         ),
       ),

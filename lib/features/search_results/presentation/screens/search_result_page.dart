@@ -72,9 +72,7 @@ class _RouteSearchState extends State<SearchResults> {
           return const Center(child: Text("Something Went Wrong"));
         },
       ),
-      bottomSheet: const Text(
-        "Search results don't belong here. Here for testing purposes",
-      ),
     );
   }
+  
 }
