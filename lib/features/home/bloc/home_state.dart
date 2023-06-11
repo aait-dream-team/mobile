@@ -29,7 +29,8 @@ class HomePinnedState extends HomeState {
   @override
   final double zoom;
   final LatLng pinPosition;
+  final String name;
 
   HomePinnedState(
-      {required this.position, required this.zoom, required this.pinPosition});
+      {required this.position, required this.name, required this.zoom, required this.pinPosition});
 }

@@ -1,5 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'package:bus_navigation/core/local_notification/local_notification.dart';
+import 'package:bus_navigation/features/history/data_provider/route_history_data_provider.dart';
+import 'package:bus_navigation/features/history/repository/route_history_repository.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/left_floating_action_button.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/stops.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/train_mode.dart';
@@ -26,6 +29,9 @@ class SidePage extends StatefulWidget {
   final RouteSearchResultModel routeSearchResultModel;
   final NavigationRepository repository =
       NavigationRepository(dataProvider: NavigationDataProvider());
+  final RouteHistoryRepository routeHistoryRepository =
+      RouteHistoryRepository(dataProvider: RouteHistoryDataProvider());
+
   SidePage(
       {Key? key,
       required this.navDetailModel,
@@ -40,6 +46,7 @@ class _SidePageState extends State<SidePage> {
   final double _expandedWidth = 400.0;
   bool _isExpanded = false;
   bool isStarted = false;
+  bool _isNavigationStarted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -52,23 +59,51 @@ class _SidePageState extends State<SidePage> {
                   .toList())),
         child: MaterialApp(home: BlocBuilder<NavigationBloc, NavigationState>(
             builder: ((context, state) {
+          if (state is NavigationRoutingState && !_isNavigationStarted) {
+            _isNavigationStarted = true;
+
+            // Notify user that their navigation has started
+            LocalNotificationDataProvider.instantNotify(
+                title: 'Navigation Started',
+                body:
+                    'You have started your navigation  to {widget.navDetailModel.legs[-1].to}');
+            // Save the navigation to History
+            // widget.routeHistoryRepository.addRoute(RouteModel(
+            //   startPoint: widget.navDetailModel.legs[0].from,
+            //   endPoint: widget.navDetailModel.legs[-1].to,
+            //   date: DateTime.now(),
+            // ));
+          }
+
           return Scaffold(
             backgroundColor: Colors.transparent,
             extendBodyBehindAppBar: true,
-            floatingActionButton: FloatingActionButton.extended(
-              label: const Text('Start'), // <-- Text
-              backgroundColor: Colors.blueAccent,
-              icon: const Icon(
-                // <-- Icon
-                Icons.play_circle,
-                size: 24.0,
-              ),
-              onPressed: () {
-                BlocProvider.of<NavigationBloc>(context)
-                    .add(StartNavigationEvent());
-                
-              },
-            ),
+            floatingActionButton: (state is NavigationRoutingState)
+                ? FloatingActionButton.extended(
+                    label: const Text('Cancel'), // <-- Text
+                    backgroundColor: Colors.redAccent,
+                    icon: const Icon(
+                      // <-- Icon
+                      Icons.cancel,
+                      size: 24.0,
+                    ),
+                    onPressed: () {
+                      // TODO: Biruk ADD CANCEL EVENT
+                    },
+                  )
+                : FloatingActionButton.extended(
+                    label: const Text('Start'), // <-- Text
+                    backgroundColor: Colors.green,
+                    icon: const Icon(
+                      // <-- Icon
+                      Icons.play_circle,
+                      size: 24.0,
+                    ),
+                    onPressed: () {
+                      BlocProvider.of<NavigationBloc>(context)
+                          .add(StartNavigationEvent());
+                    },
+                  ),
             floatingActionButtonLocation:
                 const LeftFloatingActionButtonLocation(),
             body: SafeArea(
@@ -96,7 +131,7 @@ class _SidePageState extends State<SidePage> {
                             child: Row(
                               children: [
                                 IconButton(
-                                  icon: Container(
+                                  icon: SizedBox(
                                     width: 200,
                                     height: 200,
                                     child: Card(
@@ -129,17 +164,31 @@ class _SidePageState extends State<SidePage> {
                                                 const SizedBox(
                                                   height: 70,
                                                 ),
-                                                Card(
-                                                  child: Container(
-                                                    width: 150,
-                                                    color: Colors.white,
-                                                    child: List1(
-                                                      currentIndex: (state
-                                                              is NavigationRoutingState)
-                                                          ? state.currentIndex
-                                                          : 0,
-                                                      navDetailModel:
-                                                          widget.navDetailModel,
+                                                GestureDetector(
+                                                  onPanUpdate: (details) {
+                                                    int sensitivity = 0;
+                                                    if (details.delta.dy >
+                                                            sensitivity ||
+                                                        details.delta.dy <
+                                                            -sensitivity) {
+                                                      setState(() {
+                                                        _isExpanded =
+                                                            !_isExpanded;
+                                                      });
+                                                    }
+                                                  },
+                                                  child: Card(
+                                                    child: Container(
+                                                      width: 150,
+                                                      color: Colors.white,
+                                                      child: List1(
+                                                        currentIndex: (state
+                                                                is NavigationRoutingState)
+                                                            ? state.currentIndex
+                                                            : 0,
+                                                        navDetailModel: widget
+                                                            .navDetailModel,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
@@ -189,7 +238,7 @@ class _SidePageState extends State<SidePage> {
 class List1 extends StatelessWidget {
   final NavDetailModel navDetailModel;
   final int currentIndex;
-  List1({Key? key, required this.navDetailModel, required this.currentIndex})
+  const List1({Key? key, required this.navDetailModel, required this.currentIndex})
       : super(key: key);
 
   @override

@@ -7,8 +7,8 @@ import 'package:latlong2/latlong.dart';
 class NavigationDataProvider {
   Future<List<List<LatLng>>> getRouteDetails() async {
     var data = await getJsonContents();
-    var route_legs = getRouteLegs(data);
-    var points = route_legs.map((e) => e["legGeometry"]["points"]);
+    var routeLegs = getRouteLegs(data);
+    var points = routeLegs.map((e) => e["legGeometry"]["points"]);
     PolylinePoints polylinePoints = PolylinePoints();
 
     // Decode the string and create a list of LatLng objects

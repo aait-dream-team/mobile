@@ -10,3 +10,4 @@ class PointPicked extends RoutesEvent {
   final PinPoint to;
   PointPicked({required this.from, required this.to});
 }
+class FetchRecentRoute extends RoutesEvent {}

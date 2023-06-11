@@ -25,10 +25,10 @@ class _RouteHistoryState extends State<RouteHistory> {
         appBar: AppBar(
           backgroundColor: AppColors.white12,
           elevation: 0,
-          title: Row(
+          title: const Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const Text("Routes History",
+              Text("Routes History",
                   textAlign: TextAlign.left,
                   style: TextStyle(
                       color: Colors.black,

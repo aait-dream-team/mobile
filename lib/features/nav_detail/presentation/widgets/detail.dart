@@ -45,14 +45,14 @@ class _DetailState extends State<Detail> {
                     Expanded(
                       child: Text(
                         widget.leg.routeLongName!,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                     Text(
-                      widget.leg.duration < 60
-                          ? '${widget.leg.duration} min'
-                          : '${(widget.leg.duration / 60).toStringAsFixed(1)} hrs',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      widget.leg.duration < (60 * 60)
+                          ? '${(widget.leg.duration / 60).toStringAsFixed(0)} min'
+                          : '${(widget.leg.duration / (60 * 60)).toStringAsFixed(1)} hrs',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
