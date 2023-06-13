@@ -5,8 +5,10 @@ abstract class NavigationEvent {}
 
 class LoadNavigationEvent extends NavigationEvent {
   final List<String> polylineString;
+  final NavDetailModel navDetailModel;
 
-  LoadNavigationEvent({required this.polylineString});
+  LoadNavigationEvent(
+      {required this.polylineString, required this.navDetailModel});
 }
 
 class StartNavigationEvent extends NavigationEvent {}
@@ -16,3 +18,5 @@ class UpdateUserLocationEvent extends NavigationEvent {
 
   UpdateUserLocationEvent(this.location);
 }
+
+class CancelNavigationEvent extends NavigationEvent {}

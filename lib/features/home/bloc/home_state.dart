@@ -32,5 +32,24 @@ class HomePinnedState extends HomeState {
   final String name;
 
   HomePinnedState(
-      {required this.position, required this.name, required this.zoom, required this.pinPosition});
+      {required this.position,
+      required this.name,
+      required this.zoom,
+      required this.pinPosition});
+}
+
+class HomePinnedLoadingState extends HomePinnedState {
+  HomePinnedLoadingState(
+      {required super.position,
+      required super.name,
+      required super.zoom,
+      required super.pinPosition});
+}
+
+class HomePinnedMapMovedState extends HomePinnedState {
+  HomePinnedMapMovedState(
+      {required super.position,
+      required super.name,
+      required super.zoom,
+      required super.pinPosition});
 }

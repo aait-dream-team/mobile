@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:bus_navigation/features/nav_detail/model/nav_detail_model.dart';
 import 'package:bus_navigation/features/navigate/bloc/navigation_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +21,9 @@ class NavigateMapWidget extends StatelessWidget {
   // Create a map controller
   final MapController _mapController = MapController();
 
-  NavigateMapWidget({super.key});
+  final NavDetailModel navDetailModel;
+
+  NavigateMapWidget({super.key, required this.navDetailModel});
 
   LatLngBounds _createPolylinesAndBounds(List<List<LatLng>> routeData) {
     // Initialize the bounds with the first point of the route
@@ -52,7 +55,12 @@ class NavigateMapWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<NavigationBloc, NavigationState>(
         builder: ((context, state) {
+      print("SUCCESS");
       if (state is NavigationSuccessState) {
+        print(state.navDetailModel.legs
+            .map((e) => e.intermidateStops ?? [])
+            .expand((element) => element)
+            .toList());
         return SafeArea(
           child: FlutterMap(
             mapController: _mapController,
@@ -167,6 +175,16 @@ class NavigateMapWidget extends StatelessWidget {
                           width: 40)
                     ],
                   ),
+                  MarkerLayer(
+                    markers: state.navDetailModel.legs
+                        .map((e) => e.intermidateStops ?? [])
+                        .expand((element) => element)
+                        .map((e) => Marker(
+                            point: e.location,
+                            builder: (context) =>
+                                const Icon(Icons.donut_small)))
+                        .toList(),
+                  )
                 ],
               );
             });

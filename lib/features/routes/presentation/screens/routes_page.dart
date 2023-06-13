@@ -38,18 +38,26 @@ class _RoutesWidget extends State<RoutesPage> {
         context.read<SearchBloc>().add(LoadSearchEvent(
             from: state.from.location,
             to: state.to.location,
-            departureDate: DateTime.now()));
+            departureDate: state.datetime,
+            isDepartureTime: state.isDepartureTime));
       }
     }, builder: (context, state) {
       if (screenArgumentsRoutes != null) {
         if (screenArgumentsRoutes!.type == 'from') {
-          context.read<RoutesBloc>().add(PointPicked(
-              from: PinPoint(
-                  name: screenArgumentsRoutes!.name,
-                  location: screenArgumentsRoutes!.location),
-              to: state is RoutesPinPoint
-                  ? state.to
-                  : PinPoint(name: '', location: LatLng(0.0, 0.0))));
+          context.read<RoutesBloc>().add(
+                PointPicked(
+                    from: PinPoint(
+                        name: screenArgumentsRoutes!.name,
+                        location: screenArgumentsRoutes!.location),
+                    to: state is RoutesPinPoint
+                        ? state.to
+                        : PinPoint(name: '', location: LatLng(0.0, 0.0)),
+                    datetime: state is RoutesPinPoint
+                        ? state.datetime
+                        : DateTime.now(),
+                    isDepartureTime:
+                        state is RoutesPinPoint ? state.isDepartureTime : true),
+              );
         } else {
           context.read<RoutesBloc>().add(PointPicked(
               to: PinPoint(
@@ -57,7 +65,11 @@ class _RoutesWidget extends State<RoutesPage> {
                   location: screenArgumentsRoutes!.location),
               from: state is RoutesPinPoint
                   ? state.from
-                  : PinPoint(name: '', location: LatLng(0.0, 0.0))));
+                  : PinPoint(name: '', location: LatLng(0.0, 0.0)),
+              datetime:
+                  state is RoutesPinPoint ? state.datetime : DateTime.now(),
+              isDepartureTime:
+                  state is RoutesPinPoint ? state.isDepartureTime : true));
         }
         screenArgumentsRoutes = null;
       }
@@ -83,14 +95,18 @@ class _RoutesWidget extends State<RoutesPage> {
                             final PinPoint from =
                                 PinPoint(name: name, location: loc);
                             if (state is RoutesPinPoint) {
-                              context
-                                  .read<RoutesBloc>()
-                                  .add(PointPicked(from: from, to: state.to));
+                              context.read<RoutesBloc>().add(PointPicked(
+                                  from: from,
+                                  to: state.to,
+                                  datetime: state.datetime,
+                                  isDepartureTime: state.isDepartureTime));
                             } else {
                               context.read<RoutesBloc>().add(PointPicked(
                                   from: from,
                                   to: PinPoint(
-                                      name: '', location: LatLng(0.0, 0.0))));
+                                      name: '', location: LatLng(0.0, 0.0)),
+                                  datetime: DateTime.now(),
+                                  isDepartureTime: true));
                             }
                           }))
                 },
@@ -116,14 +132,18 @@ class _RoutesWidget extends State<RoutesPage> {
                             final PinPoint to =
                                 PinPoint(name: name, location: loc);
                             if (state is RoutesPinPoint) {
-                              context
-                                  .read<RoutesBloc>()
-                                  .add(PointPicked(from: state.from, to: to));
+                              context.read<RoutesBloc>().add(PointPicked(
+                                  from: state.from,
+                                  to: to,
+                                  datetime: state.datetime,
+                                  isDepartureTime: state.isDepartureTime));
                             } else {
                               context.read<RoutesBloc>().add(PointPicked(
                                   from: PinPoint(
                                       name: '', location: LatLng(0.0, 0.0)),
-                                  to: to));
+                                  to: to,
+                                  datetime: DateTime.now(),
+                                  isDepartureTime: true));
                             }
                           }));
                 },
@@ -146,12 +166,28 @@ class _RoutesWidget extends State<RoutesPage> {
                             BorderRadius.vertical(top: Radius.circular(45))),
                     context: context,
                     builder: (context) => DatePicker(
-                      onSave: (dep, date) => {
-                        setState(() => {
+                      onSave: (dep, date) {
+                        print(date);
+                        if (state is RoutesPinPoint) {
+                          context.read<RoutesBloc>().add(PointPicked(
+                              from: state.from,
+                              to: state.to,
+                              datetime: date,
+                              isDepartureTime: dep == 0));
+                        } else {
+                          context.read<RoutesBloc>().add(PointPicked(
+                              from: PinPoint(
+                                  name: '', location: LatLng(0.0, 0.0)),
+                              to: PinPoint(
+                                  name: '', location: LatLng(0.0, 0.0)),
+                              datetime: date,
+                              isDepartureTime: dep == 0));
+                        }
+                        return setState(() => {
                               Navigator.pop(context),
                               depature = dep,
                               dateTime = date,
-                            })
+                            });
                       },
                     ),
                   )

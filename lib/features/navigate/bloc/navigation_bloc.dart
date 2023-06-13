@@ -1,3 +1,4 @@
+import 'package:bus_navigation/features/nav_detail/model/nav_detail_model.dart';
 import 'package:bus_navigation/features/navigate/repository/navigation_repository.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:latlong2/latlong.dart';
@@ -17,16 +18,20 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
         emit(NavigationLoadingState());
 
         final value = parsePoints(event.polylineString);
-        emit(NavigationSuccessState(routePoints: value));
+        emit(NavigationSuccessState(
+            routePoints: value, navDetailModel: event.navDetailModel));
       } else if (event is StartNavigationEvent) {
         if (state is NavigationSuccessState) {
           var legs = (state as NavigationSuccessState).routePoints;
+          var navDetailModel = (state as NavigationSuccessState).navDetailModel;
           emit(NavigationRoutingState(
               legs: legs,
               currentIndex: 0,
               currentInnerIndex: 0,
               userPointInRoute: legs[0][0],
-              userLocation: legs[0][0]));
+              userLocation: legs[0][0],
+              navDetailModel: navDetailModel,
+              currentIntermidateStopIndex: 0));
         }
       } else if (event is UpdateUserLocationEvent) {
         if (state is NavigationRoutingState) {
@@ -36,12 +41,32 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
           if (innerInd == -1) {
             innerInd = (state as NavigationRoutingState).currentInnerIndex;
           }
+          var navDetailModel = (state as NavigationRoutingState).navDetailModel;
+          int currentIndex = update.$1;
+          int currentIntermidateStopInd =
+              (state as NavigationRoutingState).currentIntermidateStopIndex;
+          if (navDetailModel.legs[currentIndex].intermidateStops != null) {
+            currentIntermidateStopInd = findNearestIntermidateStop(
+                event.location,
+                navDetailModel.legs[currentIndex].intermidateStops!
+                    .map((e) => e.location)
+                    .toList());
+          }
           emit(NavigationRoutingState(
               legs: legs,
               currentIndex: update.$1,
               currentInnerIndex: innerInd,
               userPointInRoute: update.$2,
-              userLocation: event.location));
+              userLocation: event.location,
+              navDetailModel: navDetailModel,
+              currentIntermidateStopIndex: currentIntermidateStopInd));
+        }
+      } else if (event is CancelNavigationEvent) {
+        if (state is NavigationRoutingState) {
+          emit(NavigationSuccessState(
+              routePoints: (state as NavigationRoutingState).legs,
+              navDetailModel:
+                  (state as NavigationRoutingState).navDetailModel));
         }
       }
     });
@@ -101,5 +126,23 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
 
     // Return the index of the polyline and the nearest point on it
     return (minIndex, minPoint);
+  }
+
+  int findNearestIntermidateStop(
+      LatLng userLocation, List<LatLng> intermidateStops) {
+    Feature<Point> nearestStop = nearestPoint(
+        Feature(
+            geometry: Point(
+                coordinates:
+                    Position(userLocation.longitude, userLocation.latitude))),
+        FeatureCollection(
+            features: intermidateStops
+                .map((e) => Feature(
+                    geometry:
+                        Point(coordinates: Position(e.longitude, e.latitude))))
+                .toList()));
+    return intermidateStops.indexWhere((element) =>
+        element.latitude == (nearestStop.geometry!.coordinates[1]! as double) &&
+        element.longitude == (nearestStop.geometry!.coordinates[0] as double));
   }
 }

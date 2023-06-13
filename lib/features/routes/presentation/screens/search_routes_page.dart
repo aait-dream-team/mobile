@@ -105,8 +105,8 @@ class _SearchWidget extends State<SearchPage> {
                     getPlaceDetailWithLatLng: (Prediction prediction) {
                       // this method will return latlng with place detail
                       screenArguments.func(
-                          LatLng(double.parse(prediction.lng.toString()),
-                              double.parse(prediction.lat.toString())),
+                          LatLng(double.parse(prediction.lat.toString()),
+                              double.parse(prediction.lng.toString())),
                           prediction.description);
                     }, // this callback is called when isLatLngRequired is true
                     itmClick: (Prediction prediction) {
