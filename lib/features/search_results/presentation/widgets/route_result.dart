@@ -147,7 +147,7 @@ class RouteWidget extends StatelessWidget {
                       Chip(
                         label: Text(
                             DateFormat("HH:mm").format(result.departureTime)),
-                        backgroundColor: AppColors.greenAccent,
+                        backgroundColor: Colors.green,
                         labelStyle: TextStyle(
                             color: Colors.white, fontSize: mediumFontSize),
                       ),
@@ -157,7 +157,7 @@ class RouteWidget extends StatelessWidget {
                         Chip(
                           label: Text(
                               DateFormat("HH:mm").format(result.arrivalTime)),
-                          backgroundColor: AppColors.blueAccent,
+                          backgroundColor: Colors.blue,
                           labelStyle: TextStyle(
                               color: AppColors.white, fontSize: mediumFontSize),
                         ),
