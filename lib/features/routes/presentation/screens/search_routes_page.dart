@@ -1,3 +1,4 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:bus_navigation/features/routes/bloc/routes_bloc.dart';
 import 'package:bus_navigation/features/routes/models/recent_route.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'screen_arguments_routes_args.dart';
 import 'choose_from_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:geolocator/geolocator.dart';
 
 class SearchPage extends StatefulWidget {
   static const String route = "/SearchRoute";
@@ -150,6 +152,36 @@ class _SearchWidget extends State<SearchPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton.icon(
                         onPressed: () async {
+                          bool isLocationEnabled =
+                              await Geolocator.isLocationServiceEnabled();
+                          if (!isLocationEnabled) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Enable Location Services"),
+                                  content: const Text(
+                                      'Please enable location services.'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: const Text('Cancel'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: const Text('Settings'),
+                                      onPressed: () {
+                                        AppSettings.openLocationSettings();
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            return;
+                          }
                           final Position val = await _determinePosition();
                           screenArguments.func(
                               LatLng(val.latitude, val.longitude),

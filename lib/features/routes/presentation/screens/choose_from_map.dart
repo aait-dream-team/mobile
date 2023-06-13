@@ -20,7 +20,7 @@ class _MapPageState extends State<MapPage> {
   final ScreenArgumentsRoutesArgs screenArguments;
 
   _MapPageState({required this.screenArguments});
-
+  bool isLoading = false;
   // Create a map controller
   final MapController _mapController = MapController();
 
@@ -78,17 +78,38 @@ class _MapPageState extends State<MapPage> {
           //         var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
           // var first = addresses.first;
           // print("${first.featureName} : ${first.addressLine}");
-          List<Placemark> placemarks = await placemarkFromCoordinates(
-              _centerLocation.latitude, _centerLocation.longitude);
-          Placemark place = placemarks[0];
-          String locationName =
-              "${place.name}, ${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode} ${place.country}";
-          print(locationName);
-          screenArguments.func(_centerLocation, locationName);
+          setState(() {
+            isLoading = true;
+          });
+          // await Future.delayed(Duration(seconds: 10));
+          try {
+            List<Placemark> placemarks = await placemarkFromCoordinates(
+                _centerLocation.latitude, _centerLocation.longitude);
+            Placemark place = placemarks[0];
+            String locationName =
+                "${place.name}, ${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode} ${place.country}";
+            print(locationName);
+            screenArguments.func(_centerLocation, locationName);
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('No internet connection'),
+              ),
+            );
+            // await Future.delayed(Duration(seconds: 2));
+          }
+
+          setState(() {
+            isLoading = false;
+          });
           Navigator.pop(context);
           Navigator.pop(context);
         },
-        child: const Icon(Icons.check),
+        child: isLoading
+            ? CircularProgressIndicator(
+                color: Colors.white,
+              )
+            : Icon(Icons.check),
       ),
     );
   }
