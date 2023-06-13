@@ -9,8 +9,11 @@ import '../models/RouteResultModel.dart';
 
 class RouteSearchDataProvider {
   Future<List<(RouteSearchResultModel, NavDetailModel)>> getSearchResults(
-      LatLng from, LatLng to, DateTime departureDate) async {
-    var data = await getApiContent(from, to, departureDate);
+      LatLng from,
+      LatLng to,
+      DateTime departureDate,
+      bool isDepartureTime) async {
+    var data = await getApiContent(from, to, departureDate, isDepartureTime);
     var details = getItineraries(data)
         .cast<Map<String, dynamic>>()
         .map(NavDetailModel.fromMap)
@@ -77,22 +80,18 @@ class RouteSearchDataProvider {
     return null;
   }
 
-  Future<dynamic> getApiContent(
-      LatLng from, LatLng to, DateTime departureDate) async {
+  Future<dynamic> getApiContent(LatLng from, LatLng to, DateTime departureDate,
+      bool isDepartureTime) async {
+    departureDate = (DateTime.now().isAfter(departureDate))
+        ? DateTime.now()
+        : departureDate;
     var URL =
-        "http://34.125.99.126:8082/otp/routers/default/plan?fromPlace=${from.latitude},${from.longitude}&toPlace=${to.latitude},${to.longitude}&time=${DateFormat('hh:mm a').format(departureDate)}&date=${DateFormat('MM-dd-yyyy').format(departureDate)}&mode=TRANSIT%2CWALK&arriveBy=false&wheelchair=false&showIntermediateStops=true&debugItineraryFilter=false&locale=en&numItineraries=7";
+        "http://34.125.99.126:8082/otp/routers/default/plan?fromPlace=${from.latitude},${from.longitude}&toPlace=${to.latitude},${to.longitude}&time=${DateFormat('hh:mm a').format(departureDate)}&date=${DateFormat('MM-dd-yyyy').format(departureDate)}&mode=TRANSIT%2CWALK&arriveBy=false&wheelchair=false&showIntermediateStops=true&debugItineraryFilter=false&locale=en&numItineraries=10&arriveBy=${!isDepartureTime}";
 
     var response = await http.get(Uri.parse(URL));
     if (response.statusCode == 200) {
       // parse the response body as JSON
       var data = jsonDecode(response.body);
-      print(data);
-      // print(data['plan']['itineraries'][0]['legs'][1]['tripId']);
-      // print(data['plan']['itineraries'][0]['legs'][1]['duration']);
-      // print(data['plan']['itineraries'][0]['legs'][1]['startTime']);
-
-      // print(data['plan']['itineraries'][0]['legs']);
-
       return data;
     } else {
       // handle the error

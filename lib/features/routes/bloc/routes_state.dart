@@ -22,6 +22,13 @@ class RoutesLoaded extends RoutesState {
 class RoutesPinPoint extends RoutesState {
   final PinPoint from;
   final PinPoint to;
+  final DateTime datetime;
+  final bool isDepartureTime;
 
-  const RoutesPinPoint({required this.from, required this.to, required super.routes});
+  const RoutesPinPoint(
+      {required this.from,
+      required this.to,
+      required super.routes,
+      required this.datetime,
+      required this.isDepartureTime});
 }
