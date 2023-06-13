@@ -74,21 +74,16 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
   }
 
   @override
-void didChangeAppLifecycleState(AppLifecycleState state) {
-  if(state == AppLifecycleState.paused){
-    if(isPipAvailable){
-      print("yesss changeddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd");
-    floating.enable(aspectRatio: Rational(2, 3));
-    print("Maletttttttttttt");
-    print("yesss changeddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd");
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    debugPrint(state.toString());
+    if (state == AppLifecycleState.inactive) {
+      if (isPipAvailable && _isNavigationStarted) {
+        floating.enable(aspectRatio: const Rational(2, 3));
+      }
     }
-    
   }
-}
 
-onPause(){
-
-}
+  onPause() {}
 
   @override
   Widget build(BuildContext context) {
@@ -106,14 +101,14 @@ onPause(){
             builder: ((context, state) {
               if (state is NavigationRoutingState && !_isNavigationStarted) {
                 _isNavigationStarted = true;
-    
+
                 String text = 'You have started your navigation  to Bole';
                 // Notify user that their navigation has started
                 LocalNotificationDataProvider.instantNotify(
                     title: 'Navigation Started', body: text);
                 TextToSpeechSingleton tts = TextToSpeechSingleton();
                 tts.speak(text);
-    
+
                 // Save the navigation to History
                 // widget.routeHistoryRepository.addRoute(RouteModel(
                 //   startPoint: widget.navDetailModel.legs[0].from,
@@ -121,20 +116,20 @@ onPause(){
                 //   date: DateTime.now(),
                 // ));
               }
-    
+
               return Scaffold(
                 backgroundColor: Colors.transparent,
                 extendBodyBehindAppBar: true,
                 floatingActionButton: (state is NavigationRoutingState)
-                    ? FloatingActionButton.extended(
-                        label: const Text('Cancel'), // <-- Text
+                    ? const FloatingActionButton.extended(
+                        label: Text('Cancel'), // <-- Text
                         backgroundColor: Colors.redAccent,
-                        icon: const Icon(
+                        icon: Icon(
                           // <-- Icon
                           Icons.cancel,
                           size: 24.0,
                         ),
-                        onPressed: isPipAvailable ?()=>floating.enable(aspectRatio: Rational(2, 3)):null
+                        onPressed: null,
                       )
                     : FloatingActionButton.extended(
                         label: const Text('Start'), // <-- Text
@@ -299,14 +294,14 @@ onPause(){
             builder: ((context, state) {
               if (state is NavigationRoutingState && !_isNavigationStarted) {
                 _isNavigationStarted = true;
-    
+
                 String text = 'You have started your navigation  to Bole';
                 // Notify user that their navigation has started
                 LocalNotificationDataProvider.instantNotify(
                     title: 'Navigation Started', body: text);
                 TextToSpeechSingleton tts = TextToSpeechSingleton();
                 tts.speak(text);
-    
+
                 // Save the navigation to History
                 // widget.routeHistoryRepository.addRoute(RouteModel(
                 //   startPoint: widget.navDetailModel.legs[0].from,
@@ -314,7 +309,7 @@ onPause(){
                 //   date: DateTime.now(),
                 // ));
               }
-    
+
               return Scaffold(
                 backgroundColor: Colors.transparent,
                 extendBodyBehindAppBar: true,
