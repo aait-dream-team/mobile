@@ -12,6 +12,7 @@ import 'package:bus_navigation/features/nav_detail/presentation/widgets/walk_mod
 import 'package:bus_navigation/features/navigate/presentation/screens/navigation_screen.dart';
 import 'package:bus_navigation/features/search_results/models/RouteResultModel.dart';
 import 'package:bus_navigation/features/search_results/presentation/widgets/route_result.dart';
+import 'package:floating/floating.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bus_navigation/core/utils/utils.dart';
@@ -43,15 +44,56 @@ class SidePage extends StatefulWidget {
   _SidePageState createState() => _SidePageState();
 }
 
-class _SidePageState extends State<SidePage> {
+class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
   final double _expandedWidth = 400.0;
   bool _isExpanded = false;
   bool isStarted = false;
   bool _isNavigationStarted = false;
+  late Floating floating;
+  bool isPipAvailable = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    floating = Floating();
+    requestPipAvailable();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  void requestPipAvailable() async {
+    isPipAvailable = await floating.isPipAvailable;
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+    floating.dispose();
+  }
+
+  @override
+void didChangeAppLifecycleState(AppLifecycleState state) {
+  if(state == AppLifecycleState.paused){
+    if(isPipAvailable){
+      print("yesss changeddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd");
+    floating.enable(aspectRatio: Rational(2, 3));
+    print("Maletttttttttttt");
+    print("yesss changeddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd");
+    }
+    
+  }
+}
+
+onPause(){
+
+}
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return PiPSwitcher(
+      childWhenDisabled: BlocProvider(
         create: (context) => NavigationBloc(repository: widget.repository)
           ..add(LoadNavigationEvent(
               polylineString: widget.navDetailModel.legs
@@ -59,19 +101,19 @@ class _SidePageState extends State<SidePage> {
                   .cast<String>()
                   .toList())),
         child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            home: BlocBuilder<NavigationBloc, NavigationState>(
-                builder: ((context, state) {
+          debugShowCheckedModeBanner: false,
+          home: BlocBuilder<NavigationBloc, NavigationState>(
+            builder: ((context, state) {
               if (state is NavigationRoutingState && !_isNavigationStarted) {
                 _isNavigationStarted = true;
-
+    
                 String text = 'You have started your navigation  to Bole';
                 // Notify user that their navigation has started
                 LocalNotificationDataProvider.instantNotify(
                     title: 'Navigation Started', body: text);
                 TextToSpeechSingleton tts = TextToSpeechSingleton();
                 tts.speak(text);
-
+    
                 // Save the navigation to History
                 // widget.routeHistoryRepository.addRoute(RouteModel(
                 //   startPoint: widget.navDetailModel.legs[0].from,
@@ -79,7 +121,7 @@ class _SidePageState extends State<SidePage> {
                 //   date: DateTime.now(),
                 // ));
               }
-
+    
               return Scaffold(
                 backgroundColor: Colors.transparent,
                 extendBodyBehindAppBar: true,
@@ -92,9 +134,7 @@ class _SidePageState extends State<SidePage> {
                           Icons.cancel,
                           size: 24.0,
                         ),
-                        onPressed: () {
-                          // TODO: Biruk ADD CANCEL EVENT
-                        },
+                        onPressed: isPipAvailable ?()=>floating.enable(aspectRatio: Rational(2, 3)):null
                       )
                     : FloatingActionButton.extended(
                         label: const Text('Start'), // <-- Text
@@ -242,7 +282,64 @@ class _SidePageState extends State<SidePage> {
                   ),
                 ),
               );
-            }))));
+            }),
+          ),
+        ),
+      ),
+      childWhenEnabled: BlocProvider(
+        create: (context) => NavigationBloc(repository: widget.repository)
+          ..add(LoadNavigationEvent(
+              polylineString: widget.navDetailModel.legs
+                  .map((e) => e.legGeometry)
+                  .cast<String>()
+                  .toList())),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: BlocBuilder<NavigationBloc, NavigationState>(
+            builder: ((context, state) {
+              if (state is NavigationRoutingState && !_isNavigationStarted) {
+                _isNavigationStarted = true;
+    
+                String text = 'You have started your navigation  to Bole';
+                // Notify user that their navigation has started
+                LocalNotificationDataProvider.instantNotify(
+                    title: 'Navigation Started', body: text);
+                TextToSpeechSingleton tts = TextToSpeechSingleton();
+                tts.speak(text);
+    
+                // Save the navigation to History
+                // widget.routeHistoryRepository.addRoute(RouteModel(
+                //   startPoint: widget.navDetailModel.legs[0].from,
+                //   endPoint: widget.navDetailModel.legs[-1].to,
+                //   date: DateTime.now(),
+                // ));
+              }
+    
+              return Scaffold(
+                backgroundColor: Colors.transparent,
+                extendBodyBehindAppBar: true,
+                body: SafeArea(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Stack(
+                          children: [
+                            Container(
+                              color: Colors.white,
+                              child: Center(child: NavigationPage()),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }),
+          ),
+        ),
+      ),
+    );
   }
 }
 

@@ -55,6 +55,7 @@ dependencies:
   geolocator: ^9.0.2
   turf: ^0.0.7
   geocoding: ^2.1.0
+  floating: ^2.0.0
 
   
 dev_dependencies:
