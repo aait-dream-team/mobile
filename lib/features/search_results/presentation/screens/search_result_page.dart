@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/search_bloc.dart';
 import '../../data_provider/route_search_data_provider.dart';
 import '../../repository/route_search_repository.dart';
-import '../widgets/depature_datetime.dart';
 import '../widgets/route_result.dart';
 
 class SearchResults extends StatefulWidget {
@@ -38,7 +37,15 @@ class _RouteSearchState extends State<SearchResults> {
             );
           }
           if (state is SearchLoadFailedState) {
-            return Center(child: Text(state.msg));
+            return RefreshIndicator(
+                onRefresh: () async {
+                  context.read<SearchBloc>().add(LoadSearchEvent(
+                      departureDate: state.departureDate,
+                      from: state.from,
+                      to: state.to,
+                      isDepartureTime: state.isDepartureTime));
+                },
+                child: Center(child: Text(state.msg)));
           }
           if (state is SearchSuccessState) {
             final list = state.results;
@@ -48,7 +55,8 @@ class _RouteSearchState extends State<SearchResults> {
                 context.read<SearchBloc>().add(LoadSearchEvent(
                     departureDate: state.departureDate,
                     from: state.from,
-                    to: state.to));
+                    to: state.to,
+                    isDepartureTime: state.isDepartureTime));
               },
               child: CustomScrollView(
                 slivers: list

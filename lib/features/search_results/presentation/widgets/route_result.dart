@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bus_navigation/core/utils/colors.dart';
 
 import 'package:flutter/material.dart';
@@ -43,11 +45,12 @@ class RouteWidget extends StatelessWidget {
       elevation: 4,
       shadowColor: AppColors.blackAccent.withOpacity(0.2),
       borderRadius: BorderRadius.circular(8),
+      color: Colors.white,
       child: Row(
         children: [
           // First column: departure in minutes
           SizedBox(
-            width: 100,
+            width: 110,
             child: Container(
               padding: const EdgeInsets.all(8),
               child: Column(
@@ -77,6 +80,58 @@ class RouteWidget extends StatelessWidget {
                       ),
                     ],
                   ),
+                  // TODO [BIRUK]: use real alerts from OTP
+                  if (Random().nextBool())
+                    Badge(
+                      label: const Text("7"),
+                      // position: BadgePosition.topEnd(top: -10, end: -10), // Adjust the position of the badge
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Show an alert dialog with the list of alerts
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Alerts for this route'),
+                                content: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      "result.alerts",
+                                      "result.alerts",
+                                      "result.alerts",
+                                    ]
+                                        .map((alert) => const ListTile(
+                                              leading: Icon(Icons.ac_unit),
+                                              title: Text(
+                                                  "alert.message alert.message alert.message alert.message alert.message alert.message "),
+                                            ))
+                                        .toList(),
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: const Icon(Icons.warning,
+                            color: Colors.red), // Change the icon color
+                        style: ElevatedButton.styleFrom(
+                          shape: const CircleBorder(
+                              side: BorderSide(
+                                  color: Colors
+                                      .red)), // Add a border to the circle
+                          padding: const EdgeInsets.all(9),
+                          backgroundColor: Colors.white, // Button color
+                        ),
+                      ),
+                    )
                 ],
               ),
             ),

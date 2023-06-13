@@ -62,9 +62,17 @@ class BusMode extends StatelessWidget {
                   child: Card(
                     child: Padding(
                       padding: const EdgeInsets.all(3.0),
-                      child: Text(
-                        "${leg.routeShortName}",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      child: SizedBox(
+                        width: 35,
+                        child: Center(
+                          child: Text(
+                            "${leg.routeShortName}",
+                            overflow: TextOverflow.clip,
+                            maxLines: 1,
+                            softWrap: false,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ),
                     ),
                   ),

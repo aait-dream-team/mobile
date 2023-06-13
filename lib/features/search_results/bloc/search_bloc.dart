@@ -22,18 +22,20 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
           try {
             final value = await repository.getSearchResults(
-                event.from, event.to, event.departureDate);
+                event.from, event.to, event.departureDate, event.isDepartureTime);
             emit(SearchSuccessState(
                 results: value,
                 from: event.from,
                 to: event.to,
-                departureDate: event.departureDate));
+                departureDate: event.departureDate,
+                isDepartureTime: event.isDepartureTime));
           } catch (e) {
             emit(SearchLoadFailedState(
                 msg: e.toString(),
                 from: event.from,
                 to: event.to,
-                departureDate: event.departureDate));
+                departureDate: event.departureDate,
+                isDepartureTime: event.isDepartureTime));
           }
         }
         if (event is InitSearch) {
