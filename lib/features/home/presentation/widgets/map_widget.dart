@@ -22,6 +22,46 @@ class _MapWidget extends State<MapWidget>
     with AutomaticKeepAliveClientMixin<MapWidget> {
   bool _isShowingBottomSheet = false;
 
+  final txt = Container(
+    decoration: BoxDecoration(
+      border: Border.all(
+        color: Colors.grey,
+      ),
+      borderRadius: BorderRadius.circular(5),
+    ),
+    height: 50,
+    margin: const EdgeInsets.symmetric(horizontal: 30),
+    child: ClipRRect(
+      child: Expanded(
+        child: Row(
+          children: [
+            Expanded(
+                child: TextFormField(
+              decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(left: 10)),
+            )),
+            Container(
+              decoration: const BoxDecoration(
+                color: Colors.redAccent,
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(5),
+                    bottomRight: Radius.circular(5)),
+              ),
+              alignment: Alignment.center,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: const InkWell(
+                  child: Text(
+                'Apply Coupon',
+                style: TextStyle(color: Colors.white),
+              )),
+            )
+          ],
+        ),
+      ),
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     final items = ['work', 'home', 'school', 'other'];

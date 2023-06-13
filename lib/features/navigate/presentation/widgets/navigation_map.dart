@@ -128,6 +128,16 @@ class NavigateMapWidget extends StatelessWidget {
                         .cast<Polyline>()
                         .toList(),
                   ),
+                  MarkerLayer(
+                    markers: state.navDetailModel.legs
+                        .map((e) => e.intermidateStops ?? [])
+                        .expand((element) => element)
+                        .map((e) => Marker(
+                            point: e.location,
+                            builder: (context) =>
+                                const Icon(Icons.donut_small)))
+                        .toList(),
+                  )
                 ],
               ),
             );

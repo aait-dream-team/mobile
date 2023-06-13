@@ -35,14 +35,15 @@ class NavigationRoutingState extends NavigationState {
   final LatLng userLocation;
   final int currentIntermidateStopIndex;
 
-  NavigationRoutingState(
-      {required this.legs,
-      required this.navDetailModel,
-      required this.currentIndex,
-      required this.currentInnerIndex,
-      required this.userPointInRoute,
-      required this.userLocation,
-      required this.currentIntermidateStopIndex,
-      required this.fromPin,
-      required this.toPin});
+  NavigationRoutingState({
+    required this.legs,
+    required this.navDetailModel,
+    required this.currentIndex,
+    required this.currentInnerIndex,
+    required this.userPointInRoute,
+    required this.userLocation,
+    required this.currentIntermidateStopIndex,
+    required this.fromPin,
+    required this.toPin,
+  });
 }
