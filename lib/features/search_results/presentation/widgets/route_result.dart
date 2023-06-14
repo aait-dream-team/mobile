@@ -82,54 +82,50 @@ class RouteWidget extends StatelessWidget {
                   ),
                   // TODO [BIRUK]: use real alerts from OTP
                   if (Random().nextBool())
-                    Badge(
-                      label: const Text("7"),
-                      // position: BadgePosition.topEnd(top: -10, end: -10), // Adjust the position of the badge
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Show an alert dialog with the list of alerts
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text('Alerts for this route'),
-                                content: SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      "result.alerts",
-                                      "result.alerts",
-                                      "result.alerts",
-                                    ]
-                                        .map((alert) => const ListTile(
-                                              leading: Icon(Icons.ac_unit),
-                                              title: Text(
-                                                  "alert.message alert.message alert.message alert.message alert.message alert.message "),
-                                            ))
-                                        .toList(),
-                                  ),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Show an alert dialog with the list of alerts
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Alerts for this route'),
+                              content: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    "result.alerts",
+                                    "result.alerts",
+                                    "result.alerts",
+                                  ]
+                                      .map((alert) => const ListTile(
+                                            leading: Icon(Icons.ac_unit),
+                                            title: Text(
+                                                "alert.message alert.message alert.message alert.message alert.message alert.message "),
+                                          ))
+                                      .toList(),
                                 ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('OK'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        child: const Icon(Icons.warning,
-                            color: Colors.red), // Change the icon color
-                        style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(
-                              side: BorderSide(
-                                  color: Colors
-                                      .red)), // Add a border to the circle
-                          padding: const EdgeInsets.all(9),
-                          backgroundColor: Colors.white, // Button color
-                        ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: const Icon(Icons.warning,
+                          color: Colors.red, size: 25,), // Change the icon color
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(
+                            side: BorderSide(
+                                color: Colors
+                                    .black12)), // Add a border to the circle
+                        padding: const EdgeInsets.all(9),
+                        backgroundColor: Colors.white, // Button color
                       ),
                     )
                 ],
@@ -197,6 +193,7 @@ class RouteWidget extends StatelessWidget {
                     ),
                   // Second row: departure time, duration, arrival time and walking time
                   Row(
+                    // crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Chip(
@@ -206,8 +203,9 @@ class RouteWidget extends StatelessWidget {
                         labelStyle: TextStyle(
                             color: Colors.white, fontSize: mediumFontSize),
                       ),
-                      if (showArrivalAndWalkingTime)
-                        Text('${result.totalDuration.inMinutes} min'),
+                      SizedBox(
+                        width: 20,
+                      ),
                       if (showArrivalAndWalkingTime)
                         Chip(
                           label: Text(

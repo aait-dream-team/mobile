@@ -28,7 +28,7 @@ class _RouteSearchState extends State<SearchResults> {
           if (state is SearchInitialState) {
             return const Padding(
                 padding: EdgeInsets.all(16.0),
-                child: Center(child: Text("Enter source and destination")));
+                child: Center(child: Text("Enter source and destination", style: TextStyle(fontSize: 23,fontWeight: FontWeight.w100),)));
           }
           if (state is SearchInitialState || state is SearchLoadingState) {
             return const Padding(
@@ -48,9 +48,9 @@ class _RouteSearchState extends State<SearchResults> {
                 child: Center(child: Text(state.msg)));
           }
           if (state is SearchSuccessState) {
-            final list = state.results;
+            final list = [];
 
-            return RefreshIndicator(
+            return (list.isNotEmpty)?RefreshIndicator(
               onRefresh: () async {
                 context.read<SearchBloc>().add(LoadSearchEvent(
                     departureDate: state.departureDate,
@@ -75,7 +75,7 @@ class _RouteSearchState extends State<SearchResults> {
                     .cast<SliverToBoxAdapter>()
                     .toList(),
               ),
-            );
+            ):Center(child: Text("There is no possible route", style: TextStyle(fontSize: 19, fontWeight: FontWeight.w100),),);
           }
           return const Center(child: Text("Something Went Wrong"));
         },
