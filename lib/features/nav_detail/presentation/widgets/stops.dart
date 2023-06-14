@@ -29,6 +29,9 @@ class _StopsState extends State<Stops> {
           ),
           title: Text(
             widget.title,
+            overflow: TextOverflow.fade,
+            maxLines: 1,
+            softWrap: false,
             style: const TextStyle(
                 color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
           ),
