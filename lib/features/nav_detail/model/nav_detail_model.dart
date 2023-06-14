@@ -18,6 +18,7 @@ class IntermediateStop {
   final DateTime arrivalTime;
   final DateTime departureTime;
 
+
   IntermediateStop(
       {required this.name,
       required this.location,
@@ -35,6 +36,9 @@ class IntermediateStop {
 }
 
 class Leg {
+  final String? routeId;
+  final String? agencyId;
+  final String? tripId;
   final DateTime startTime; // legs[i].startTime
   final DateTime endTime;
   final String mode;
@@ -50,6 +54,7 @@ class Leg {
   final List<Step>? steps;
 
   Leg({
+
     required this.startTime,
     required this.endTime,
     required this.mode,
@@ -63,10 +68,16 @@ class Leg {
     this.routeLongName,
     this.agencyName,
     this.steps,
+    this.routeId,
+    this.agencyId,
+    this.tripId
   });
 
   factory Leg.fromMap(Map<String, dynamic> map) {
     return Leg(
+      agencyId: map['mode'] != 'WALK' ? (map['agencyId'] as String).substring(2).replaceAll(':', "-") : null,
+      tripId: map['mode'] != 'WALK' ? (map['tripId'] as String).substring(2).replaceAll(':', "-"): null,
+      routeId: map['mode'] != 'WALK' ? (map['routeId'] as String).substring(2).replaceAll(':', "-") : null,
       startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
       endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
       mode: map['mode'] as String,
@@ -97,7 +108,7 @@ class Leg {
 
   @override
   String toString() {
-    return 'Leg(startTime: $startTime, endTime: $endTime, mode: $mode, from: $from, to: $to, duration: $duration, distance: $distance)';
+    return 'Leg(startTime: $startTime, endTime: $endTime, mode: $mode, from: $from, to: $to, duration: $duration, distance: $distance, tripId: $tripId, routeId: $routeId, agencyId: $agencyId)';
   }
 }
 

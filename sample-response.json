@@ -1,3 +1,4 @@
+// data["plan"]["itineraries"][0]["legs"][agencyId] //agencyId
 {
     "requestParameters": {
         "date": "2023-05-17",
