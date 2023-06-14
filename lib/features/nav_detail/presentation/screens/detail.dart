@@ -112,32 +112,14 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                   Uri.parse('$url/ws/trip/notification/$conStr/'))
               .stream
               .listen((message) {
-            print('agency');
-            print(leg.agencyId);
             var data = jsonDecode(message);
-
-            LocalNotificationDataProvider.instantNotify(title: data['message']['effect'], body: data["message"]['message']);
+            LocalNotificationDataProvider.instantNotify(
+                title: data['message']['effect'],
+                body: data["message"]['message']);
             TextToSpeechSingleton tts = TextToSpeechSingleton();
             tts.speak(data['message']['message']);
-            print("We finished this method call");             
+            print("We finished this method call");
           });
-
-        // WebSocketChannel.connect(Uri.parse(
-        //         '$url/ws/trip/notification/${leg.routeId}/'))
-        //     .stream
-        //     .listen((message) {
-        //   print('route');
-        //   print(leg.routeId);
-        //   print(message);
-        // });
-        // WebSocketChannel.connect(Uri.parse(
-        //         '${url}/ws/trip/notification/${leg.tripId}/'))
-        //     .stream
-        //     .listen((message) {
-        //   print('tripId');
-        //   print(leg.tripId);
-        //   print(message);
-        // });
       }
     }
   }

@@ -400,8 +400,7 @@ class _MapWidget extends State<MapWidget>
                                           ),
                                           // SizedBox(height: 16),
 
-                                              if (state
-                                                  is! HomePinnedLoadingState)
+                                          if (state is! HomePinnedLoadingState)
                                             DefaultTabController(
                                                 length: 3,
                                                 child: Column(
@@ -429,8 +428,13 @@ class _MapWidget extends State<MapWidget>
                                                           // SavedLocations(),
 
                                                           Expanded(
-                                                              child:
-                                                                  SavedLocations()),
+                                                              child: SavedLocations(
+                                                                  location: PinPoint(
+                                                                      location:
+                                                                          state
+                                                                              .pinPosition,
+                                                                      name: state
+                                                                          .name))),
                                                           Icon(Icons
                                                               .directions_transit),
                                                         ],

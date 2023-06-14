@@ -50,8 +50,8 @@ class LocationModel {
       id: map['id'] as int,
       savedName: map['savedName'] as String,
       name: map['name'] as String,
-      lat: (map['lat'] as int).toString(),
-      long: (map['long'] as int).toString(),
+      lat: (map['lat'] as double).toString(),
+      long: (map['long'] as double).toString(),
       date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
     );
   }
