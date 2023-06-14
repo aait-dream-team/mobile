@@ -1,3 +1,4 @@
+import 'package:bus_navigation/features/routes/models/pin.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
@@ -21,21 +22,25 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           emit(SearchLoadingState());
 
           try {
-            final value = await repository.getSearchResults(
-                event.from, event.to, event.departureDate, event.isDepartureTime);
+            final value = await repository.getSearchResults(event.from,
+                event.to, event.departureDate, event.isDepartureTime);
             emit(SearchSuccessState(
                 results: value,
                 from: event.from,
                 to: event.to,
                 departureDate: event.departureDate,
-                isDepartureTime: event.isDepartureTime));
+                isDepartureTime: event.isDepartureTime,
+                fromPin: event.fromPin,
+                toPin: event.toPin));
           } catch (e) {
             emit(SearchLoadFailedState(
                 msg: e.toString(),
                 from: event.from,
                 to: event.to,
                 departureDate: event.departureDate,
-                isDepartureTime: event.isDepartureTime));
+                isDepartureTime: event.isDepartureTime,
+                fromPin: event.fromPin,
+                toPin: event.toPin));
           }
         }
         if (event is InitSearch) {

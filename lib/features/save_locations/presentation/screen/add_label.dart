@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
-
+import 'package:another_flushbar/flushbar.dart';
 import '../../bloc/locations_bloc.dart';
 
 class SavedLocations extends StatefulWidget {
   static const String route = "/routes";
-  const SavedLocations({super.key});
+  final PinPoint location;
+  const SavedLocations({super.key, required this.location});
 
   @override
   State<SavedLocations> createState() => _SavedLocations();
@@ -57,30 +58,38 @@ class _SavedLocations extends State<SavedLocations> {
                                 border: InputBorder.none,
                                 contentPadding: EdgeInsets.only(left: 10)),
                           )),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.redAccent,
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(50),
-                                  bottomRight: Radius.circular(50)),
+                          GestureDetector(
+                            onTap: () {
+                              print(locationController.text);
+                              if (locationController.text == '') {
+                                Flushbar(
+                                  title: "Lable",
+                                  message:
+                                      "Label can not be empty",
+                                  duration: Duration(seconds: 3),
+                                )..show(context);
+                                return;
+                              }
+                              context.read<LocationsBloc>().add(SaveLocation(
+                                  name: locationController.text,
+                                  location: widget.location));
+                              locationController.clear();
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.redAccent,
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(50),
+                                    bottomRight: Radius.circular(50)),
+                              ),
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.symmetric(horizontal: 8),
+                              child: InkWell(
+                                  child: Text(
+                                'Save Location',
+                                style: TextStyle(color: Colors.white),
+                              )),
                             ),
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.symmetric(horizontal: 8),
-                            child: InkWell(
-                                onTap: () {
-                                  print(locationController.text);
-                                  context.read<LocationsBloc>().add(
-                                      SaveLocation(
-                                          name: locationController.text,
-                                          location: PinPoint(
-                                              name: "name",
-                                              location: LatLng(0.0, 0.0))));
-                                  locationController.clear();
-                                },
-                                child: Text(
-                                  'Save Location',
-                                  style: TextStyle(color: Colors.white),
-                                )),
                           )
                         ],
                       ),
