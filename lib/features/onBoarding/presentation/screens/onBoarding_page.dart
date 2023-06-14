@@ -34,7 +34,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         OnboardingModel(
           title: 'Effortless Navigation through Bus, Train, and Walking Routes',
           description:
-              'Unlock the pulse of your city with our all-in-one public transport companion. Seamlessly search, connect, and navigate through bus, train, and walking routes for a hassle-free urban exploration.',
+              'Seamlessly search, connect, and navigate through bus, train, and walking routes for a hassle-free urban exploration.',
           image: 'assets/onBoarding/image1.jpg',
           bgColor: const Color(0xFFFEF9EB),
         ),
