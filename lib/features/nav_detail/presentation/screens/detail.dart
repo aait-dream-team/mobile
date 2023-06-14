@@ -215,6 +215,7 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                       children: [
                         RouteWidget(
                           result: widget.routeSearchResultModel,
+                          navDetailModel: widget.navDetailModel,
                         ),
                         Expanded(
                           child: Stack(

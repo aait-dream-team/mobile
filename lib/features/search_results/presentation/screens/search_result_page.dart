@@ -74,8 +74,7 @@ class _RouteSearchState extends State<SearchResults> {
                                   context, SidePage.route,
                                   arguments: [route.$1, route.$2, state.fromPin, state.toPin]),
                               child: RouteWidget(
-                                result: route.$1,
-                              ),
+                                  result: route.$1, navDetailModel: route.$2),
                             ))))
                     .cast<SliverToBoxAdapter>()
                     .toList(),
@@ -87,5 +86,4 @@ class _RouteSearchState extends State<SearchResults> {
       ),
     );
   }
-  
 }
