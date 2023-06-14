@@ -1,3 +1,4 @@
+import 'package:bus_navigation/features/history/presentation/widgets/loading_shimmer.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/screens/detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,8 +33,8 @@ class _RouteSearchState extends State<SearchResults> {
           }
           if (state is SearchInitialState || state is SearchLoadingState) {
             return const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Center(child: CircularProgressIndicator(strokeWidth: 7)),
+              padding: EdgeInsets.all(6.0),
+              child: LoadingShimmer(),
             );
           }
           if (state is SearchLoadFailedState) {
