@@ -93,7 +93,7 @@ class RouteWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  if (alerts.isNotEmpty || Random().nextBool())
+                  if (alerts.isNotEmpty)
                     ElevatedButton(
                       onPressed: () {
                         // Show an alert dialog with the list of alerts
@@ -104,10 +104,10 @@ class RouteWidget extends StatelessWidget {
                               title: const Text('Alerts for this route'),
                               content: SingleChildScrollView(
                                 child: Column(
-                                  children: ["alerts"]
-                                      .map((alert) => const ListTile(
-                                          leading: Icon(Icons.ac_unit),
-                                          title: Text("alert.alertText")))
+                                  children: alerts
+                                      .map((alert) => ListTile(
+                                          leading: const Icon(Icons.ac_unit),
+                                          title: Text(alert.alertText)))
                                       .toList(),
                                 ),
                               ),

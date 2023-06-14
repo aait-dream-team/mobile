@@ -400,10 +400,9 @@ class _MapWidget extends State<MapWidget>
                                           ),
                                           // SizedBox(height: 16),
 
-                                              if (state
-                                                  is! HomePinnedLoadingState)
+                                          if (state is! HomePinnedLoadingState)
                                             DefaultTabController(
-                                                length: 3,
+                                                length: 2,
                                                 child: Column(
                                                   children: [
                                                     const TabBar(
