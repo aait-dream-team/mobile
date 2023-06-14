@@ -1,5 +1,6 @@
 import 'package:bus_navigation/features/routes/models/pin.dart';
 import 'package:bus_navigation/features/save_locations/model/pin_location.dart';
+import 'package:bus_navigation/features/save_locations/presentation/screen/saved_locations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -88,33 +89,7 @@ class _SavedLocations extends State<SavedLocations> {
                 ))
               ],
             ),
-            Expanded(
-                child: ListView.builder(
-              itemCount: items.length,
-              itemBuilder: (BuildContext context, int index) {
-                final item = items[index];
-                return Dismissible(
-                  key: Key(item.name),
-                  onDismissed: (direction) {
-                    context
-                        .read<LocationsBloc>()
-                        .add(DeleteLocation(id: item.id));
-                    setState(() {
-                      items.removeAt(index);
-                    });
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("${item.name} dismissed")));
-                  },
-                  background: Container(color: Colors.red[300]),
-                  child: ListTile(
-                    title: Text('${item.name}'),
-                    subtitle: Text(item.location.name),
-                    trailing: Text(formatter.format(item.date)),
-                  ),
-                );
-              },
-            ))
+            ListLocations()
           ],
         );
       },
