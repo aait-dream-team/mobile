@@ -6,6 +6,8 @@ import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 import 'package:turf/turf.dart';
 
+import '../../routes/models/pin.dart';
+
 part 'navigation_event.dart';
 part 'navigation_state.dart';
 
@@ -19,13 +21,20 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
 
         final value = parsePoints(event.polylineString);
         emit(NavigationSuccessState(
-            routePoints: value, navDetailModel: event.navDetailModel));
+            routePoints: value,
+            navDetailModel: event.navDetailModel,
+            fromPin: event.fromPin,
+            toPin: event.toPin));
       } else if (event is StartNavigationEvent) {
         if (state is NavigationSuccessState) {
           var legs = (state as NavigationSuccessState).routePoints;
+          var fromPin = (state as NavigationSuccessState).fromPin;
+          var toPin = (state as NavigationSuccessState).toPin;
           var navDetailModel = (state as NavigationSuccessState).navDetailModel;
           emit(NavigationRoutingState(
               legs: legs,
+              fromPin: fromPin,
+              toPin: toPin,
               currentIndex: 0,
               currentInnerIndex: 0,
               userPointInRoute: legs[0][0],
@@ -45,6 +54,8 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
           int currentIndex = update.$1;
           int currentIntermidateStopInd =
               (state as NavigationRoutingState).currentIntermidateStopIndex;
+          var fromPin = (state as NavigationRoutingState).fromPin;
+          var toPin = (state as NavigationRoutingState).toPin;
           if (navDetailModel.legs[currentIndex].intermidateStops != null) {
             currentIntermidateStopInd = findNearestIntermidateStop(
                 event.location,
@@ -59,14 +70,22 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
               userPointInRoute: update.$2,
               userLocation: event.location,
               navDetailModel: navDetailModel,
-              currentIntermidateStopIndex: currentIntermidateStopInd));
+              currentIntermidateStopIndex: currentIntermidateStopInd,
+              fromPin: fromPin,
+              toPin: toPin));
         }
       } else if (event is CancelNavigationEvent) {
         if (state is NavigationRoutingState) {
-          emit(NavigationSuccessState(
-              routePoints: (state as NavigationRoutingState).legs,
-              navDetailModel:
-                  (state as NavigationRoutingState).navDetailModel));
+          var fromPin = (state as NavigationRoutingState).fromPin;
+          var toPin = (state as NavigationRoutingState).toPin;
+          emit(
+            NavigationSuccessState(
+                routePoints: (state as NavigationRoutingState).legs,
+                navDetailModel:
+                    (state as NavigationRoutingState).navDetailModel,
+                fromPin: fromPin,
+                toPin: toPin),
+          );
         }
       }
     });

@@ -26,12 +26,14 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../../navigate/bloc/navigation_bloc.dart';
 import '../../../navigate/data_provider/navigation_data_provider.dart';
 import '../../../navigate/repository/navigation_repository.dart';
+import '../../../routes/models/pin.dart';
 import '../../model/nav_detail_model.dart';
 
 class SidePage extends StatefulWidget {
   static const String route = '/SidePage';
   final NavDetailModel navDetailModel;
   final RouteSearchResultModel routeSearchResultModel;
+  final PinPoint fromPin, toPin;
   final NavigationRepository repository =
       NavigationRepository(dataProvider: NavigationDataProvider());
   final RouteHistoryRepository routeHistoryRepository =
@@ -40,7 +42,9 @@ class SidePage extends StatefulWidget {
   SidePage(
       {Key? key,
       required this.navDetailModel,
-      required this.routeSearchResultModel})
+      required this.routeSearchResultModel,
+      required this.fromPin,
+      required this.toPin})
       : super(key: key);
 
   @override
@@ -149,7 +153,9 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                     .map((e) => e.legGeometry)
                     .cast<String>()
                     .toList(),
-                navDetailModel: widget.navDetailModel)),
+                navDetailModel: widget.navDetailModel,
+                fromPin: widget.fromPin,
+                toPin: widget.toPin)),
           child: MaterialApp(
               debugShowCheckedModeBanner: false,
               home: BlocBuilder<NavigationBloc, NavigationState>(
@@ -209,6 +215,7 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                       children: [
                         RouteWidget(
                           result: widget.routeSearchResultModel,
+                          navDetailModel: widget.navDetailModel,
                         ),
                         Expanded(
                           child: Stack(
@@ -341,7 +348,9 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                   .map((e) => e.legGeometry)
                   .cast<String>()
                   .toList(),
-              navDetailModel: widget.navDetailModel)),
+              navDetailModel: widget.navDetailModel,
+              fromPin: widget.fromPin,
+              toPin: widget.toPin)),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           home: BlocBuilder<NavigationBloc, NavigationState>(

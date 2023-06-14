@@ -83,10 +83,11 @@ class RouteSearchDataProvider {
   Future<dynamic> getApiContent(LatLng from, LatLng to, DateTime departureDate,
       bool isDepartureTime) async {
     departureDate = (DateTime.now().isAfter(departureDate))
-        ? DateTime.now()
+        ? DateTime.now().add(const Duration(minutes: 1))
         : departureDate;
+
     var URL =
-        "http://192.168.8.151:8082/otp/routers/default/plan?fromPlace=${from.latitude},${from.longitude}&toPlace=${to.latitude},${to.longitude}&time=${DateFormat('hh:mm a').format(departureDate)}&date=${DateFormat('MM-dd-yyyy').format(departureDate)}&mode=TRANSIT%2CWALK&arriveBy=false&wheelchair=false&showIntermediateStops=true&debugItineraryFilter=false&locale=en&numItineraries=10&arriveBy=${!isDepartureTime}";
+        "http://34.125.99.126:8082/otp/routers/default/plan?fromPlace=${from.latitude},${from.longitude}&toPlace=${to.latitude},${to.longitude}&time=${DateFormat('hh:mm a').format(departureDate)}&date=${DateFormat('MM-dd-yyyy').format(departureDate)}&mode=TRANSIT%2CWALK&wheelchair=false&showIntermediateStops=true&debugItineraryFilter=false&locale=en&numItineraries=10&arriveBy=${!isDepartureTime}";
 
     var response = await http.get(Uri.parse(URL));
     if (response.statusCode == 200) {
