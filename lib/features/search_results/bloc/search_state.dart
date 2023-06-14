@@ -12,18 +12,22 @@ class SearchLoadFailedState extends SearchState {
   final LatLng from, to;
   final DateTime departureDate;
   final bool isDepartureTime;
+  final PinPoint fromPin, toPin;
 
   SearchLoadFailedState(
       {required this.msg,
       required this.from,
       required this.to,
       required this.departureDate,
-      required this.isDepartureTime});
+      required this.isDepartureTime,
+      required this.fromPin,
+      required this.toPin});
 }
 
 class SearchSuccessState extends SearchState {
   final List<(RouteSearchResultModel, NavDetailModel)> results;
   final LatLng from, to;
+  final PinPoint fromPin, toPin;
   final DateTime departureDate;
   final bool isDepartureTime;
 
@@ -32,5 +36,7 @@ class SearchSuccessState extends SearchState {
       required this.from,
       required this.to,
       required this.departureDate,
-      required this.isDepartureTime});
+      required this.isDepartureTime,
+      required this.fromPin,
+      required this.toPin});
 }

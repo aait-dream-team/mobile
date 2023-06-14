@@ -39,7 +39,9 @@ class _RoutesWidget extends State<RoutesPage> {
             from: state.from.location,
             to: state.to.location,
             departureDate: state.datetime,
-            isDepartureTime: state.isDepartureTime));
+            isDepartureTime: state.isDepartureTime,
+            fromPin: state.from,
+            toPin: state.to),);
       }
     }, builder: (context, state) {
       if (screenArgumentsRoutes != null) {

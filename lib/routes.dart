@@ -59,7 +59,7 @@ class PageRouter {
         return MaterialPageRoute(builder: (context) {
           if (args is List) {
             return SidePage(
-                navDetailModel: args[1], routeSearchResultModel: args[0]);
+                navDetailModel: args[1], routeSearchResultModel: args[0], fromPin: args[2], toPin: args[3],);
           }
           print(args);
           return const Text("Error");
