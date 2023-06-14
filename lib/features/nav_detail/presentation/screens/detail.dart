@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:convert';
+
 import 'package:bus_navigation/core/local_notification/local_notification.dart';
 import 'package:bus_navigation/core/text_to_speech/tts.dart';
 import 'package:bus_navigation/features/history/data_provider/route_history_data_provider.dart';
@@ -19,6 +21,7 @@ import 'package:bus_navigation/core/utils/utils.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/bus_mode.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/detail.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../../../navigate/bloc/navigation_bloc.dart';
 import '../../../navigate/data_provider/navigation_data_provider.dart';
@@ -85,8 +88,59 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
 
   onPause() {}
 
+  void connectToWebSocket() {
+    print('before');
+    print(widget.navDetailModel.legs);
+    print('after');
+    String url = "ws://192.168.8.151:8000";
+
+    for (var leg in widget.navDetailModel.legs) {
+      if (leg.mode != 'WALK') {
+        print(leg.agencyId);
+        print(leg.tripId);
+        print(leg.routeId);
+        for (String conStr in [
+          'agency_${leg.agencyId}',
+          'route_${leg.routeId}',
+          'trip_${leg.tripId}'
+        ])
+          WebSocketChannel.connect(
+                  Uri.parse('$url/ws/trip/notification/$conStr/'))
+              .stream
+              .listen((message) {
+            print('agency');
+            print(leg.agencyId);
+            var data = jsonDecode(message);
+
+            LocalNotificationDataProvider.instantNotify(title: data['message']['effect'], body: data["message"]['message']);
+            TextToSpeechSingleton tts = TextToSpeechSingleton();
+            tts.speak(data['message']['message']);
+            print("We finished this method call");             
+          });
+
+        // WebSocketChannel.connect(Uri.parse(
+        //         '$url/ws/trip/notification/${leg.routeId}/'))
+        //     .stream
+        //     .listen((message) {
+        //   print('route');
+        //   print(leg.routeId);
+        //   print(message);
+        // });
+        // WebSocketChannel.connect(Uri.parse(
+        //         '${url}/ws/trip/notification/${leg.tripId}/'))
+        //     .stream
+        //     .listen((message) {
+        //   print('tripId');
+        //   print(leg.tripId);
+        //   print(message);
+        // });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    connectToWebSocket();
     return PiPSwitcher(
       childWhenDisabled: BlocProvider(
           create: (context) => NavigationBloc(repository: widget.repository)

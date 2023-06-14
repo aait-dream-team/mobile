@@ -57,8 +57,7 @@ dependencies:
   geocoding: ^2.1.0
   floating: ^2.0.0
   app_settings: ^4.2.0
-  # getflutter: ^1.1.3
-  
+  web_socket_channel: ^2.4.0  
 
   
 dev_dependencies:
