@@ -1,4 +1,8 @@
+import 'package:bus_navigation/features/routes/bloc/routes_bloc.dart';
 import 'package:bus_navigation/features/routes/models/pin.dart';
+import 'package:bus_navigation/features/routes/presentation/screens/routes_page.dart';
+import 'package:bus_navigation/features/routes/presentation/screens/screen_arguments_routes.dart';
+import 'package:bus_navigation/features/routes/presentation/screens/screen_arguments_routes_args.dart';
 import 'package:bus_navigation/features/save_locations/model/pin_location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +13,10 @@ import '../../bloc/locations_bloc.dart';
 
 class ListLocations extends StatefulWidget {
   static const String route = "/routes";
-  const ListLocations({super.key});
+  final ScreenArgumentsRoutesArgs? screenArguments;
+
+  const ListLocations({super.key, this.screenArguments});
+  // final bool isHome;
 
   @override
   State<ListLocations> createState() => _ListLocations();
@@ -45,9 +52,47 @@ class _ListLocations extends State<ListLocations> {
               },
               background: Container(color: Colors.red[300]),
               child: ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: const Color(0xff764abc),
+                  child: Icon(Icons.save_as_rounded),
+                ),
+                onTap: () {
+                  print('clicked');
+
+                  if (widget.screenArguments == null){
+                    BlocProvider.of<RoutesBloc>(context).add(PointPicked(
+                      from: PinPoint(
+                          name: item.location.name,
+                          location: item.location.location),
+                      to: PinPoint(name: '', location: LatLng(0, 0)),
+                      datetime: DateTime.now(),
+                      isDepartureTime: true));
+                  Navigator.pushNamed(context, RoutesPage.route,
+                      arguments: ScreenArgumentsRoutes(
+                        type: 'from',
+                        name: item.location.name,
+                        location: item.location.location,
+                      ));
+                  }else{
+                    widget.screenArguments!.func(
+                      item.location.location,
+                      item.location.name
+                    );
+                    Navigator.pop(context);
+                  }
+                },
                 title: Text('${item.name}'),
                 subtitle: Text(item.location.name),
                 trailing: Text(formatter.format(item.date)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(32),
+                        bottomRight: Radius.circular(32))),
+                selectedTileColor: Colors.orange[100],
+                selected: false,
+                // onTap: () {},
+                // leading: Icon(icon),
+                // title: Text(title),
               ),
             );
           },

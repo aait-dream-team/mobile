@@ -14,6 +14,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 
 class SearchPage extends StatefulWidget {
+  
   static const String route = "/SearchRoute";
   final ScreenArgumentsRoutesArgs screenArguments;
   const SearchPage({super.key, required this.screenArguments});
@@ -266,7 +267,7 @@ class _SearchWidget extends State<SearchPage> {
                               ),
                       )
                       ,
-                      ListLocations(),
+                      ListLocations(screenArguments: screenArguments,),
                     ],
                   ),
                 ),

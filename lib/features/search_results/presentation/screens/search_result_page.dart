@@ -43,12 +43,15 @@ class _RouteSearchState extends State<SearchResults> {
                       departureDate: state.departureDate,
                       from: state.from,
                       to: state.to,
-                      isDepartureTime: state.isDepartureTime));
+                      isDepartureTime: state.isDepartureTime,
+                      fromPin: state.fromPin,
+                      toPin: state.toPin
+                      ));
                 },
                 child: Center(child: Text(state.msg)));
           }
           if (state is SearchSuccessState) {
-            final list = [];
+            final list = state.results;
 
             return (list.isNotEmpty)?RefreshIndicator(
               onRefresh: () async {
@@ -56,7 +59,9 @@ class _RouteSearchState extends State<SearchResults> {
                     departureDate: state.departureDate,
                     from: state.from,
                     to: state.to,
-                    isDepartureTime: state.isDepartureTime));
+                    isDepartureTime: state.isDepartureTime,
+                    fromPin: state.fromPin,
+                    toPin: state.toPin));
               },
               child: CustomScrollView(
                 slivers: list
@@ -67,20 +72,18 @@ class _RouteSearchState extends State<SearchResults> {
                             child: InkWell(
                               onTap: () => Navigator.pushNamed(
                                   context, SidePage.route,
-                                  arguments: [route.$1, route.$2]),
+                                  arguments: [route.$1, route.$2, state.fromPin, state.toPin]),
                               child: RouteWidget(
-                                result: route.$1,
-                              ),
+                                  result: route.$1, navDetailModel: route.$2),
                             ))))
                     .cast<SliverToBoxAdapter>()
                     .toList(),
               ),
-            ):Center(child: Text("There is no possible route", style: TextStyle(fontSize: 19, fontWeight: FontWeight.w100),),);
+            ):Center(child: Text("There is no possible route", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w100),),);
           }
           return const Center(child: Text("Something Went Wrong"));
         },
       ),
     );
   }
-  
 }

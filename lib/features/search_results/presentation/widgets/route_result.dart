@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:bus_navigation/core/utils/colors.dart';
+import 'package:bus_navigation/features/nav_detail/model/nav_detail_model.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -9,8 +11,11 @@ import '../../models/RouteResultModel.dart';
 
 class RouteWidget extends StatelessWidget {
   final RouteSearchResultModel result;
+  final NavDetailModel navDetailModel;
 
-  const RouteWidget({Key? key, required this.result}) : super(key: key);
+  const RouteWidget(
+      {Key? key, required this.result, required this.navDetailModel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +45,12 @@ class RouteWidget extends StatelessWidget {
       RouteSegmentType.tram: Icons.directions_subway,
       RouteSegmentType.walking: Icons.nordic_walking
     };
+
+    var alerts = navDetailModel.legs
+        .map((e) => e.alerts)
+        .whereNotNull()
+        .expand((element) => element)
+        .toList();
 
     return Material(
       elevation: 4,

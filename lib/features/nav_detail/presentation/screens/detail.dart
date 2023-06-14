@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:convert';
+
 import 'package:bus_navigation/core/local_notification/local_notification.dart';
 import 'package:bus_navigation/core/text_to_speech/tts.dart';
 import 'package:bus_navigation/features/history/data_provider/route_history_data_provider.dart';
@@ -18,16 +20,19 @@ import 'package:bus_navigation/core/utils/utils.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/bus_mode.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/detail.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../../../navigate/bloc/navigation_bloc.dart';
 import '../../../navigate/data_provider/navigation_data_provider.dart';
 import '../../../navigate/repository/navigation_repository.dart';
+import '../../../routes/models/pin.dart';
 import '../../model/nav_detail_model.dart';
 
 class SidePage extends StatefulWidget {
   static const String route = '/SidePage';
   final NavDetailModel navDetailModel;
   final RouteSearchResultModel routeSearchResultModel;
+  final PinPoint fromPin, toPin;
   final NavigationRepository repository =
       NavigationRepository(dataProvider: NavigationDataProvider());
   final RouteHistoryRepository routeHistoryRepository =
@@ -36,7 +41,9 @@ class SidePage extends StatefulWidget {
   SidePage(
       {Key? key,
       required this.navDetailModel,
-      required this.routeSearchResultModel})
+      required this.routeSearchResultModel,
+      required this.fromPin,
+      required this.toPin})
       : super(key: key);
 
   @override
@@ -84,8 +91,41 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
 
   onPause() {}
 
+  void connectToWebSocket() {
+    print('before');
+    print(widget.navDetailModel.legs);
+    print('after');
+    String url = "ws://192.168.8.151:8000";
+
+    for (var leg in widget.navDetailModel.legs) {
+      if (leg.mode != 'WALK') {
+        print(leg.agencyId);
+        print(leg.tripId);
+        print(leg.routeId);
+        for (String conStr in [
+          'agency_${leg.agencyId}',
+          'route_${leg.routeId}',
+          'trip_${leg.tripId}'
+        ])
+          WebSocketChannel.connect(
+                  Uri.parse('$url/ws/trip/notification/$conStr/'))
+              .stream
+              .listen((message) {
+            var data = jsonDecode(message);
+            LocalNotificationDataProvider.instantNotify(
+                title: data['message']['effect'],
+                body: data["message"]['message']);
+            TextToSpeechSingleton tts = TextToSpeechSingleton();
+            tts.speak(data['message']['message']);
+            print("We finished this method call");
+          });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    connectToWebSocket();
     return PiPSwitcher(
       childWhenDisabled: BlocProvider(
           create: (context) => NavigationBloc(repository: widget.repository)
@@ -94,7 +134,9 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                     .map((e) => e.legGeometry)
                     .cast<String>()
                     .toList(),
-                navDetailModel: widget.navDetailModel)),
+                navDetailModel: widget.navDetailModel,
+                fromPin: widget.fromPin,
+                toPin: widget.toPin)),
           child: MaterialApp(
               debugShowCheckedModeBanner: false,
               home: BlocBuilder<NavigationBloc, NavigationState>(
@@ -153,7 +195,7 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                       child: Column(
                         children: [
                           RouteWidget(
-                            result: widget.routeSearchResultModel,
+                            result: widget.routeSearchResultModel, navDetailModel: widget.navDetailModel,
                           ),
                           Expanded(
                             child: Stack(
@@ -291,7 +333,9 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                   .map((e) => e.legGeometry)
                   .cast<String>()
                   .toList(),
-              navDetailModel: widget.navDetailModel)),
+              navDetailModel: widget.navDetailModel,
+              fromPin: widget.fromPin,
+              toPin: widget.toPin)),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           home: BlocBuilder<NavigationBloc, NavigationState>(
