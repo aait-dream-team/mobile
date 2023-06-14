@@ -58,7 +58,8 @@ dependencies:
   floating: ^2.0.0
   app_settings: ^4.2.0
   web_socket_channel: ^2.4.0  
-
+  another_flushbar: ^1.10.30
+  
   
 dev_dependencies:
   flutter_launcher_icons: "^0.13.1"

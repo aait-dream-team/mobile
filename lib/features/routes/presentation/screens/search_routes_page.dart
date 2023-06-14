@@ -267,7 +267,7 @@ class _SearchWidget extends State<SearchPage> {
                               ),
                       )
                       ,
-                      ListLocations(),
+                      ListLocations(screenArguments: screenArguments,),
                     ],
                   ),
                 ),
