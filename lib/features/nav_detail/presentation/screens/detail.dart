@@ -231,7 +231,7 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                                                                       is NavigationRoutingState)
                                                                   ? state
                                                                       .currentIndex
-                                                                  : 0,
+                                                                  : -1,
                                                               navDetailModel: widget
                                                                   .navDetailModel,
                                                             ),

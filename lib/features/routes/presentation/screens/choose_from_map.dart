@@ -92,7 +92,7 @@ class _MapPageState extends State<MapPage> {
             screenArguments.func(_centerLocation, locationName);
           } catch (e) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+              const SnackBar(
                 content: Text('No internet connection'),
               ),
             );

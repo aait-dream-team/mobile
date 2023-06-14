@@ -25,29 +25,18 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
     return OnBoardingWidget(
       pages: [
         OnboardingModel(
-          title: 'Fast, Fluid and Secure',
-          description: 'Enjoy the best of the world in the palm of your hands.',
+          title: 'Your All-in-One Urban Exploration Companion"',
+          description:
+              'Discover, Connect, and Traverse your city effortlessly with our all-in-one public transport companion.',
           image: 'assets/onBoarding/image0.png',
           bgColor: Colors.indigo,
         ),
         OnboardingModel(
-          title: 'Connect with your friends.',
-          description: 'Connect with your friends anytime anywhere.',
-          image: 'assets/onBoarding/image1.png',
-          bgColor: const Color(0xff1eb090),
-        ),
-        OnboardingModel(
-          title: 'Bookmark your favourites',
+          title: 'Effortless Navigation through Bus, Train, and Walking Routes',
           description:
-              'Bookmark your favourite quotes to read at a leisure time.',
-          image: 'assets/onBoarding/image2.png',
-          bgColor: const Color(0xfffeae4f),
-        ),
-        OnboardingModel(
-          title: 'Follow creators',
-          description: 'Follow your favourite creators to stay in the loop.',
-          image: 'assets/onBoarding/image3.png',
-          bgColor: Colors.purple,
+              'Unlock the pulse of your city with our all-in-one public transport companion. Seamlessly search, connect, and navigate through bus, train, and walking routes for a hassle-free urban exploration.',
+          image: 'assets/onBoarding/image1.jpg',
+          bgColor: const Color(0xFFFEF9EB),
         ),
       ],
     );

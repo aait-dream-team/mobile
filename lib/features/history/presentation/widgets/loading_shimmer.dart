@@ -53,10 +53,13 @@ class one_shimmer extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    width: width * 0.7,
-                    height: 8.0,
-                    color: AppColors.white,
+                  ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                    child: Container(
+                      width: width * 0.95,
+                      height: 80.0,
+                      color: AppColors.white,
+                    ),
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 2.0),
