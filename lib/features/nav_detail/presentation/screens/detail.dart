@@ -7,6 +7,7 @@ import 'package:bus_navigation/core/text_to_speech/tts.dart';
 import 'package:bus_navigation/features/history/data_provider/route_history_data_provider.dart';
 import 'package:bus_navigation/features/history/repository/route_history_repository.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/left_floating_action_button.dart';
+import 'package:bus_navigation/features/nav_detail/presentation/widgets/stops.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/train_mode.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/walk_expanded.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/walk_mode.dart';
@@ -139,27 +140,28 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                 toPin: widget.toPin)),
           child: MaterialApp(
               debugShowCheckedModeBanner: false,
-              home: BlocBuilder<NavigationBloc, NavigationState>(
-                  builder: ((context, state) {
-                if (state is NavigationRoutingState && !_isNavigationStarted) {
-                  _isNavigationStarted = true;
+              home: BlocConsumer<NavigationBloc, NavigationState>(
+                builder: ((context, state) {
+                  if (state is NavigationRoutingState &&
+                      !_isNavigationStarted) {
+                    _isNavigationStarted = true;
 
-                  String text = 'You have started your navigation  to Bole';
-                  // Notify user that their navigation has started
-                  LocalNotificationDataProvider.instantNotify(
-                      title: 'Navigation Started', body: text);
-                  TextToSpeechSingleton tts = TextToSpeechSingleton();
-                  tts.speak(text);
+                    String text = 'You have started your navigation  to Bole';
+                    // Notify user that their navigation has started
+                    LocalNotificationDataProvider.instantNotify(
+                        title: 'Navigation Started', body: text);
+                    TextToSpeechSingleton tts = TextToSpeechSingleton();
+                    tts.speak(text);
 
-                  // Save the navigation to History
-                  // widget.routeHistoryRepository.addRoute(RouteModel(
-                  //   startPoint: widget.navDetailModel.legs[0].from,
-                  //   endPoint: widget.navDetailModel.legs[-1].to,
-                  //   date: DateTime.now(),
-                  // ));
-                }
+                    // Save the navigation to History
+                    // widget.routeHistoryRepository.addRoute(RouteModel(
+                    //   startPoint: widget.navDetailModel.legs[0].from,
+                    //   endPoint: widget.navDetailModel.legs[-1].to,
+                    //   date: DateTime.now(),
+                    // ));
+                  }
 
-                return Scaffold(
+                  return Scaffold(
                     backgroundColor: Colors.transparent,
                     extendBodyBehindAppBar: true,
                     floatingActionButton: (state is NavigationRoutingState)
@@ -194,9 +196,25 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                     body: SafeArea(
                       child: Column(
                         children: [
-                          RouteWidget(
-                            result: widget.routeSearchResultModel, navDetailModel: widget.navDetailModel,
-                          ),
+                          (state is NavigationRoutingState)
+                              ? Stops(
+                                  title: state
+                                      .navDetailModel
+                                      .legs[state.currentIndex]
+                                      .intermidateStops![
+                                          state.currentIntermidateStopIndex]
+                                      .name,
+                                  arrivalTime: state
+                                      .navDetailModel
+                                      .legs[state.currentIndex]
+                                      .intermidateStops![
+                                          state.currentIntermidateStopIndex]
+                                      .arrivalTime,
+                                )
+                              : RouteWidget(
+                                  result: widget.routeSearchResultModel,
+                                  navDetailModel: widget.navDetailModel,
+                                ),
                           Expanded(
                             child: Stack(
                               children: [
@@ -276,7 +294,7 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                                                                         is NavigationRoutingState)
                                                                     ? state
                                                                         .currentIndex
-                                                                    : 0,
+                                                                    : -1,
                                                                 navDetailModel:
                                                                     widget
                                                                         .navDetailModel,
@@ -324,8 +342,41 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                           ),
                         ],
                       ),
-                    ));
-              })))),
+                    ),
+                  );
+                }),
+                listenWhen: (previous, current) {
+                  if (previous is NavigationRoutingState &&
+                      current is NavigationRoutingState) {
+                    if (previous.currentIndex != current.currentIndex &&
+                        current.navDetailModel.legs[current.currentIndex]
+                                .mode ==
+                            'BUS') {
+                      return true;
+                    }
+                    return previous.currentIndex == current.currentIndex &&
+                        current.navDetailModel.legs[current.currentIndex]
+                                .mode ==
+                            'BUS' &&
+                        current.currentIntermidateStopIndex !=
+                            previous.currentIntermidateStopIndex;
+                  }
+
+                  return false;
+                },
+                listener: (BuildContext context, NavigationState state) {
+                  if (state is NavigationRoutingState) {
+                    String speak = state
+                        .navDetailModel
+                        .legs[state.currentIndex]
+                        .intermidateStops![state.currentIntermidateStopIndex]
+                        .name;
+
+                    TextToSpeechSingleton tts = TextToSpeechSingleton();
+                    tts.speak(speak);
+                  }
+                },
+              ))),
       childWhenEnabled: BlocProvider(
         create: (context) => NavigationBloc(repository: widget.repository)
           ..add(LoadNavigationEvent(
