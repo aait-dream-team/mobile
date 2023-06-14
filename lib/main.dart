@@ -3,6 +3,9 @@ import 'package:bus_navigation/features/home/bloc/home_bloc.dart';
 import 'package:bus_navigation/features/home/presentation/home_page.dart';
 import 'package:bus_navigation/features/onBoarding/presentation/screens/onBoarding_page.dart';
 import 'package:bus_navigation/features/routes/bloc/routes_bloc.dart';
+import 'package:bus_navigation/features/save_locations/bloc/locations_bloc.dart';
+import 'package:bus_navigation/features/save_locations/provider/location_provider.dart';
+import 'package:bus_navigation/features/save_locations/repository/location_repository.dart';
 import 'package:bus_navigation/features/search_results/bloc/search_bloc.dart';
 import 'package:bus_navigation/features/routes/data_provider/recent_route_data_provider.dart';
 import 'package:bus_navigation/features/routes/repository/recent_route_repository.dart';
@@ -15,7 +18,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'features/search_results/data_provider/route_search_data_provider.dart';
 import 'features/search_results/repository/route_search_repository.dart';
-
 
 int? initScreen;
 
@@ -48,17 +50,22 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-
   // This widget is the root of your xapplication.
   @override
   Widget build(BuildContext context) {
     final RecentRouteRepository recentRouteRepository;
     return MultiBlocProvider(
       providers: [
+        BlocProvider<LocationsBloc>(
+            create: (BuildContext context) => LocationsBloc(
+                location_repository:
+                    LocationRepository(dataProvider: LocationDataProvider()))
+              ..add(FetchLocation())),
         BlocProvider<RoutesBloc>(
             create: (BuildContext context) => RoutesBloc(
                 recentRouteRepository: RecentRouteRepository(
-                    dataProvider: RecentRouteDataProvider()))..add(FetchRecentRoute())),
+                    dataProvider: RecentRouteDataProvider()))
+              ..add(FetchRecentRoute())),
         BlocProvider<HomeBloc>(create: (BuildContext context) => HomeBloc()),
         BlocProvider<SearchBloc>(
             create: (context) => SearchBloc(

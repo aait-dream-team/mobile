@@ -47,6 +47,7 @@ class _HomePageState extends State<HomePage> {
             )
           : const RoutesPage(),
       RouteHistory(),
+      Center(child: Text("Settings"),)
     ];
     return Scaffold(
       body:  screens[index],
