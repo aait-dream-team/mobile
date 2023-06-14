@@ -39,11 +39,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
 Future<String> getNameFromLatLng(LatLng latlng) async {
   print(latlng);
-  List<Placemark> placemarks =
-      await placemarkFromCoordinates(latlng.latitude, latlng.longitude);
+  try{
+    List<Placemark> placemarks =
+      await placemarkFromCoordinates(latlng.latitude, latlng.longitude, localeIdentifier: "et");
   Placemark place = placemarks[0];
   String locationName =
       "${place.name}, ${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode} ${place.country}";
   print(locationName);
   return locationName;
+  }catch(e){
+    return '${latlng.latitude.toString()} | ${latlng.longitude.toString()}, Uknown street, Addis Ababa, Addis Ababa, 1000, Ethiopia}}';
+  }
 }

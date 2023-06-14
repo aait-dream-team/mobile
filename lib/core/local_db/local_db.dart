@@ -11,6 +11,7 @@ class LocalDB {
   // ignore: constant_identifier_names
   static const _table_history = 'RouteHistory';
   static const _table_recent = 'RecentRoutes';
+  static const _table_location = 'Locations';
 
   LocalDB._privateConstructor();
   static final LocalDB instance = LocalDB._privateConstructor();
@@ -41,6 +42,8 @@ class LocalDB {
         "CREATE TABLE $_table_history(id INTEGER PRIMARY KEY, startPoint TEXT, endPoint TEXT, date INT )");
     await db.execute(
         "CREATE TABLE $_table_recent(id INTEGER PRIMARY KEY, name TEXT, lat STRING, long STRING, date INT )");
+    await db.execute(
+        "CREATE TABLE $_table_location(id INTEGER PRIMARY KEY, savedName TEXT, name TEXT, lat STRING, long STRING, date INT )");
   }
 
   // Fetch all routes
@@ -57,16 +60,29 @@ class LocalDB {
     var routes = await db.rawQuery("select * from $_table_recent;");
     return routes;
   }
+  Future getLocations() async {
+    Database db = await instance.database;
+
+    var locaions = await db.rawQuery("select * from $_table_location;");
+    return locaions;
+  }
 
   Future insertRoute(dynamic route) async {
     Database db = await instance.database;
-
     await db.insert(_table_history, route);
   }
 
   Future insertRecentRoute(dynamic recentRoute) async {
     Database db = await instance.database;
-    var routes = await db.rawQuery("select * from $_table_recent;");
     await db.insert(_table_recent, recentRoute);
   }
+  Future insertLocation(dynamic recentRoute) async {
+    Database db = await instance.database;
+    await db.insert(_table_location, recentRoute);
+  }
+  Future<void> deleteLocation(int id) async {
+    Database db = await instance.database;
+    await db.delete(_table_location, where: 'id = ?', whereArgs: [id]);
+  }
+  
 }
