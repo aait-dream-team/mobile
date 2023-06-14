@@ -349,7 +349,7 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                   .toList(),
               navDetailModel: widget.navDetailModel,
               fromPin: widget.fromPin,
-              toPin:widget.toPin)),
+              toPin: widget.toPin)),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           home: BlocBuilder<NavigationBloc, NavigationState>(
