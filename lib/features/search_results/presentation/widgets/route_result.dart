@@ -62,9 +62,11 @@ class RouteWidget extends StatelessWidget {
           // First column: departure in minutes
           SizedBox(
             width: 110,
+            height: 117,
             child: Container(
               padding: const EdgeInsets.all(8),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
@@ -91,8 +93,7 @@ class RouteWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // TODO [BIRUK]: use real alerts from OTP
-                  if (Random().nextBool())
+                  if (alerts.isNotEmpty)
                     ElevatedButton(
                       onPressed: () {
                         // Show an alert dialog with the list of alerts
@@ -103,16 +104,10 @@ class RouteWidget extends StatelessWidget {
                               title: const Text('Alerts for this route'),
                               content: SingleChildScrollView(
                                 child: Column(
-                                  children: [
-                                    "result.alerts",
-                                    "result.alerts",
-                                    "result.alerts",
-                                  ]
-                                      .map((alert) => const ListTile(
-                                            leading: Icon(Icons.ac_unit),
-                                            title: Text(
-                                                "alert.message alert.message alert.message alert.message alert.message alert.message "),
-                                          ))
+                                  children: alerts
+                                      .map((alert) => ListTile(
+                                          leading: const Icon(Icons.ac_unit),
+                                          title: Text(alert.alertText)))
                                       .toList(),
                                 ),
                               ),
@@ -138,7 +133,7 @@ class RouteWidget extends StatelessWidget {
                         padding: const EdgeInsets.all(9),
                         backgroundColor: Colors.white, // Button color
                       ),
-                    )
+                    ),
                 ],
               ),
             ),
