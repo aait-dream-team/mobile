@@ -62,9 +62,11 @@ class RouteWidget extends StatelessWidget {
           // First column: departure in minutes
           SizedBox(
             width: 110,
+            height: 117,
             child: Container(
               padding: const EdgeInsets.all(8),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
@@ -92,49 +94,46 @@ class RouteWidget extends StatelessWidget {
                     ],
                   ),
                   if (alerts.isNotEmpty)
-                    Badge(
-                      label: Text(alerts.length.toString()),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Show an alert dialog with the list of alerts
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text('Alerts for this route'),
-                                content: SingleChildScrollView(
-                                  child: Column(
-                                    children: alerts
-                                        .map((alert) => ListTile(
-                                            leading: const Icon(Icons.ac_unit),
-                                            title: Text(alert.alertText)))
-                                        .toList(),
-                                  ),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Show an alert dialog with the list of alerts
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Alerts for this route'),
+                              content: SingleChildScrollView(
+                                child: Column(
+                                  children: alerts
+                                      .map((alert) => ListTile(
+                                          leading: const Icon(Icons.ac_unit),
+                                          title: Text(alert.alertText)))
+                                      .toList(),
                                 ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('OK'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        child: const Icon(Icons.warning,
-                            color: Colors.red), // Change the icon color
-                        style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(
-                              side: BorderSide(
-                                  color: Colors
-                                      .red)), // Add a border to the circle
-                          padding: const EdgeInsets.all(9),
-                          backgroundColor: Colors.white, // Button color
-                        ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: const Icon(Icons.warning,
+                          color: Colors.red), // Change the icon color
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(
+                            side: BorderSide(
+                                color:
+                                    Colors.red)), // Add a border to the circle
+                        padding: const EdgeInsets.all(9),
+                        backgroundColor: Colors.white, // Button color
                       ),
-                    )
+                    ),
                 ],
               ),
             ),

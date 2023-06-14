@@ -40,7 +40,7 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
               userPointInRoute: legs[0][0],
               userLocation: legs[0][0],
               navDetailModel: navDetailModel,
-              currentIntermidateStopIndex: 0));
+              currentIntermidateStopIndex: -1));
         }
       } else if (event is UpdateUserLocationEvent) {
         if (state is NavigationRoutingState) {
@@ -52,8 +52,7 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
           }
           var navDetailModel = (state as NavigationRoutingState).navDetailModel;
           int currentIndex = update.$1;
-          int currentIntermidateStopInd =
-              (state as NavigationRoutingState).currentIntermidateStopIndex;
+          int currentIntermidateStopInd = -1;
           var fromPin = (state as NavigationRoutingState).fromPin;
           var toPin = (state as NavigationRoutingState).toPin;
           if (navDetailModel.legs[currentIndex].intermidateStops != null) {
