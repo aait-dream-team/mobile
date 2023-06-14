@@ -199,17 +199,19 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                           (state is NavigationRoutingState)
                               ? Stops(
                                   title: state
-                                      .navDetailModel
-                                      .legs[state.currentIndex]
-                                      .intermidateStops![
-                                          state.currentIntermidateStopIndex]
-                                      .name,
+                                          .navDetailModel
+                                          .legs[state.currentIndex]
+                                          ?.intermidateStops?[
+                                              state.currentIntermidateStopIndex]
+                                          .name ??
+                                      'Waiting for data',
                                   arrivalTime: state
-                                      .navDetailModel
-                                      .legs[state.currentIndex]
-                                      .intermidateStops![
-                                          state.currentIntermidateStopIndex]
-                                      .arrivalTime,
+                                          .navDetailModel
+                                          .legs[state.currentIndex]
+                                          ?.intermidateStops?[
+                                              state.currentIntermidateStopIndex]
+                                          .arrivalTime ??
+                                      DateTime.now(),
                                 )
                               : RouteWidget(
                                   result: widget.routeSearchResultModel,
