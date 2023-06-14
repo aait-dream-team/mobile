@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:bus_navigation/features/nav_detail/model/nav_detail_model.dart';
 import 'package:bus_navigation/features/navigate/bloc/navigation_bloc.dart';
 import 'package:flutter/material.dart';
@@ -115,78 +116,117 @@ class NavigateMapWidget extends StatelessWidget {
           newLegs.addAll(
               state.legs.sublist(state.currentIndex + 1, state.legs.length));
         }
-        return StreamBuilder<Position>(
-            stream: Geolocator.getPositionStream(
-                locationSettings: const LocationSettings(
-                    accuracy: LocationAccuracy.bestForNavigation)),
+        return FutureBuilder<bool>(
+            future: Geolocator.isLocationServiceEnabled(),
             builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data != null) {
-                var location =
-                    LatLng(snapshot.data!.latitude, snapshot.data!.longitude);
-                BlocProvider.of<NavigationBloc>(context)
-                    .add(UpdateUserLocationEvent(location));
+              if (snapshot.hasData) {
+                if (!snapshot.data!) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text("Enable Location Services"),
+                        content: const Text('Please enable location services.'),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text('Cancel'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('Settings'),
+                            onPressed: () {
+                              AppSettings.openLocationSettings();
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else {
+                  return StreamBuilder<Position>(
+                      stream: Geolocator.getPositionStream(
+                          locationSettings: const LocationSettings(
+                              accuracy: LocationAccuracy.bestForNavigation)),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData && snapshot.data != null) {
+                          var location = LatLng(snapshot.data!.latitude,
+                              snapshot.data!.longitude);
+                          BlocProvider.of<NavigationBloc>(context)
+                              .add(UpdateUserLocationEvent(location));
+                        }
+                        return FlutterMap(
+                          mapController: _mapController,
+                          options: MapOptions(
+                            center: LatLng(9.0229687,
+                                38.7747978), // Initial center location
+                            zoom: 11.0,
+                            onMapReady: () {
+                              // Fit the bounds when the map is created
+                              _mapController.fitBounds(
+                                  _createPolylinesAndBounds(state.legs));
+                            },
+                          ),
+                          children: [
+                            TileLayer(
+                                urlTemplate:
+                                    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                userAgentPackageName: 'com.example.app',
+                                tileProvider: FMTC
+                                    .instance('mapStore')
+                                    .getTileProvider()),
+                            PolylineLayer(
+                              polylines: [
+                                oldLegs.map((e) => Polyline(
+                                      color:
+                                          const Color.fromARGB(255, 64, 70, 75),
+                                      strokeWidth: 8.0,
+                                      points: e,
+                                    )),
+                                newLegs.map((e) => Polyline(
+                                      color: const Color.fromARGB(
+                                          255, 14, 129, 222),
+                                      strokeWidth: 8.0,
+                                      points: e,
+                                    ))
+                              ].expand((element) => element).toList(),
+                            ),
+                            MarkerLayer(
+                              markers: [
+                                Marker(
+                                    point: state.userLocation,
+                                    builder: (context) => const Icon(
+                                          Icons.location_on,
+                                          color: Color.fromARGB(255, 0, 255, 8),
+                                        ),
+                                    width: 42),
+                                Marker(
+                                    point: state.userPointInRoute,
+                                    builder: (context) => const Icon(
+                                        Icons.location_on,
+                                        color:
+                                            Color.fromARGB(255, 233, 42, 29)),
+                                    width: 40)
+                              ],
+                            ),
+                            MarkerLayer(
+                              markers: state.navDetailModel.legs
+                                  .map((e) => e.intermidateStops ?? [])
+                                  .expand((element) => element)
+                                  .map((e) => Marker(
+                                      point: e.location,
+                                      builder: (context) =>
+                                          const Icon(Icons.donut_small)))
+                                  .toList(),
+                            )
+                          ],
+                        );
+                      });
+                }
               }
-              return FlutterMap(
-                mapController: _mapController,
-                options: MapOptions(
-                  center:
-                      LatLng(9.0229687, 38.7747978), // Initial center location
-                  zoom: 11.0,
-                  onMapReady: () {
-                    // Fit the bounds when the map is created
-                    _mapController
-                        .fitBounds(_createPolylinesAndBounds(state.legs));
-                  },
-                ),
-                children: [
-                  TileLayer(
-                      urlTemplate:
-                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                      userAgentPackageName: 'com.example.app',
-                      tileProvider:
-                          FMTC.instance('mapStore').getTileProvider()),
-                  PolylineLayer(
-                    polylines: [
-                      oldLegs.map((e) => Polyline(
-                            color: const Color.fromARGB(255, 64, 70, 75),
-                            strokeWidth: 8.0,
-                            points: e,
-                          )),
-                      newLegs.map((e) => Polyline(
-                            color: const Color.fromARGB(255, 14, 129, 222),
-                            strokeWidth: 8.0,
-                            points: e,
-                          ))
-                    ].expand((element) => element).toList(),
-                  ),
-                  MarkerLayer(
-                    markers: [
-                      Marker(
-                          point: state.userLocation,
-                          builder: (context) => const Icon(
-                                Icons.location_on,
-                                color: Color.fromARGB(255, 0, 255, 8),
-                              ),
-                          width: 42),
-                      Marker(
-                          point: state.userPointInRoute,
-                          builder: (context) => const Icon(Icons.location_on,
-                              color: Color.fromARGB(255, 233, 42, 29)),
-                          width: 40)
-                    ],
-                  ),
-                  MarkerLayer(
-                    markers: state.navDetailModel.legs
-                        .map((e) => e.intermidateStops ?? [])
-                        .expand((element) => element)
-                        .map((e) => Marker(
-                            point: e.location,
-                            builder: (context) =>
-                                const Icon(Icons.donut_small)))
-                        .toList(),
-                  )
-                ],
-              );
+              return const Center(child: CircularProgressIndicator());
             });
       } else {
         return const Center(child: CircularProgressIndicator());

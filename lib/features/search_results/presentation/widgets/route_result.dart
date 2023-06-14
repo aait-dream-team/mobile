@@ -84,7 +84,6 @@ class RouteWidget extends StatelessWidget {
                   if (Random().nextBool())
                     Badge(
                       label: const Text("7"),
-                      // position: BadgePosition.topEnd(top: -10, end: -10), // Adjust the position of the badge
                       child: ElevatedButton(
                         onPressed: () {
                           // Show an alert dialog with the list of alerts
