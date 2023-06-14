@@ -402,7 +402,7 @@ class _MapWidget extends State<MapWidget>
 
                                           if (state is! HomePinnedLoadingState)
                                             DefaultTabController(
-                                                length: 3,
+                                                length: 2,
                                                 child: Column(
                                                   children: [
                                                     const TabBar(
