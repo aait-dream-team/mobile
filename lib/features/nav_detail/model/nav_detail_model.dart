@@ -36,19 +36,18 @@ class IntermediateStop {
 
 class Alert {
   final String alertText;
-  final int startDate;
-  final int endDate;
+  final int? startDate;
+  final int? endDate;
 
-  Alert(
-      {required this.alertText,
-      required this.startDate,
-      required this.endDate});
+  Alert({required this.alertText, this.startDate, this.endDate});
 
   factory Alert.fromMap(Map<String, dynamic> map) {
     return Alert(
-        alertText: map["alertHeaderText"],
-        startDate: map["effectiveStartDate"],
-        endDate: map["effectiveEndDate"]);
+      alertText: map["alertHeaderText"],
+      startDate:
+          (map["effectiveStartDate"] != null) ? map["effectiveStartDate"] : 0,
+      endDate: (map["effectiveEndDate"] != null) ? map["effectiveEndDate"] : 0,
+    );
   }
 }
 
