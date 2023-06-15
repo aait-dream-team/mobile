@@ -19,8 +19,10 @@ class StartNavigationEvent extends NavigationEvent {}
 
 class UpdateUserLocationEvent extends NavigationEvent {
   final LatLng location;
+  final double direction;
+  final bool isFreeLook;
 
-  UpdateUserLocationEvent(this.location);
+  UpdateUserLocationEvent({required this.location, required this.direction, required this.isFreeLook});
 }
 
 class CancelNavigationEvent extends NavigationEvent {}

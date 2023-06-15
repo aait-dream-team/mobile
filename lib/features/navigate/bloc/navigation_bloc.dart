@@ -40,7 +40,9 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
               userPointInRoute: legs[0][0],
               userLocation: legs[0][0],
               navDetailModel: navDetailModel,
-              currentIntermidateStopIndex: -1));
+              currentIntermidateStopIndex: -1,
+              direction: 0.0,
+              isFreeLook: false));
         }
       } else if (event is UpdateUserLocationEvent) {
         if (state is NavigationRoutingState) {
@@ -71,7 +73,9 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
               navDetailModel: navDetailModel,
               currentIntermidateStopIndex: currentIntermidateStopInd,
               fromPin: fromPin,
-              toPin: toPin));
+              toPin: toPin,
+              direction: event.direction,
+              isFreeLook: event.isFreeLook));
         }
       } else if (event is CancelNavigationEvent) {
         if (state is NavigationRoutingState) {
