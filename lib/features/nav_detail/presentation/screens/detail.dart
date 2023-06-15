@@ -147,7 +147,7 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                     _isNavigationStarted = true;
 
                     String text =
-                        'You have started your navigation  to ${widget.toPin.name.substring(0, widget.toPin.name.indexOf(","))}';
+                        'You have started your navigation  to ${widget.toPin.name}';
                     // Notify user that their navigation has started
                     LocalNotificationDataProvider.instantNotify(
                         title: 'Navigation Started', body: text);
@@ -158,7 +158,7 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                     widget.routeHistoryRepository.addRoute(RouteModel(
                       startPoint: widget.fromPin.name,
                       endPoint: widget.toPin.name,
-                      date: DateTime.now().add(Duration(days: 1)),
+                      date: DateTime.now(),
                     ));
                   }
 
