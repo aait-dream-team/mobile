@@ -55,8 +55,8 @@ class _RouteSearchState extends State<SearchResults> with SingleTickerProviderSt
                   children: [
                     SizedBox(height: 50,),
                     Image.asset("assets/source_dest.png", height: 200,),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Text("Enter source and destination", style: TextStyle(fontSize: 23,fontWeight: FontWeight.w100),),
                     ),
                   ],
@@ -80,7 +80,19 @@ class _RouteSearchState extends State<SearchResults> with SingleTickerProviderSt
                       toPin: state.toPin
                       ));
                 },
-                child: Center(child: Text(state.msg)));
+                child: Center(child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 70,),
+                    Image.asset("assets/error.png", height: 150,),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20,30,20,10),
+                      child: Center(
+                        child: Text(state.msg, style: TextStyle(fontSize: 23,fontWeight: FontWeight.w100),
+                                          ),
+                      ),)
+                  ],
+                )));
           }
           if (state is SearchSuccessState) {
             final list = state.results;
@@ -114,7 +126,7 @@ class _RouteSearchState extends State<SearchResults> with SingleTickerProviderSt
             ):Center(child: AnimatedOpacity(
       opacity: _animation.value,
       duration: const Duration(milliseconds: 500),
-      child: Center(
+      child:const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
