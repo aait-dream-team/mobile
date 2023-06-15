@@ -44,6 +44,10 @@ Future<void> main() async {
     ),
   ]);
 
+  if (!await AwesomeNotifications().isNotificationAllowed()) {
+    AwesomeNotifications().requestPermissionToSendNotifications();
+  }
+
   runApp(const MyApp());
 }
 
