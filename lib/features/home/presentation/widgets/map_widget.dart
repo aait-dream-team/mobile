@@ -189,7 +189,7 @@ class _MapWidget extends State<MapWidget>
                                             subtitle: Text((state
                                                     is HomePinnedLoadingState)
                                                 ? ""
-                                                : '${street}\n${sub_city}'),
+                                                : '$street'),
                                             trailing: Text((state
                                                     is HomePinnedLoadingState)
                                                 ? ""
@@ -359,47 +359,14 @@ class _MapWidget extends State<MapWidget>
                                           // SizedBox(height: 16),
 
                                           if (state is! HomePinnedLoadingState)
-                                            DefaultTabController(
-                                                length: 2,
-                                                child: Column(
-                                                  children: [
-                                                    const TabBar(
-                                                      tabs: [
-                                                        Tab(
-                                                            icon: Icon(
-                                                                Icons
-                                                                    .save_rounded,
-                                                                color: Colors
-                                                                    .black)),
-                                                        Tab(
-                                                            icon: Icon(
-                                                                Icons
-                                                                    .directions_transit,
-                                                                color: Colors
-                                                                    .black)),
-                                                      ],
-                                                    ),
-                                                    Container(
-                                                      height: 1000,
-                                                      child: TabBarView(
-                                                        children: [
-                                                          // SavedLocations(),
-
-                                                          Expanded(
-                                                              child: SavedLocations(
-                                                                  location: PinPoint(
-                                                                      location:
-                                                                          state
-                                                                              .pinPosition,
-                                                                      name: state
-                                                                          .name))),
-                                                          Icon(Icons
-                                                              .directions_transit),
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ],
-                                                )),
+                                            Container(
+                                              height: 1000,
+                                              child: SavedLocations(
+                                                location: PinPoint(
+                                                    location: state.pinPosition,
+                                                    name: state.name),
+                                              ),
+                                            ),
 
                                           if (state is! HomePinnedLoadingState)
                                             const SizedBox(height: 16),

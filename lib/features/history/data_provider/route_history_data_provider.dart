@@ -27,10 +27,12 @@ class RouteHistoryDataProvider {
 
     data.forEach((element) {
       var item = RouteModel.fromMap(element);
-      if (result.containsKey(item.date)) {
-        result[item.date]!.add(item);
+      var date = DateTime(item.date.year, item.date.month, item.date.day);
+      print(date);
+      if (result.containsKey(date)) {
+        result[date]!.add(item);
       } else {
-        result[item.date] = [item];
+        result[date] = [item];
       }
     });
     return result;

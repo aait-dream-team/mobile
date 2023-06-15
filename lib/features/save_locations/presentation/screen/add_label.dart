@@ -54,13 +54,12 @@ class _SavedLocations extends State<SavedLocations> {
                           Expanded(
                               child: TextFormField(
                             controller: locationController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 contentPadding: EdgeInsets.only(left: 10)),
                           )),
                           GestureDetector(
                             onTap: () {
-                              print(locationController.text);
                               if (locationController.text == '') {
                                 Flushbar(
                                   title: "Error",
@@ -75,7 +74,7 @@ class _SavedLocations extends State<SavedLocations> {
                               locationController.clear();
                             },
                             child: Container(
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: Colors.blueAccent,
                                 borderRadius: BorderRadius.only(
                                     topRight: Radius.circular(50),
@@ -83,7 +82,7 @@ class _SavedLocations extends State<SavedLocations> {
                               ),
                               alignment: Alignment.center,
                               padding: EdgeInsets.symmetric(horizontal: 8),
-                              child: InkWell(
+                              child: const InkWell(
                                   child: Text(
                                 'Save Location',
                                 style: TextStyle(color: Colors.white),

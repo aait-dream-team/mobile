@@ -17,6 +17,7 @@ import 'package:bus_navigation/features/search_results/models/RouteResultModel.d
 import 'package:bus_navigation/features/search_results/presentation/widgets/route_result.dart';
 import 'package:floating/floating.dart';
 import 'package:flutter/material.dart';
+import 'package:compass_icon/compass_icon.dart';
 
 import 'package:bus_navigation/core/utils/utils.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/bus_mode.dart';
@@ -205,7 +206,7 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                                           ?.intermidateStops?[
                                               state.currentIntermidateStopIndex]
                                           .name ??
-                                      'Waiting for data',
+                                      'Walking',
                                   arrivalTime: state
                                           .navDetailModel
                                           .legs[state.currentIndex]
@@ -340,6 +341,28 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                                     ),
                                   ),
                                 ),
+                                if (state is NavigationRoutingState)
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(15),
+                                      child: GestureDetector(
+                                        onTap: () => {
+                                          //TODO: BIRUK
+                                        },
+                                        child: const CircleAvatar(
+                                          radius: 25,
+                                          backgroundColor: Colors.blueAccent,
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.navigation_outlined,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                               ],
                             ),
                           ),
@@ -403,13 +426,6 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                     title: 'Navigation Started', body: text);
                 TextToSpeechSingleton tts = TextToSpeechSingleton();
                 tts.speak(text);
-
-                // Save the navigation to History
-                // widget.routeHistoryRepository.addRoute(RouteModel(
-                //   startPoint: widget.navDetailModel.legs[0].from,
-                //   endPoint: widget.navDetailModel.legs[-1].to,
-                //   date: DateTime.now(),
-                // ));
               }
 
               return Scaffold(
