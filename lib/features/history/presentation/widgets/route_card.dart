@@ -25,11 +25,14 @@ class RouteHistoryCard extends StatelessWidget {
                 color: AppColors.whiteAccent,
               ),
               const SizedBox(width: 10),
-              Text(
-                route.startPoint,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.blackAccent,
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.75,
+                child: Text(
+                  route.startPoint,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.blackAccent,
+                  ),
                 ),
               ),
             ],
@@ -53,12 +56,15 @@ class RouteHistoryCard extends StatelessWidget {
               const SizedBox(
                 width: 10,
               ),
-              Text(
-                route.endPoint,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: AppColors.blackAccent,
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.75,
+                child: Text(
+                  route.endPoint,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    color: AppColors.blackAccent,
+                  ),
                 ),
               ),
             ],

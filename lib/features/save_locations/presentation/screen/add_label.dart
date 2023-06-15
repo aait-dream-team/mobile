@@ -63,9 +63,8 @@ class _SavedLocations extends State<SavedLocations> {
                               print(locationController.text);
                               if (locationController.text == '') {
                                 Flushbar(
-                                  title: "Lable",
-                                  message:
-                                      "Label can not be empty",
+                                  title: "Error",
+                                  message: "Label can not be empty",
                                   duration: Duration(seconds: 3),
                                 )..show(context);
                                 return;
@@ -77,7 +76,7 @@ class _SavedLocations extends State<SavedLocations> {
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.redAccent,
+                                color: Colors.blueAccent,
                                 borderRadius: BorderRadius.only(
                                     topRight: Radius.circular(50),
                                     bottomRight: Radius.circular(50)),

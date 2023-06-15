@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:bus_navigation/core/local_notification/local_notification.dart';
 import 'package:bus_navigation/core/text_to_speech/tts.dart';
 import 'package:bus_navigation/features/history/data_provider/route_history_data_provider.dart';
+import 'package:bus_navigation/features/history/models/RouteHistory.dart';
 import 'package:bus_navigation/features/history/repository/route_history_repository.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/left_floating_action_button.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/stops.dart';
@@ -118,7 +119,6 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                 body: data["message"]['message']);
             TextToSpeechSingleton tts = TextToSpeechSingleton();
             tts.speak(data['message']['message']);
-            print("We finished this method call");
           });
       }
     }
@@ -146,7 +146,8 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                       !_isNavigationStarted) {
                     _isNavigationStarted = true;
 
-                    String text = 'You have started your navigation  to Bole';
+                    String text =
+                        'You have started your navigation  to ${widget.toPin.name}';
                     // Notify user that their navigation has started
                     LocalNotificationDataProvider.instantNotify(
                         title: 'Navigation Started', body: text);
@@ -154,11 +155,11 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                     tts.speak(text);
 
                     // Save the navigation to History
-                    // widget.routeHistoryRepository.addRoute(RouteModel(
-                    //   startPoint: widget.navDetailModel.legs[0].from,
-                    //   endPoint: widget.navDetailModel.legs[-1].to,
-                    //   date: DateTime.now(),
-                    // ));
+                    widget.routeHistoryRepository.addRoute(RouteModel(
+                      startPoint: widget.fromPin.name,
+                      endPoint: widget.toPin.name,
+                      date: DateTime.now(),
+                    ));
                   }
 
                   return Scaffold(
@@ -199,17 +200,19 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                           (state is NavigationRoutingState)
                               ? Stops(
                                   title: state
-                                      .navDetailModel
-                                      .legs[state.currentIndex]
-                                      .intermidateStops![
-                                          state.currentIntermidateStopIndex]
-                                      .name,
+                                          .navDetailModel
+                                          .legs[state.currentIndex]
+                                          ?.intermidateStops?[
+                                              state.currentIntermidateStopIndex]
+                                          .name ??
+                                      'Waiting for data',
                                   arrivalTime: state
-                                      .navDetailModel
-                                      .legs[state.currentIndex]
-                                      .intermidateStops![
-                                          state.currentIntermidateStopIndex]
-                                      .arrivalTime,
+                                          .navDetailModel
+                                          .legs[state.currentIndex]
+                                          ?.intermidateStops?[
+                                              state.currentIntermidateStopIndex]
+                                          .arrivalTime ??
+                                      DateTime.now(),
                                 )
                               : RouteWidget(
                                   result: widget.routeSearchResultModel,

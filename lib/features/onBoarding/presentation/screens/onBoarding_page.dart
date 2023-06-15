@@ -32,11 +32,10 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           bgColor: Colors.indigo,
         ),
         OnboardingModel(
-          title: 'Effortless Navigation through Bus, Train, and Walking Routes',
-          description:
-              'Seamlessly search, connect, and navigate through bus, train, and walking routes for a hassle-free urban exploration.',
-          image: 'assets/onBoarding/image1.jpg',
-          bgColor: const Color(0xFFFEF9EB),
+          title: 'Effortless Navigation through Bus and Walking Routes',
+          description: 'Seamlessly search, connect, and Navigate through Bus.',
+          image: 'assets/onBoarding/image1.png',
+          bgColor: Color.fromARGB(255, 157, 24, 24),
         ),
       ],
     );

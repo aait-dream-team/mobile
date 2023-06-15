@@ -240,10 +240,10 @@ class _MapWidget extends State<MapWidget>
                                                                   location: state
                                                                       .pinPosition));
                                                         },
-                                                        icon: const Icon(
-                                                            Icons.home),
+                                                        icon: const Icon(Icons
+                                                            .add_circle_outline_outlined),
                                                         label: const Text(
-                                                            'Set Arrival'),
+                                                            'Set Departure'),
                                                         style: ElevatedButton
                                                             .styleFrom(
                                                           shape:
@@ -260,11 +260,8 @@ class _MapWidget extends State<MapWidget>
                                                               .transparent,
                                                           foregroundColor:
                                                               const Color
-                                                                      .fromARGB(
-                                                                  255,
-                                                                  4,
-                                                                  133,
-                                                                  239),
+                                                                  .fromARGB(255,
+                                                                  4, 133, 239),
                                                           side:
                                                               const BorderSide(
                                                                   color: Color
@@ -288,8 +285,8 @@ class _MapWidget extends State<MapWidget>
                                                                   location: state
                                                                       .pinPosition));
                                                         },
-                                                        icon: const Icon(
-                                                            Icons.home),
+                                                        icon: const Icon(Icons
+                                                            .pin_drop_outlined),
                                                         label: const Text(
                                                             'Set Destination'),
                                                         style: ElevatedButton
@@ -308,11 +305,8 @@ class _MapWidget extends State<MapWidget>
                                                               .transparent,
                                                           foregroundColor:
                                                               const Color
-                                                                      .fromARGB(
-                                                                  255,
-                                                                  4,
-                                                                  133,
-                                                                  239),
+                                                                  .fromARGB(255,
+                                                                  4, 133, 239),
                                                           side:
                                                               const BorderSide(
                                                                   color: Color
@@ -326,19 +320,16 @@ class _MapWidget extends State<MapWidget>
                                                       const SizedBox(width: 16),
                                                       ElevatedButton.icon(
                                                         onPressed: () {},
-                                                        icon: const Icon(
-                                                            Icons.home),
+                                                        icon: const Icon(Icons
+                                                            .gps_fixed_outlined),
                                                         label: const Text(
-                                                            'Button 1'),
+                                                            'Current Location'),
                                                         style: ElevatedButton
                                                             .styleFrom(
                                                           foregroundColor:
                                                               const Color
-                                                                      .fromARGB(
-                                                                  255,
-                                                                  4,
-                                                                  133,
-                                                                  239),
+                                                                  .fromARGB(255,
+                                                                  4, 133, 239),
                                                           shape:
                                                               RoundedRectangleBorder(
                                                             borderRadius:
@@ -362,39 +353,6 @@ class _MapWidget extends State<MapWidget>
                                                         ),
                                                       ),
                                                       const SizedBox(width: 16),
-                                                      ElevatedButton.icon(
-                                                        onPressed: () {},
-                                                        icon: const Icon(
-                                                            Icons.home),
-                                                        label: const Text(
-                                                            'Button 1'),
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        20),
-                                                          ),
-                                                          backgroundColor:
-                                                              Colors
-                                                                  .transparent,
-                                                          shadowColor: Colors
-                                                              .transparent,
-                                                          onPrimary: const Color
-                                                                  .fromARGB(
-                                                              255, 4, 133, 239),
-                                                          side:
-                                                              const BorderSide(
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          4,
-                                                                          133,
-                                                                          239)),
-                                                        ),
-                                                      ),
                                                     ],
                                                   ),
                                           ),
