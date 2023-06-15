@@ -82,6 +82,8 @@ class RouteSearchDataProvider {
 
   Future<dynamic> getApiContent(LatLng from, LatLng to, DateTime departureDate,
       bool isDepartureTime) async {
+        print(departureDate);
+        print(isDepartureTime);
     departureDate = (DateTime.now().isAfter(departureDate))
         ? DateTime.now().add(const Duration(minutes: 1))
         : departureDate;

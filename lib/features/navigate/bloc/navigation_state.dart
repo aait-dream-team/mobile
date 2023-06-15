@@ -34,6 +34,8 @@ class NavigationRoutingState extends NavigationState {
   final LatLng userPointInRoute;
   final LatLng userLocation;
   final int currentIntermidateStopIndex;
+  final double direction;
+  final bool isFreeLook;
 
   NavigationRoutingState({
     required this.legs,
@@ -45,5 +47,7 @@ class NavigationRoutingState extends NavigationState {
     required this.currentIntermidateStopIndex,
     required this.fromPin,
     required this.toPin,
+    required this.direction,
+    required this.isFreeLook,
   });
 }

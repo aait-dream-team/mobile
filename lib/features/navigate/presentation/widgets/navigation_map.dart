@@ -54,58 +54,147 @@ class NavigateMapWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<NavigationBloc, NavigationState>(
-        listenWhen: (previous, current) => (current is NavigationRoutingState &&
-            previous is! NavigationRoutingState),
-        listener: (context, state) async {
-          if (state is NavigationRoutingState) {
-            var isLocationEnabled = await Geolocator.isLocationServiceEnabled();
-            if (!isLocationEnabled) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text("Enable Location Services"),
-                    content: const Text('Please enable location services.'),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('Cancel'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      TextButton(
-                        child: const Text('Settings'),
-                        onPressed: () {
-                          AppSettings.openLocationSettings();
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
+    // create a listener for NavigationBloc here
+
+    return BlocListener<NavigationBloc, NavigationState>(
+      listener: (context, state) {
+        if (state is NavigationRoutingState && !state.isFreeLook) {
+          _mapController.move(state.userPointInRoute, 15.0);
+        }
+      },
+      child: BlocConsumer<NavigationBloc, NavigationState>(
+          listenWhen: (previous, current) =>
+              (current is NavigationRoutingState &&
+                  previous is! NavigationRoutingState),
+          listener: (context, state) async {
+            if (state is NavigationRoutingState) {
+              var isLocationEnabled =
+                  await Geolocator.isLocationServiceEnabled();
+              if (!isLocationEnabled) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Enable Location Services"),
+                      content: const Text('Please enable location services.'),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('Cancel'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        TextButton(
+                          child: const Text('Settings'),
+                          onPressed: () {
+                            AppSettings.openLocationSettings();
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
             }
-          }
-        },
-        builder: ((context, state) {
-          print("SUCCESS");
-          if (state is NavigationSuccessState) {
-            print(state.navDetailModel.legs
-                .map((e) => e.intermidateStops ?? [])
-                .expand((element) => element)
-                .toList());
-            return SafeArea(
-              child: FlutterMap(
+          },
+          builder: ((context, state) {
+            if (state is NavigationSuccessState) {
+              print(state.navDetailModel.legs
+                  .map((e) => e.intermidateStops ?? [])
+                  .expand((element) => element)
+                  .toList());
+              return SafeArea(
+                child: FlutterMap(
+                  mapController: _mapController,
+                  options: MapOptions(
+                    center: LatLng(
+                        9.0229687, 38.7747978), // Initial center location
+                    zoom: 11.0,
+                    onMapReady: () {
+                      // Fit the bounds when the map is created
+                      _mapController.fitBounds(
+                          _createPolylinesAndBounds(state.routePoints));
+                    },
+                  ),
+                  children: [
+                    TileLayer(
+                        urlTemplate:
+                            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        userAgentPackageName: 'com.example.app',
+                        tileProvider:
+                            FMTC.instance('mapStore').getTileProvider()),
+                    PolylineLayer(
+                      polylines: state.routePoints
+                          .asMap()
+                          .entries
+                          .map((e) => Polyline(
+                                color: routeColors[
+                                    min(e.key, routeColors.length - 1)],
+                                strokeWidth: 7.0,
+                                points: e.value,
+                              ))
+                          .cast<Polyline>()
+                          .toList(),
+                    ),
+                    MarkerLayer(
+                      markers: state.navDetailModel.legs
+                          .map((e) => e.intermidateStops ?? [])
+                          .expand((element) => element)
+                          .map((e) => Marker(
+                              point: e.location,
+                              builder: (context) =>
+                                  const Icon(Icons.donut_small)))
+                          .toList(),
+                    )
+                  ],
+                ),
+              );
+            } else if (state is NavigationRoutingState) {
+              var oldLegs = [];
+              if (state.currentIndex > 0) {
+                oldLegs = state.legs.sublist(0, state.currentIndex);
+              }
+              if (state.currentInnerIndex > 0) {
+                oldLegs.add(state.legs[state.currentIndex]
+                    .sublist(0, state.currentInnerIndex + 1));
+              }
+              var newLegs = [];
+              if (state.currentInnerIndex <
+                  state.legs[state.currentIndex].length - 1) {
+                newLegs = [
+                  state.legs[state.currentIndex].sublist(
+                      state.currentInnerIndex,
+                      state.legs[state.currentIndex].length)
+                ];
+              }
+              if (state.currentIndex < state.legs.length - 1) {
+                newLegs.addAll(state.legs
+                    .sublist(state.currentIndex + 1, state.legs.length));
+              }
+              Geolocator.getPositionStream(
+                      locationSettings: AndroidSettings(
+                        // intervalDuration: const Duration(seconds: 1),
+                        accuracy: LocationAccuracy.bestForNavigation
+                      ))
+                  .listen((event) {
+                    
+                print(event.heading);
+                var location = LatLng(event.latitude, event.longitude);
+                var direction = event.heading;
+                BlocProvider.of<NavigationBloc>(context).add(
+                    UpdateUserLocationEvent(
+                        location: location, direction: direction, isFreeLook: state.isFreeLook));
+              });
+              return FlutterMap(
                 mapController: _mapController,
                 options: MapOptions(
-                  center:
-                      LatLng(9.0229687, 38.7747978), // Initial center location
-                  zoom: 11.0,
-                  onMapReady: () {
-                    // Fit the bounds when the map is created
-                    _mapController.fitBounds(
-                        _createPolylinesAndBounds(state.routePoints));
+                  center: state.userPointInRoute,
+                  zoom: 15.0,
+                  onPointerDown: (p0, lt) {
+                    BlocProvider.of<NavigationBloc>(context).add(
+                    UpdateUserLocationEvent(
+                        location: state.userLocation, direction: state.direction, isFreeLook: true));
                   },
                 ),
                 children: [
@@ -116,17 +205,34 @@ class NavigateMapWidget extends StatelessWidget {
                       tileProvider:
                           FMTC.instance('mapStore').getTileProvider()),
                   PolylineLayer(
-                    polylines: state.routePoints
-                        .asMap()
-                        .entries
-                        .map((e) => Polyline(
-                              color: routeColors[
-                                  min(e.key, routeColors.length - 1)],
-                              strokeWidth: 7.0,
-                              points: e.value,
-                            ))
-                        .cast<Polyline>()
-                        .toList(),
+                    polylines: [
+                      oldLegs.map((e) => Polyline(
+                            color: const Color.fromARGB(255, 64, 70, 75),
+                            strokeWidth: 8.0,
+                            points: e,
+                          )),
+                      newLegs.map((e) => Polyline(
+                            color: const Color.fromARGB(255, 14, 129, 222),
+                            strokeWidth: 8.0,
+                            points: e,
+                          ))
+                    ].expand((element) => element).toList(),
+                  ),
+                  MarkerLayer(
+                    markers: [
+                      Marker(
+                          point: state.userLocation,
+                          builder: (context) => const Icon(
+                                Icons.location_on,
+                                color: Color.fromARGB(255, 0, 255, 8),
+                              ),
+                          width: 42),
+                      Marker(
+                          point: state.userPointInRoute,
+                          builder: (context) => const Icon(Icons.location_on,
+                              color: Color.fromARGB(255, 233, 42, 29)),
+                          width: 40)
+                    ],
                   ),
                   MarkerLayer(
                     markers: state.navDetailModel.legs
@@ -134,110 +240,15 @@ class NavigateMapWidget extends StatelessWidget {
                         .expand((element) => element)
                         .map((e) => Marker(
                             point: e.location,
-                            builder: (context) =>
-                                const Icon(Icons.donut_small)))
+                            builder: (context) => const Icon(Icons.bus_alert)))
                         .toList(),
                   )
                 ],
-              ),
-            );
-          } else if (state is NavigationRoutingState) {
-            var oldLegs = [];
-            if (state.currentIndex > 0) {
-              oldLegs = state.legs.sublist(0, state.currentIndex);
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
             }
-            if (state.currentInnerIndex > 0) {
-              oldLegs.add(state.legs[state.currentIndex]
-                  .sublist(0, state.currentInnerIndex + 1));
-            }
-            var newLegs = [];
-            if (state.currentInnerIndex <
-                state.legs[state.currentIndex].length - 1) {
-              newLegs = [
-                state.legs[state.currentIndex].sublist(state.currentInnerIndex,
-                    state.legs[state.currentIndex].length)
-              ];
-            }
-            if (state.currentIndex < state.legs.length - 1) {
-              newLegs.addAll(state.legs
-                  .sublist(state.currentIndex + 1, state.legs.length));
-            }
-            return StreamBuilder<Position>(
-                stream: Geolocator.getPositionStream(
-                    locationSettings: const LocationSettings(
-                        accuracy: LocationAccuracy.bestForNavigation)),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data != null) {
-                    var location = LatLng(
-                        snapshot.data!.latitude, snapshot.data!.longitude);
-                    BlocProvider.of<NavigationBloc>(context)
-                        .add(UpdateUserLocationEvent(location));
-                  }
-                  return FlutterMap(
-                    mapController: _mapController,
-                    options: MapOptions(
-                      center: LatLng(
-                          9.0229687, 38.7747978), // Initial center location
-                      zoom: 11.0,
-                      onMapReady: () {
-                        // Fit the bounds when the map is created
-                        _mapController.move(state.userPointInRoute, 15.0);
-                      },
-                    ),
-                    children: [
-                      TileLayer(
-                          urlTemplate:
-                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                          userAgentPackageName: 'com.example.app',
-                          tileProvider:
-                              FMTC.instance('mapStore').getTileProvider()),
-                      PolylineLayer(
-                        polylines: [
-                          oldLegs.map((e) => Polyline(
-                                color: const Color.fromARGB(255, 64, 70, 75),
-                                strokeWidth: 8.0,
-                                points: e,
-                              )),
-                          newLegs.map((e) => Polyline(
-                                color: const Color.fromARGB(255, 14, 129, 222),
-                                strokeWidth: 8.0,
-                                points: e,
-                              ))
-                        ].expand((element) => element).toList(),
-                      ),
-                      MarkerLayer(
-                        markers: [
-                          Marker(
-                              point: state.userLocation,
-                              builder: (context) => const Icon(
-                                    Icons.location_on,
-                                    color: Color.fromARGB(255, 0, 255, 8),
-                                  ),
-                              width: 42),
-                          Marker(
-                              point: state.userPointInRoute,
-                              builder: (context) => const Icon(
-                                  Icons.location_on,
-                                  color: Color.fromARGB(255, 233, 42, 29)),
-                              width: 40)
-                        ],
-                      ),
-                      MarkerLayer(
-                        markers: state.navDetailModel.legs
-                            .map((e) => e.intermidateStops ?? [])
-                            .expand((element) => element)
-                            .map((e) => Marker(
-                                point: e.location,
-                                builder: (context) =>
-                                    const Icon(Icons.bus_alert)))
-                            .toList(),
-                      )
-                    ],
-                  );
-                });
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        }));
+          })),
+    );
   }
 }

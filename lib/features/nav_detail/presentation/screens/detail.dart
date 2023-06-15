@@ -97,7 +97,7 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
     print('before');
     print(widget.navDetailModel.legs);
     print('after');
-    String url = "ws://192.168.8.151:8000";
+    String url = "ws://34.125.99.126";
 
     for (var leg in widget.navDetailModel.legs) {
       if (leg.mode != 'WALK') {
@@ -114,8 +114,9 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
               .stream
               .listen((message) {
             var data = jsonDecode(message);
+            print(data);
             LocalNotificationDataProvider.instantNotify(
-                title: data['message']['effect'],
+                title: data['message']['effect_field'],
                 body: data["message"]['message']);
             TextToSpeechSingleton tts = TextToSpeechSingleton();
             tts.speak(data['message']['message']);
