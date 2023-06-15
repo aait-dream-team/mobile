@@ -18,7 +18,29 @@ class SearchResults extends StatefulWidget {
   State<SearchResults> createState() => _RouteSearchState();
 }
 
-class _RouteSearchState extends State<SearchResults> {
+class _RouteSearchState extends State<SearchResults> with SingleTickerProviderStateMixin{
+   late AnimationController _animationController;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _animation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeIn,
+    );
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     int depature = 0;
@@ -52,7 +74,7 @@ class _RouteSearchState extends State<SearchResults> {
                 child: Center(child: Text(state.msg)));
           }
           if (state is SearchSuccessState) {
-            final list = state.results;
+            final list = [];
 
             return (list.isNotEmpty)?RefreshIndicator(
               onRefresh: () async {
@@ -80,7 +102,38 @@ class _RouteSearchState extends State<SearchResults> {
                     .cast<SliverToBoxAdapter>()
                     .toList(),
               ),
-            ):Center(child: Text("There is no possible route", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w100),),);
+            ):Center(child: AnimatedOpacity(
+      opacity: _animation.value,
+      duration: const Duration(milliseconds: 500),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.search_off,
+              size: 64,
+              color: Colors.grey,
+            ),
+            SizedBox(height: 16),
+            Text(
+              'No Possible Routes',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Try with different source and destination',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),);
           }
           return const Center(child: Text("Something Went Wrong"));
         },
