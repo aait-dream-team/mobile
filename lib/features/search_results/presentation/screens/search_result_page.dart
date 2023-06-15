@@ -49,9 +49,18 @@ class _RouteSearchState extends State<SearchResults> with SingleTickerProviderSt
       body: BlocBuilder<SearchBloc, SearchState>(
         builder: (context, state) {
           if (state is SearchInitialState) {
-            return const Padding(
+            return  Padding(
                 padding: EdgeInsets.all(16.0),
-                child: Center(child: Text("Enter source and destination", style: TextStyle(fontSize: 23,fontWeight: FontWeight.w100),)));
+                child: Center(child: Column(
+                  children: [
+                    SizedBox(height: 50,),
+                    Image.asset("assets/source_dest.png", height: 200,),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Enter source and destination", style: TextStyle(fontSize: 23,fontWeight: FontWeight.w100),),
+                    ),
+                  ],
+                )));
           }
           if (state is SearchInitialState || state is SearchLoadingState) {
             return const Padding(
@@ -74,7 +83,7 @@ class _RouteSearchState extends State<SearchResults> with SingleTickerProviderSt
                 child: Center(child: Text(state.msg)));
           }
           if (state is SearchSuccessState) {
-            final list = [];
+            final list = state.results;
 
             return (list.isNotEmpty)?RefreshIndicator(
               onRefresh: () async {
