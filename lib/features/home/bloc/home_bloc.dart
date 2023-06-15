@@ -12,13 +12,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeEvent>((event, emit) async {
       if (event is MapPinChanged) {
         emit(HomePinnedLoadingState(
-            position: event.position,
+            position: event.pinPosition,
             zoom: event.zoom,
             name: "${event.position.latitude}, ${event.position.longitude}",
             pinPosition: event.pinPosition));
         var name = await getNameFromLatLng(event.pinPosition);
         emit(HomePinnedState(
-            position: event.position,
+            position: event.pinPosition,
             zoom: event.zoom,
             name: name,
             pinPosition: event.pinPosition));
@@ -39,15 +39,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
 Future<String> getNameFromLatLng(LatLng latlng) async {
   print(latlng);
-  try{
-    List<Placemark> placemarks =
-      await placemarkFromCoordinates(latlng.latitude, latlng.longitude, localeIdentifier: "et");
-  Placemark place = placemarks[0];
-  String locationName =
-      "${place.name}, ${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode} ${place.country}";
-  print(locationName);
-  return locationName;
-  }catch(e){
+  try {
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+        latlng.latitude, latlng.longitude,
+        localeIdentifier: "et");
+    Placemark place = placemarks[0];
+    String locationName =
+        "${place.name}, ${place.street}, ${place.locality}, ${place.administrativeArea}";
+    print(locationName);
+    return locationName;
+  } catch (e) {
     return '${latlng.latitude.toString()} | ${latlng.longitude.toString()}, Uknown street, Addis Ababa, Addis Ababa, 1000, Ethiopia}}';
   }
 }

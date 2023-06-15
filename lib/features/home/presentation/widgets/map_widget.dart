@@ -21,50 +21,10 @@ class MapWidget extends StatefulWidget {
 class _MapWidget extends State<MapWidget>
     with AutomaticKeepAliveClientMixin<MapWidget> {
   bool _isShowingBottomSheet = false;
-
-  final txt = Container(
-    decoration: BoxDecoration(
-      border: Border.all(
-        color: Colors.grey,
-      ),
-      borderRadius: BorderRadius.circular(5),
-    ),
-    height: 50,
-    margin: const EdgeInsets.symmetric(horizontal: 30),
-    child: ClipRRect(
-      child: Expanded(
-        child: Row(
-          children: [
-            Expanded(
-                child: TextFormField(
-              decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(left: 10)),
-            )),
-            Container(
-              decoration: const BoxDecoration(
-                color: Colors.redAccent,
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(5),
-                    bottomRight: Radius.circular(5)),
-              ),
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: const InkWell(
-                  child: Text(
-                'Apply Coupon',
-                style: TextStyle(color: Colors.white),
-              )),
-            )
-          ],
-        ),
-      ),
-    ),
-  );
+  final MapController _mapController = MapController();
 
   @override
   Widget build(BuildContext context) {
-    final items = ['work', 'home', 'school', 'other'];
     super.build(context);
     return BlocConsumer<HomeBloc, HomeState>(
         listenWhen: (previous, current) => !(previous is HomePinnedState &&
@@ -72,6 +32,7 @@ class _MapWidget extends State<MapWidget>
         listener: showBottomSheet,
         builder: (context, state) {
           return FlutterMap(
+            mapController: _mapController,
             options: MapOptions(
                 center: state.position,
                 zoom: state.zoom,
@@ -120,6 +81,7 @@ class _MapWidget extends State<MapWidget>
 
   void showBottomSheet(context, state) {
     if (state is HomePinnedState) {
+      _mapController.move(state.pinPosition, state.zoom);
       var name, street, sub_city, city;
       if (state is! HomePinnedLoadingState) {
         final details = state.name.split(',');
@@ -131,7 +93,10 @@ class _MapWidget extends State<MapWidget>
       if (_isShowingBottomSheet) {
         Navigator.of(context).pop();
       }
-      _isShowingBottomSheet = true;
+      setState(() {
+        _isShowingBottomSheet = true;
+      });
+
       showModalBottomSheet(
         barrierColor: Colors.transparent,
         context: context,
@@ -148,7 +113,7 @@ class _MapWidget extends State<MapWidget>
                 child: GestureDetector(
                   onTap: () {},
                   child: DraggableScrollableSheet(
-                    initialChildSize: 0.34,
+                    initialChildSize: 0.4,
                     minChildSize: 0.2,
                     maxChildSize: 0.75,
                     builder: (_, controller) {
@@ -260,8 +225,11 @@ class _MapWidget extends State<MapWidget>
                                                               .transparent,
                                                           foregroundColor:
                                                               const Color
-                                                                  .fromARGB(255,
-                                                                  4, 133, 239),
+                                                                      .fromARGB(
+                                                                  255,
+                                                                  4,
+                                                                  133,
+                                                                  239),
                                                           side:
                                                               const BorderSide(
                                                                   color: Color
@@ -305,8 +273,11 @@ class _MapWidget extends State<MapWidget>
                                                               .transparent,
                                                           foregroundColor:
                                                               const Color
-                                                                  .fromARGB(255,
-                                                                  4, 133, 239),
+                                                                      .fromARGB(
+                                                                  255,
+                                                                  4,
+                                                                  133,
+                                                                  239),
                                                           side:
                                                               const BorderSide(
                                                                   color: Color
@@ -328,8 +299,11 @@ class _MapWidget extends State<MapWidget>
                                                             .styleFrom(
                                                           foregroundColor:
                                                               const Color
-                                                                  .fromARGB(255,
-                                                                  4, 133, 239),
+                                                                      .fromARGB(
+                                                                  255,
+                                                                  4,
+                                                                  133,
+                                                                  239),
                                                           shape:
                                                               RoundedRectangleBorder(
                                                             borderRadius:
@@ -388,7 +362,9 @@ class _MapWidget extends State<MapWidget>
           );
         },
       ).then((value) {
-        _isShowingBottomSheet = false;
+        setState(() {
+          _isShowingBottomSheet = false;
+        });
       });
     }
   }

@@ -18,8 +18,9 @@ class SearchResults extends StatefulWidget {
   State<SearchResults> createState() => _RouteSearchState();
 }
 
-class _RouteSearchState extends State<SearchResults> with SingleTickerProviderStateMixin{
-   late AnimationController _animationController;
+class _RouteSearchState extends State<SearchResults>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
   late Animation<double> _animation;
 
   @override
@@ -41,6 +42,7 @@ class _RouteSearchState extends State<SearchResults> with SingleTickerProviderSt
     _animationController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     int depature = 0;
@@ -49,15 +51,25 @@ class _RouteSearchState extends State<SearchResults> with SingleTickerProviderSt
       body: BlocBuilder<SearchBloc, SearchState>(
         builder: (context, state) {
           if (state is SearchInitialState) {
-            return  Padding(
+            return Padding(
                 padding: EdgeInsets.all(16.0),
-                child: Center(child: Column(
+                child: Center(
+                    child: Column(
                   children: [
-                    SizedBox(height: 50,),
-                    Image.asset("assets/source_dest.png", height: 200,),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Image.asset(
+                      "assets/source_dest.png",
+                      height: 200,
+                    ),
                     const Padding(
                       padding: EdgeInsets.all(8.0),
-                      child: Text("Enter source and destination", style: TextStyle(fontSize: 23,fontWeight: FontWeight.w100),),
+                      child: Text(
+                        "Enter source and destination",
+                        style: TextStyle(
+                            fontSize: 23, fontWeight: FontWeight.w100),
+                      ),
                     ),
                   ],
                 )));
@@ -77,84 +89,98 @@ class _RouteSearchState extends State<SearchResults> with SingleTickerProviderSt
                       to: state.to,
                       isDepartureTime: state.isDepartureTime,
                       fromPin: state.fromPin,
-                      toPin: state.toPin
-                      ));
+                      toPin: state.toPin));
                 },
-                child: Center(child: Column(
+                child: Center(
+                    child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: 70,),
                     Image.asset("assets/error.png", height: 150,),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20,30,20,10),
+                      padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
                       child: Center(
-                        child: Text(state.msg, style: TextStyle(fontSize: 23,fontWeight: FontWeight.w100),
-                                          ),
-                      ),)
+                        child: Text(
+                          state.msg,
+                          style: TextStyle(
+                              fontSize: 23, fontWeight: FontWeight.w100),
+                        ),
+                      ),
+                    )
                   ],
                 )));
           }
           if (state is SearchSuccessState) {
             final list = state.results;
 
-            return (list.isNotEmpty)?RefreshIndicator(
-              onRefresh: () async {
-                context.read<SearchBloc>().add(LoadSearchEvent(
-                    departureDate: state.departureDate,
-                    from: state.from,
-                    to: state.to,
-                    isDepartureTime: state.isDepartureTime,
-                    fromPin: state.fromPin,
-                    toPin: state.toPin));
-              },
-              child: CustomScrollView(
-                slivers: list
-                    .map((route) => SliverToBoxAdapter(
-                        child: Container(
-                            margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            color: Colors.black26,
-                            child: InkWell(
-                              onTap: () => Navigator.pushNamed(
-                                  context, SidePage.route,
-                                  arguments: [route.$1, route.$2, state.fromPin, state.toPin]),
-                              child: RouteWidget(
-                                  result: route.$1, navDetailModel: route.$2),
-                            ))))
-                    .cast<SliverToBoxAdapter>()
-                    .toList(),
-              ),
-            ):Center(child: AnimatedOpacity(
-      opacity: _animation.value,
-      duration: const Duration(milliseconds: 500),
-      child:const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.search_off,
-              size: 64,
-              color: Colors.grey,
-            ),
-            SizedBox(height: 16),
-            Text(
-              'No Possible Routes',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Try with different source and destination',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),);
+            return (list.isNotEmpty)
+                ? RefreshIndicator(
+                    onRefresh: () async {
+                      context.read<SearchBloc>().add(LoadSearchEvent(
+                          departureDate: state.departureDate,
+                          from: state.from,
+                          to: state.to,
+                          isDepartureTime: state.isDepartureTime,
+                          fromPin: state.fromPin,
+                          toPin: state.toPin));
+                    },
+                    child: CustomScrollView(
+                      slivers: list
+                          .map((route) => SliverToBoxAdapter(
+                              child: Container(
+                                  margin:
+                                      const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                  color: Colors.white,
+                                  child: InkWell(
+                                    onTap: () => Navigator.pushNamed(
+                                        context, SidePage.route, arguments: [
+                                      route.$1,
+                                      route.$2,
+                                      state.fromPin,
+                                      state.toPin
+                                    ]),
+                                    child: RouteWidget(
+                                        result: route.$1,
+                                        navDetailModel: route.$2),
+                                  ))))
+                          .cast<SliverToBoxAdapter>()
+                          .toList(),
+                    ),
+                  )
+                : Center(
+                    child: AnimatedOpacity(
+                      opacity: _animation.value,
+                      duration: const Duration(milliseconds: 500),
+                      child: const Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.search_off,
+                              size: 64,
+                              color: Colors.grey,
+                            ),
+                            SizedBox(height: 16),
+                            Text(
+                              'No Possible Routes',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              'Try with different source and destination',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
           }
           return const Center(child: Text("Something Went Wrong"));
         },

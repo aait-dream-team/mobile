@@ -89,12 +89,7 @@ class NavigateMapWidget extends StatelessWidget {
           }
         },
         builder: ((context, state) {
-          print("SUCCESS");
           if (state is NavigationSuccessState) {
-            print(state.navDetailModel.legs
-                .map((e) => e.intermidateStops ?? [])
-                .expand((element) => element)
-                .toList());
             return SafeArea(
               child: FlutterMap(
                 mapController: _mapController,
@@ -135,7 +130,7 @@ class NavigateMapWidget extends StatelessWidget {
                         .map((e) => Marker(
                             point: e.location,
                             builder: (context) =>
-                                const Icon(Icons.donut_small)))
+                                const Icon(Icons.directions_bus)))
                         .toList(),
                   )
                 ],
@@ -162,6 +157,7 @@ class NavigateMapWidget extends StatelessWidget {
               newLegs.addAll(state.legs
                   .sublist(state.currentIndex + 1, state.legs.length));
             }
+
             return StreamBuilder<Position>(
                 stream: Geolocator.getPositionStream(
                     locationSettings: const LocationSettings(
@@ -181,7 +177,7 @@ class NavigateMapWidget extends StatelessWidget {
                       zoom: 11.0,
                       onMapReady: () {
                         // Fit the bounds when the map is created
-                        _mapController.move(state.userPointInRoute, 15.0);
+                        _mapController.move(state.userPointInRoute, 16.0);
                       },
                     ),
                     children: [
@@ -210,16 +206,17 @@ class NavigateMapWidget extends StatelessWidget {
                           Marker(
                               point: state.userLocation,
                               builder: (context) => const Icon(
-                                    Icons.location_on,
-                                    color: Color.fromARGB(255, 0, 255, 8),
-                                  ),
-                              width: 42),
+                                  Icons.location_on,
+                                  color: Colors.blue,
+                                  size: 30),
+                              width: 80),
                           Marker(
                               point: state.userPointInRoute,
                               builder: (context) => const Icon(
                                   Icons.location_on,
-                                  color: Color.fromARGB(255, 233, 42, 29)),
-                              width: 40)
+                                  color: Color.fromARGB(255, 233, 42, 29),
+                                  size: 40),
+                              width: 80)
                         ],
                       ),
                       MarkerLayer(
