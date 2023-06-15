@@ -158,7 +158,7 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                     widget.routeHistoryRepository.addRoute(RouteModel(
                       startPoint: widget.fromPin.name,
                       endPoint: widget.toPin.name,
-                      date: DateTime.now(),
+                      date: DateTime.now().add(Duration(days: 1)),
                     ));
                   }
 
@@ -403,13 +403,6 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                     title: 'Navigation Started', body: text);
                 TextToSpeechSingleton tts = TextToSpeechSingleton();
                 tts.speak(text);
-
-                // Save the navigation to History
-                // widget.routeHistoryRepository.addRoute(RouteModel(
-                //   startPoint: widget.navDetailModel.legs[0].from,
-                //   endPoint: widget.navDetailModel.legs[-1].to,
-                //   date: DateTime.now(),
-                // ));
               }
 
               return Scaffold(

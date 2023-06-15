@@ -15,61 +15,69 @@ class RouteHistoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.circle_outlined,
-                size: 20,
-                color: AppColors.whiteAccent,
-              ),
-              const SizedBox(width: 10),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.75,
-                child: Text(
-                  route.startPoint,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.blackAccent,
-                  ),
+      child: Card(
+        child: Container(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.circle,
+                      size: 20,
+                      color: Colors.green,
+                    ),
+                    const SizedBox(width: 10),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.75,
+                        child: Text(
+                          route.startPoint,
+                          style: TextStyle(
+                            color: AppColors.blackAccent,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Icon(
-                Icons.arrow_downward_outlined,
-                color: AppColors.grey,
-                size: 17,
-              )
-            ],
-          ),
-          Row(
-            children: [
-              Icon(
-                Icons.circle_rounded,
-                size: 20,
-                color: AppColors.blueAccent,
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.75,
-                child: Text(
-                  route.endPoint,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                    color: AppColors.blackAccent,
-                  ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.arrow_downward_outlined,
+                      color: AppColors.grey,
+                      size: 17,
+                    )
+                  ],
                 ),
-              ),
-            ],
+                Row(
+                  children: [
+                    Icon(
+                      Icons.circle_rounded,
+                      size: 20,
+                      color: AppColors.blue,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.75,
+                      child: Text(
+                        route.endPoint,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: AppColors.blackAccent,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ],
+        ),
       ),
     );
   }
