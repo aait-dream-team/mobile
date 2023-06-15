@@ -106,7 +106,10 @@ class RouteWidget extends StatelessWidget {
                                 child: Column(
                                   children: alerts
                                       .map((alert) => ListTile(
-                                          leading: const Icon(Icons.ac_unit),
+                                          leading: const Icon(
+                                            Icons.warning_amber,
+                                            color: Colors.redAccent,
+                                          ),
                                           title: Text(alert.alertText)))
                                       .toList(),
                                 ),
@@ -123,8 +126,11 @@ class RouteWidget extends StatelessWidget {
                           },
                         );
                       },
-                      child: const Icon(Icons.warning,
-                          color: Colors.red, size: 25,), // Change the icon color
+                      child: const Icon(
+                        Icons.warning,
+                        color: Colors.red,
+                        size: 25,
+                      ), // Change the icon color
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(
                             side: BorderSide(

@@ -87,7 +87,7 @@ class _MapPageState extends State<MapPage> {
                 _centerLocation.latitude, _centerLocation.longitude);
             Placemark place = placemarks[0];
             String locationName =
-                "${place.name}, ${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode} ${place.country}";
+                "${place.name}, ${place.street}, ${place.locality}, ${place.administrativeArea}";
             print(locationName);
             screenArguments.func(_centerLocation, locationName);
           } catch (e) {
