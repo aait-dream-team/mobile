@@ -56,7 +56,7 @@ class DatePickerState extends State<DatePicker> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              customRadio("Depature", 0),
+              customRadio("Departure", 0),
               const Icon(Icons.arrow_right_sharp),
               customRadio("Arrival", 1),
             ],

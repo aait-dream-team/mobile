@@ -18,7 +18,29 @@ class SearchResults extends StatefulWidget {
   State<SearchResults> createState() => _RouteSearchState();
 }
 
-class _RouteSearchState extends State<SearchResults> {
+class _RouteSearchState extends State<SearchResults> with SingleTickerProviderStateMixin{
+   late AnimationController _animationController;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _animation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeIn,
+    );
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     int depature = 0;
@@ -27,9 +49,18 @@ class _RouteSearchState extends State<SearchResults> {
       body: BlocBuilder<SearchBloc, SearchState>(
         builder: (context, state) {
           if (state is SearchInitialState) {
-            return const Padding(
+            return  Padding(
                 padding: EdgeInsets.all(16.0),
-                child: Center(child: Text("Enter source and destination")));
+                child: Center(child: Column(
+                  children: [
+                    SizedBox(height: 50,),
+                    Image.asset("assets/source_dest.png", height: 200,),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text("Enter source and destination", style: TextStyle(fontSize: 23,fontWeight: FontWeight.w100),),
+                    ),
+                  ],
+                )));
           }
           if (state is SearchInitialState || state is SearchLoadingState) {
             return const Padding(
@@ -49,12 +80,24 @@ class _RouteSearchState extends State<SearchResults> {
                       toPin: state.toPin
                       ));
                 },
-                child: Center(child: Text(state.msg)));
+                child: Center(child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 70,),
+                    Image.asset("assets/error.png", height: 150,),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20,30,20,10),
+                      child: Center(
+                        child: Text(state.msg, style: TextStyle(fontSize: 23,fontWeight: FontWeight.w100),
+                                          ),
+                      ),)
+                  ],
+                )));
           }
           if (state is SearchSuccessState) {
             final list = state.results;
 
-            return RefreshIndicator(
+            return (list.isNotEmpty)?RefreshIndicator(
               onRefresh: () async {
                 context.read<SearchBloc>().add(LoadSearchEvent(
                     departureDate: state.departureDate,
@@ -80,7 +123,38 @@ class _RouteSearchState extends State<SearchResults> {
                     .cast<SliverToBoxAdapter>()
                     .toList(),
               ),
-            );
+            ):Center(child: AnimatedOpacity(
+      opacity: _animation.value,
+      duration: const Duration(milliseconds: 500),
+      child:const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.search_off,
+              size: 64,
+              color: Colors.grey,
+            ),
+            SizedBox(height: 16),
+            Text(
+              'No Possible Routes',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Try with different source and destination',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),);
           }
           return const Center(child: Text("Something Went Wrong"));
         },
