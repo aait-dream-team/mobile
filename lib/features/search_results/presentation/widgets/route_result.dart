@@ -124,12 +124,12 @@ class RouteWidget extends StatelessWidget {
                         );
                       },
                       child: const Icon(Icons.warning,
-                          color: Colors.red), // Change the icon color
+                          color: Colors.red, size: 25,), // Change the icon color
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(
                             side: BorderSide(
-                                color:
-                                    Colors.red)), // Add a border to the circle
+                                color: Colors
+                                    .black12)), // Add a border to the circle
                         padding: const EdgeInsets.all(9),
                         backgroundColor: Colors.white, // Button color
                       ),
@@ -199,6 +199,7 @@ class RouteWidget extends StatelessWidget {
                     ),
                   // Second row: departure time, duration, arrival time and walking time
                   Row(
+                    // crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Chip(
@@ -208,8 +209,9 @@ class RouteWidget extends StatelessWidget {
                         labelStyle: TextStyle(
                             color: Colors.white, fontSize: mediumFontSize),
                       ),
-                      if (showArrivalAndWalkingTime)
-                        Text('${result.totalDuration.inMinutes} min'),
+                      SizedBox(
+                        width: 20,
+                      ),
                       if (showArrivalAndWalkingTime)
                         Chip(
                           label: Text(
