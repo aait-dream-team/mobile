@@ -189,7 +189,7 @@ class _MapWidget extends State<MapWidget>
                                             subtitle: Text((state
                                                     is HomePinnedLoadingState)
                                                 ? ""
-                                                : '${street}\n${sub_city}'),
+                                                : '$street'),
                                             trailing: Text((state
                                                     is HomePinnedLoadingState)
                                                 ? ""

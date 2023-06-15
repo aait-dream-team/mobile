@@ -35,67 +35,78 @@ class _ListLocations extends State<ListLocations> {
           items = state.locations;
         }
         return Expanded(
-            child: ListView.builder(
-          itemCount: items.length,
-          itemBuilder: (BuildContext context, int index) {
-            final item = items[index];
-            return Dismissible(
-              key: Key(item.name),
-              onDismissed: (direction) {
-                context.read<LocationsBloc>().add(DeleteLocation(id: item.id));
-                setState(() {
-                  items.removeAt(index);
-                });
+            child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (BuildContext context, int index) {
+              final item = items[index];
+              return Dismissible(
+                key: Key(item.name),
+                onDismissed: (direction) {
+                  context
+                      .read<LocationsBloc>()
+                      .add(DeleteLocation(id: item.id));
+                  setState(() {
+                    items.removeAt(index);
+                  });
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("${item.name} dismissed")));
-              },
-              background: Container(color: Colors.red[300]),
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: const Color(0xff764abc),
-                  child: Icon(Icons.save_as_rounded),
-                ),
-                onTap: () {
-                  print('clicked');
-
-                  if (widget.screenArguments == null){
-                    BlocProvider.of<RoutesBloc>(context).add(PointPicked(
-                      from: PinPoint(
-                          name: item.location.name,
-                          location: item.location.location),
-                      to: PinPoint(name: '', location: LatLng(0, 0)),
-                      datetime: DateTime.now(),
-                      isDepartureTime: true));
-                  Navigator.pushNamed(context, RoutesPage.route,
-                      arguments: ScreenArgumentsRoutes(
-                        type: 'from',
-                        name: item.location.name,
-                        location: item.location.location,
-                      ));
-                  }else{
-                    widget.screenArguments!.func(
-                      item.location.location,
-                      item.location.name
-                    );
-                    Navigator.pop(context);
-                  }
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("${item.name} dismissed")));
                 },
-                title: Text('${item.name}'),
-                subtitle: Text(item.location.name),
-                trailing: Text(formatter.format(item.date)),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(32),
-                        bottomRight: Radius.circular(32))),
-                selectedTileColor: Colors.orange[100],
-                selected: false,
-                // onTap: () {},
-                // leading: Icon(icon),
-                // title: Text(title),
-              ),
-            );
-          },
+                background: Container(color: Colors.red[300]),
+                child: Card(
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      child: Icon(Icons.save_as_rounded),
+                    ),
+                    onTap: () {
+                      if (widget.screenArguments == null) {
+                        BlocProvider.of<RoutesBloc>(context).add(PointPicked(
+                            from: PinPoint(
+                                name: item.location.name,
+                                location: item.location.location),
+                            to: PinPoint(name: '', location: LatLng(0, 0)),
+                            datetime: DateTime.now(),
+                            isDepartureTime: true));
+                        Navigator.pushNamed(context, RoutesPage.route,
+                            arguments: ScreenArgumentsRoutes(
+                              type: 'from',
+                              name: item.location.name,
+                              location: item.location.location,
+                            ));
+                      } else {
+                        widget.screenArguments!
+                            .func(item.location.location, item.location.name);
+                        Navigator.pop(context);
+                      }
+                    },
+                    title: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text(
+                        item.name,
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                    ),
+                    subtitle: Text(item.location.name
+                        .substring(0, item.location.name.indexOf(','))),
+                    trailing: Text(
+                      DateFormat.MMMd().format(item.date),
+                    ),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(32),
+                            bottomRight: Radius.circular(32))),
+                    selectedTileColor: Colors.orange[100],
+                    selected: false,
+                    // onTap: () {},
+                    // leading: Icon(icon),
+                    // title: Text(title),
+                  ),
+                ),
+              );
+            },
+          ),
         ));
       },
     );
