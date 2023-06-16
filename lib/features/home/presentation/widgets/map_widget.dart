@@ -1,8 +1,10 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:bus_navigation/features/home/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geocoding/geocoding.dart';
 import '../../../save_locations/presentation/screen/add_label.dart';
@@ -22,6 +24,43 @@ class _MapWidget extends State<MapWidget>
     with AutomaticKeepAliveClientMixin<MapWidget> {
   bool _isShowingBottomSheet = false;
   final MapController _mapController = MapController();
+
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -290,7 +329,89 @@ class _MapWidget extends State<MapWidget>
                                                       ),
                                                       const SizedBox(width: 16),
                                                       ElevatedButton.icon(
-                                                        onPressed: () {},
+                                                        onPressed: () async {
+                                                          bool
+                                                              isLocationEnabled =
+                                                              await Geolocator
+                                                                  .isLocationServiceEnabled();
+                                                          if (!isLocationEnabled) {
+                                                            showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return AlertDialog(
+                                                                  title: Text(
+                                                                      "Enable Location Services"),
+                                                                  content:
+                                                                      const Text(
+                                                                          'Please enable location services.'),
+                                                                  actions: <Widget>[
+                                                                    TextButton(
+                                                                      child: const Text(
+                                                                          'Cancel'),
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                    ),
+                                                                    TextButton(
+                                                                      child: const Text(
+                                                                          'Settings'),
+                                                                      onPressed:
+                                                                          () {
+                                                                        AppSettings
+                                                                            .openLocationSettings();
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                    ),
+                                                                  ],
+                                                                );
+                                                              },
+                                                            );
+                                                            return;
+                                                          }
+
+                                                          final Position pos =
+                                                              await _determinePosition();
+                                                          BlocProvider.of<
+                                                                      RoutesBloc>(
+                                                                  context)
+                                                              .add(PointPicked(
+                                                                  from:
+                                                                      PinPoint(
+                                                                          name:
+                                                                              'Your Location',
+                                                                          location:
+                                                                              LatLng(
+                                                                            pos.latitude,
+                                                                            pos.longitude,
+                                                                          )),
+                                                                  to: PinPoint(
+                                                                      name: '',
+                                                                      location:
+                                                                          LatLng(0,
+                                                                              0)),
+                                                                  datetime:
+                                                                      DateTime
+                                                                          .now(),
+                                                                  isDepartureTime:
+                                                                      true));
+                                                          Navigator.pushNamed(
+                                                              context,
+                                                              RoutesPage.route,
+                                                              arguments:
+                                                                  PinPoint(
+                                                                      name:
+                                                                          'Your Location',
+                                                                      location:
+                                                                          LatLng(
+                                                                        pos.latitude,
+                                                                        pos.longitude,
+                                                                      )));
+                                                        },
                                                         icon: const Icon(Icons
                                                             .gps_fixed_outlined),
                                                         label: const Text(
