@@ -82,15 +82,15 @@ class RouteSearchDataProvider {
 
   Future<dynamic> getApiContent(LatLng from, LatLng to, DateTime departureDate,
       bool isDepartureTime) async {
-        print(departureDate);
-        print(isDepartureTime);
+    print(departureDate);
+    print(isDepartureTime);
     departureDate = (DateTime.now().isAfter(departureDate))
         ? DateTime.now().add(const Duration(minutes: 1))
         : departureDate;
 
     var URL =
         "http://34.125.99.126:8082/otp/routers/default/plan?fromPlace=${from.latitude},${from.longitude}&toPlace=${to.latitude},${to.longitude}&time=${DateFormat('hh:mm a').format(departureDate)}&date=${DateFormat('MM-dd-yyyy').format(departureDate)}&mode=TRANSIT%2CWALK&wheelchair=false&showIntermediateStops=true&debugItineraryFilter=false&locale=en&numItineraries=10&arriveBy=${!isDepartureTime}";
-
+    print(URL);
     var response = await http.get(Uri.parse(URL));
     if (response.statusCode == 200) {
       // parse the response body as JSON
@@ -103,7 +103,6 @@ class RouteSearchDataProvider {
           }
         }
       }
-      print('before');
 
       return data;
     } else {
