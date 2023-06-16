@@ -20,11 +20,11 @@ class NavigateMapWidget extends StatelessWidget {
     const Color.fromARGB(255, 170, 255, 0),
   ];
   // Create a map controller
-  final MapController _mapController = MapController();
+  final MapController mapController;
 
   final NavDetailModel navDetailModel;
 
-  NavigateMapWidget({super.key, required this.navDetailModel});
+  NavigateMapWidget({super.key, required this.navDetailModel, required this.mapController});
 
   LatLngBounds _createPolylinesAndBounds(List<List<LatLng>> routeData) {
     // Initialize the bounds with the first point of the route
@@ -94,14 +94,14 @@ class NavigateMapWidget extends StatelessWidget {
           if (state is NavigationSuccessState) {
             return SafeArea(
               child: FlutterMap(
-                mapController: _mapController,
+                mapController: mapController,
                 options: MapOptions(
                   center:
                       LatLng(9.0229687, 38.7747978), // Initial center location
                   zoom: 11.0,
                   onMapReady: () {
                     // Fit the bounds when the map is created
-                    _mapController.fitBounds(
+                    mapController.fitBounds(
                         _createPolylinesAndBounds(state.routePoints));
                   },
                 ),
@@ -173,7 +173,7 @@ class NavigateMapWidget extends StatelessWidget {
                       isFreeLook: state.isFreeLook));
             });
             return FlutterMap(
-              mapController: _mapController,
+              mapController: mapController,
               options: MapOptions(
                 center: state.userPointInRoute,
                 zoom: 15.0,

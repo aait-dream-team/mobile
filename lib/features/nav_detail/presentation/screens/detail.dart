@@ -17,12 +17,12 @@ import 'package:bus_navigation/features/search_results/models/RouteResultModel.d
 import 'package:bus_navigation/features/search_results/presentation/widgets/route_result.dart';
 import 'package:floating/floating.dart';
 import 'package:flutter/material.dart';
-import 'package:compass_icon/compass_icon.dart';
 
 import 'package:bus_navigation/core/utils/utils.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/bus_mode.dart';
 import 'package:bus_navigation/features/nav_detail/presentation/widgets/detail.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../../../navigate/bloc/navigation_bloc.dart';
@@ -33,6 +33,7 @@ import '../../model/nav_detail_model.dart';
 
 class SidePage extends StatefulWidget {
   static const String route = '/SidePage';
+  final MapController mapController = MapController();
   final NavDetailModel navDetailModel;
   final RouteSearchResultModel routeSearchResultModel;
   final PinPoint fromPin, toPin;
@@ -228,6 +229,7 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                                     child: Center(
                                       child: NavigateMapWidget(
                                         navDetailModel: widget.navDetailModel,
+                                        mapController: widget.mapController,
                                       ),
                                     )),
                                 Align(
@@ -348,8 +350,9 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                                     child: Padding(
                                       padding: const EdgeInsets.all(15),
                                       child: GestureDetector(
-                                        onTap: () => {
-                                          //TODO: BIRUK
+                                        onTap: () {
+                                          widget.mapController.move(
+                                              state.userPointInRoute, 16.0);
                                         },
                                         child: const CircleAvatar(
                                           radius: 25,
@@ -441,6 +444,7 @@ class _SidePageState extends State<SidePage> with WidgetsBindingObserver {
                             child: Center(
                               child: NavigateMapWidget(
                                 navDetailModel: widget.navDetailModel,
+                                mapController: widget.mapController,
                               ),
                             ),
                           ),
