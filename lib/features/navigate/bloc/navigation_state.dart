@@ -1,16 +1,28 @@
 part of 'navigation_bloc.dart';
 
 @immutable
-abstract class NavigationState {}
+abstract class NavigationState extends Equatable{}
 
-class NavigationInitialState extends NavigationState {}
+class NavigationInitialState extends NavigationState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
 
-class NavigationLoadingState extends NavigationState {}
+class NavigationLoadingState extends NavigationState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
 
 class NavigationLoadFailedState extends NavigationState {
   final String msg;
 
   NavigationLoadFailedState({required this.msg});
+  
+  @override
+  // TODO: implement props
+  List<Object?> get props => [msg];
 }
 
 class NavigationSuccessState extends NavigationState {
@@ -23,6 +35,10 @@ class NavigationSuccessState extends NavigationState {
       required this.navDetailModel,
       required this.fromPin,
       required this.toPin});
+      
+        @override
+        // TODO: implement props
+        List<Object?> get props => [routePoints, navDetailModel, fromPin, toPin];
 }
 
 class NavigationRoutingState extends NavigationState {
@@ -46,4 +62,18 @@ class NavigationRoutingState extends NavigationState {
     required this.fromPin,
     required this.toPin,
   });
+  
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+        legs,
+        navDetailModel,
+        currentIndex,
+        currentInnerIndex,
+        userPointInRoute,
+        userLocation,
+        currentIntermidateStopIndex,
+        fromPin,
+        toPin,
+      ];
 }

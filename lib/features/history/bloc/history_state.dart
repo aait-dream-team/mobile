@@ -2,17 +2,29 @@
 part of 'history_bloc.dart';
 
 @immutable
-abstract class HistoryState {}
+abstract class HistoryState extends Equatable {}
 
-class HistoryInitialState extends HistoryState {}
+class HistoryInitialState extends HistoryState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
 
-class HistoryLoadingState extends HistoryState {}
+class HistoryLoadingState extends HistoryState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
 
 class HistoryLoadFailedState extends HistoryState {
   final String msg;
   HistoryLoadFailedState({
     required this.msg,
   });
+  
+  @override
+  // TODO: implement props
+  List<Object?> get props => [msg];
 }
 
 class HistorySuccessState extends HistoryState {
@@ -21,4 +33,8 @@ class HistorySuccessState extends HistoryState {
   HistorySuccessState({
     required this.routes,
   });
+  
+  @override
+  // TODO: implement props
+  List<Object?> get props => [routes];
 }

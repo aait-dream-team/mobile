@@ -1,7 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'package:equatable/equatable.dart';
 
-class RecentRouteModel {
+class RecentRouteModel extends Equatable {
   final String name;
   final String lat;
   final String long;
@@ -65,4 +66,8 @@ class RecentRouteModel {
 
   @override
   int get hashCode => name.hashCode ^ lat.hashCode ^ long.hashCode ^ date.hashCode;
+  
+  @override
+  // TODO: implement props
+  List<Object?> get props => [name, lat, long, date];
 }

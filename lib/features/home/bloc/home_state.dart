@@ -1,7 +1,7 @@
 part of 'home_bloc.dart';
 
 @immutable
-abstract class HomeState {
+abstract class HomeState extends Equatable {
   late final LatLng position;
   late final double zoom;
 }
@@ -11,6 +11,10 @@ class HomeInitialState extends HomeState {
   LatLng get position => LatLng(8.9806, 38.7578);
   @override
   double get zoom => 12.1;
+  
+  @override
+  // TODO: implement props
+  List<Object?> get props => [position, zoom];
 }
 
 class HomeMapState extends HomeState {
@@ -20,6 +24,10 @@ class HomeMapState extends HomeState {
   final double zoom;
 
   HomeMapState(this.position, this.zoom);
+  
+  @override
+  // TODO: implement props
+  List<Object?> get props => [position, zoom];
 }
 
 // Map that contains a pin
@@ -36,6 +44,10 @@ class HomePinnedState extends HomeState {
       required this.name,
       required this.zoom,
       required this.pinPosition});
+      
+        @override
+        // TODO: implement props
+        List<Object?> get props => [position, name, zoom, pinPosition];
 }
 
 class HomePinnedLoadingState extends HomePinnedState {

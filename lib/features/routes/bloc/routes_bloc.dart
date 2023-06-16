@@ -4,6 +4,7 @@ import 'package:bus_navigation/features/routes/models/recent_route.dart';
 import 'package:bus_navigation/features/routes/repository/recent_route_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:equatable/equatable.dart';
 
 part 'routes_event.dart';
 part 'routes_state.dart';

@@ -5,6 +5,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 import 'package:turf/turf.dart';
+import 'package:equatable/equatable.dart';
 
 import '../../routes/models/pin.dart';
 

@@ -1,7 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'package:equatable/equatable.dart';
 
-class RouteModel {
+class RouteModel extends Equatable {
   final String startPoint;
   final String endPoint;
   final DateTime date;
@@ -59,4 +60,8 @@ class RouteModel {
 
   @override
   int get hashCode => startPoint.hashCode ^ endPoint.hashCode ^ date.hashCode;
+  
+  @override
+  // TODO: implement props
+  List<Object?> get props => [startPoint, endPoint, date];
 }

@@ -40,8 +40,8 @@ class _HomeWidget extends State<HomeWidget> {
           builder: (context, state) {
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
+              key: Key('search_home'),
               child: GooglePlaceAutoCompleteTextField(
-                  
                   textEditingController: controller,
                   googleAPIKey: api_key!,
                   inputDecoration: InputDecoration(

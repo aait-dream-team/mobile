@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:latlong2/latlong.dart';
+import 'package:equatable/equatable.dart';
 
 class Step {
   final double distance;
@@ -139,7 +140,7 @@ class Leg {
   }
 }
 
-class NavDetailModel {
+class NavDetailModel extends Equatable {
   final DateTime startTime; // startTime
   final DateTime endTime; // endTime
   final int duration; // duration
@@ -169,4 +170,8 @@ class NavDetailModel {
   String toString() {
     return 'NavDetailModel(startTime: $startTime, endTime: $endTime, duration: $duration, legs: $legs)';
   }
+  
+  @override
+  // TODO: implement props
+  List<Object?> get props =>[startTime, endTime, duration, legs];
 }

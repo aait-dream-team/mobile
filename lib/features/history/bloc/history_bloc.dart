@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
 import 'package:bus_navigation/features/history/repository/route_history_repository.dart';
+import 'package:equatable/equatable.dart';
 
 import '../models/RouteHistory.dart';
 
